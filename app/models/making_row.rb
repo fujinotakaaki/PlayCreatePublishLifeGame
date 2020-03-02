@@ -1,0 +1,2 @@
+class MakingRow < ApplicationRecord
+end

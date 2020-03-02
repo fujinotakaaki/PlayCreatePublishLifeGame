@@ -1,0 +1,2 @@
+class PatternRow < ApplicationRecord
+end

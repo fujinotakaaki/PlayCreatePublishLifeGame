@@ -1,0 +1,2 @@
+class DisplayFotmat < ApplicationRecord
+end
