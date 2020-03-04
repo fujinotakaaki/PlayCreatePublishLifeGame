@@ -64,7 +64,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # ログイン機能実装
 gem 'devise'
 # CSSデザイン補助機能
-gem 'bootstrap-sass', '~> 3.3.6'
+gem 'bootstrap-sass', '~> 3.4.1'
 # jQuery導入
 gem 'jquery-rails'
 # ファイル投稿機能
