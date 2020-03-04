@@ -28,51 +28,15 @@
    clear: both;
  }
 
- #menue-parent {
-   text-align: left;
-   position: relative;
- }
-
- #menue-child {
-   position: absolute;
-   display: none;
-   text-align: center;
-   top: 80%;
-   left: 0;
-   li {
-     width: 100%;
-     margin: 0;
-     padding: 0;
-     border: thin solid black;
-     border-top: none;
-     color: black;
-     &:first-child {
-       background-color: #666;
-     }
-   }
- }
-
  header {
    position: relative;
-   background-color: #000;
-   color: #fff;
+   background-color: black;
+   color: white;
    padding: 10px 30px;
-   #end-user-profile {
-     position: absolute;
-     top: 30px;
-     right: 30px;
-     &:hover #menue-child {
-       display: block;
-       background-color: lightgray;
-     }
-     &:hover #menue-parent {
-       color: yellow;
-     }
-   }
+
    img {
      border: thin solid dimgray;
      display: inline-block;
-     float: right;
    }
    a {
      text-decoration: none;
@@ -82,14 +46,43 @@
      }
    }
    nav {
-     margin: 0 30px 0 0;
      ul {
        text-align: right;
        li {
+         vertical-align: middle;
          // aタグの方が優先度が高いため、色設定ができない
          list-style: none;
          display: inline-block;
          margin: 0 10px;
+         position: relative;
+         ul {
+           display: none;
+           width: 100%;
+           position: absolute;
+           top: 100%;
+           right: 0;
+           text-align: center;
+           li {
+             display: block;
+             width: 100%;
+             margin: 0;
+             border: thin solid black;
+             border-top: none;
+             color: black;
+             &:first-child {
+               background-color: #ddd;
+               &:hover {
+                 color: black;
+               }
+             }
+           }
+         }
+         &:hover {
+           color: yellow;
+           ul {
+             display: inline-block;
+           }
+         }
        }
      }
    }
