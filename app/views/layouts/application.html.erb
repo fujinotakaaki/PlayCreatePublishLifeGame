@@ -14,31 +14,43 @@
     <ul>
       <% if user_signed_in? %>
       <li><%= attachment_image_tag current_user, :profile_image, size:'30x30', format: 'jpeg', fallback: 'no_image.jpg', size:'30x30' %></li>
-      <li style='text-align: left;'>
-        こんにちは、<br><%= current_user.name %>さん▼
-        <ul>
-          <li>メニュー</li>
-          <li>新規作成</li>
-          <li>マイページ</li>
+      <li id='menue-parent'>
+        こんにちは、<br>
+        <%= current_user.name %>さん▼
+        <ul id='menue-child'>
+          <li>
+            <span class="glyphicon glyphicon-list" aria-hidden="true" style='color: rgba(0,0,0,0);'></span>　メニュー
+          </li>
+          <li>
+            <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
+            <%= link_to '　パターン作成', edit_making_path %>
+          </li>
+          <li>
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            <%= link_to '　マイページ', member_path( current_user ) %>
+          </li>
+          <li>
+            <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+            <%= link_to '　ログアウト', destroy_user_session_path, method: :delete %>
+          </li>
         </ul>
       </li>
       <% else %>
-      <li><%= image_tag "no_image.jpg", size:'30x30' %></li>
-      <li>こんにちは、<br><%= admin_signed_in? ? '管理人' : 'ゲスト' %>さん　</li>
+      <li style='text-align: left;'>
+        <%= link_to new_user_session_path do %>
+        ようこそ！<br>
+        ログイン<span class="glyphicon glyphicon-log-in" aria-hidden="true" style='font-size: 10px;'></span>
+        <% end %>
+      </li>
       <% end %>
 
       <li><%= link_to "TOP", root_path %></li>
       <li><%= link_to "About", about_path %></li>
+
       <% if admin_signed_in? %>
-      <!-- admin_userの場合 -->
       <li><%= link_to "Sign out", destroy_admin_session_path, method: :delete %></li>
-      <% elsif user_signed_in? %>
-      <!-- end_userの場合 -->
-      <li><%= link_to "Sign out", destroy_user_session_path, method: :delete %></li>
       <% else %>
-      <!--ゲストの場合 -->
-      <li><%= link_to "Log in", new_user_session_path %></li>
-      <li><%= link_to "[Log in for Admin]", new_admin_session_path  if Rails.env.development? %></li>
+      <li><%= link_to "[Log in for Admin]", new_admin_session_path %></li>
       <% end %>
     </ul>
   </nav>
@@ -48,5 +60,5 @@
     <%= yield %>
   </body>
 
-  <footer></footer>
+  <footer><%= debug(params) if Rails.env.development? %></footer>
 </html>
