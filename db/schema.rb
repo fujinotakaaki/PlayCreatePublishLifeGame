@@ -57,10 +57,10 @@ ActiveRecord::Schema.define(version: 2020_03_02_160054) do
 
   create_table "makings", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "margin_top"
-    t.integer "margin_bottom"
-    t.integer "margin_left"
-    t.integer "margin_right"
+    t.integer "margin_top", default: 0
+    t.integer "margin_bottom", default: 0
+    t.integer "margin_left", default: 0
+    t.integer "margin_right", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -106,7 +106,6 @@ ActiveRecord::Schema.define(version: 2020_03_02_160054) do
     t.string "name"
     t.text "introduction"
     t.string "profile_image_id"
-    t.boolean "is_deleated", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
