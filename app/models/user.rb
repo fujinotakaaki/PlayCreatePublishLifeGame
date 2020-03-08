@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   attachment :profile_image
   has_one    :making,              dependent: :destroy
-  has_many :patterns
+  has_many :patterns,             dependent: :destroy
   has_many :display_formats
   has_many :post_comments, dependent: :destroy
   has_many :favorites,             dependent: :destroy
