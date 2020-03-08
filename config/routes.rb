@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # ===一般ユーザ側のルーティング===
   # ユーザのルーティング
-  resource :member, only: [ :edit, :show, :update ]
+  resources :members, except: [:new, :create, :destroy]
   # パターンのルーティング
   resources :patterns, except: [ :new ] do
     # コメント投稿のルーティング
@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   # 表示形式のルーティング
   resources :display_formats, except: [ :show ]
   # パターン作成のルーティング
-  resource :making, except: [ :show ]
+  resource :making, only: [ :edit, :update, :destroy ]
   # ジャンルのルーティング
   resources :categories, only: [ :index, :show ]
   # 一般ユーザアカウント管理への設定
