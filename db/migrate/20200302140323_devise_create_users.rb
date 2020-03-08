@@ -39,8 +39,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       t.text        :introduction
       # プロフィールイメージ
       t.string     :profile_image_id
-      # 退会フラグ
-      t.boolean :is_deleated	, null: false	, default: false
       t.timestamps null: false
     end
 
