@@ -15,8 +15,14 @@ Rails.application.routes.draw do
   resource :making, only: [ :edit, :update, :destroy ]
   # ジャンルのルーティング
   resources :categories, only: [ :index, :show ]
-  # 一般ユーザアカウント管理への設定
-  devise_for :users
+  # ユーザアカウント管理の設定(devise)
+  scope module: :users do
+    devise_for :users, controllers: {
+      sessions: 'users/sessions',
+      registrations: 'users/registrations',
+      passwords: 'users/passwords'
+    }
+  end
 
   # ===管理者側のルーティング===
   namespace :admin do
@@ -26,7 +32,12 @@ Rails.application.routes.draw do
     resources :categories
   end
   #管理者アカウント管理への設定
-  devise_for :admins
+  devise_for :admins, skip: :all
+  devise_scope :admin do
+    get      'admin/sign_in'   => 'admin/users/sessions#new', as: 'new_admin_session'
+    post    'admin/sign_in'   => 'admin/users/sessions#create', as: 'admin_session'
+    delete 'admin/sign_out' => 'admin/users/sessions#destroy', as: 'destroy_admin_session'
+  end
 
   # ===共通===
   # アバウトページのルーティング
