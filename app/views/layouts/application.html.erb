@@ -5,8 +5,10 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'common', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'user/application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag '/common', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'user/application', 'data-turbolinks-track': 'reload' %>
   </head>
   <header>
     <h1>WebCamp</h1>
@@ -46,12 +48,6 @@
 
       <li><%= link_to "TOP", root_path %></li>
       <li><%= link_to "About", about_path %></li>
-
-      <% if admin_signed_in? %>
-      <li><%= link_to "Sign out", destroy_admin_session_path, method: :delete %></li>
-      <% else %>
-      <li><%= link_to "[Log in for Admin]", new_admin_session_path %></li>
-      <% end %>
     </ul>
   </nav>
   </header>

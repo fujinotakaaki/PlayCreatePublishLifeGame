@@ -15,3 +15,4 @@
 //= require activestorage
 //= require turbolinks
 //= require_tree .
+console.log('I am admin/application.js');

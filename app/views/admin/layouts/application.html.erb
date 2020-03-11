@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PlayCreatePublishLifeGame_管理者</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'admin/application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'admin/application', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <header>
+    <h1>PlayCreatePublishLifeGame（管理者）</h1>
+    <%= link_to 'ろぐあうと', destroy_admin_session_path, method: :delete %>
+
+  </header>
+
+  <body>
+    <%= yield %>
+  </body>
+
+  <footer><%= debug(params) if Rails.env.development? %></footer>
+</html>
