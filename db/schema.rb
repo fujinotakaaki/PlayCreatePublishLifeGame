@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2020_03_02_160054) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "display_fotmats", force: :cascade do |t|
+  create_table "display_formats", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name"
     t.string "alive"

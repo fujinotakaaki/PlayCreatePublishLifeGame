@@ -1,4 +1,4 @@
-class DisplayFotmat < ApplicationRecord
+class DisplayFormat < ApplicationRecord
   ERROR_MESSAGES = {
     length: 'セル状態は1文字で定義してください.' ,
     display_format: '「生」と「死」のセル状態は同じ文字にできません.',

@@ -1,7 +1,7 @@
-class CreateDisplayFotmats < ActiveRecord::Migration[5.2]
+class CreateDisplayFormats < ActiveRecord::Migration[5.2]
   # 表示形式のモデル
   def change
-    create_table :display_fotmats do |t|
+    create_table :display_formats do |t|
       # 作成ユーザとの関連付け
       t.integer :user_id,             null: false
       # 表示形式名称
