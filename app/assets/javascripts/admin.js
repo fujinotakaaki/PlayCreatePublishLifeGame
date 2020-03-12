@@ -14,6 +14,6 @@
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
-//= require common
+//= require_tree ./common
 //= require_tree ./admin
 console.log('Read admin.js');
