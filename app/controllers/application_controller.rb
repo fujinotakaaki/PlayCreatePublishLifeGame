@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
     when User then
       member_path( resource )
     when Admin then
-      admin_categories_path
+      admin_root_path
     end
   end
 
