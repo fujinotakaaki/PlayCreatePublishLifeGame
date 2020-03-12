@@ -5,13 +5,13 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'common', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_link_tag    'user/application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag '/common', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'user/application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'user', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'user', 'data-turbolinks-track': 'reload' %>
   </head>
   <header>
     <h1>WebCamp</h1>
+    <h2>    <%= link_to 'rooと', root_path %><br>
+        <%= link_to 'category_indexと', admin_categories_path %></h2>
     <nav>
     <ul>
       <% if user_signed_in? %>

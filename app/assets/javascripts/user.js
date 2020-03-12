@@ -14,5 +14,6 @@
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
-//= require_tree .
-console.log('Read user/application.js');
+//= require common
+//= require_tree ./user
+console.log('Read user.js');
