@@ -1,0 +1,16 @@
+<h2>This section is showed for debug.</h2>
+
+<nav>
+  <ul>
+    <li>
+      <h4>Members</h4>
+      <%= link_to 'Index', admin_members_path %>
+    </li>
+    <li>
+      <h4>Categories</h4>
+      <%= link_to 'Index', admin_categories_path %>
+    </li>
+  </ul>
+</nav>
+
+<%= debug(params) %>

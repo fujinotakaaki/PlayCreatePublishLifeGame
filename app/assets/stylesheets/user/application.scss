@@ -13,9 +13,48 @@
  *= require_tree .
  *= require_self
  */
- @import "bootstrap-sprockets";  /*ここを追加*/
- @import "bootstrap";                   /*ここを追加*/
 
 h1 {
   color: red;
 }
+
+#menue-parent {
+  position: relative;
+  text-align: left;
+  &:hover {
+    #menue-child {
+      display: block;
+    }
+  }
+}
+
+#menue-child {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    text-align: left;
+    background-color: white;
+    li {
+      display: block;
+      width: 150px;
+      margin: 0;
+      border: thin solid black;
+      border-top: none;
+      padding: 2px 10px;
+      color: black;
+      &:hover {
+        color: black;
+      }
+      &:first-child {
+        background-color: #aaa;
+      }
+      a {
+        color: black;
+        &:hover {
+          color: purple;
+          text-decoration: none;
+        }
+      }
+    }
+  }

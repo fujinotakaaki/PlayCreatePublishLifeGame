@@ -15,7 +15,7 @@
     <ul>
       <li><%= link_to "Top for user", root_path %></li>
       <li><%= link_to "Top for Admin", admin_root_path %></li>
-      <li><%= link_to '管理者ログアウト', destroy_admin_session_path, method: :delete %></li>
+      <li><%= link_to '管理者ログアウト', destroy_admin_session_path, method: :delete, data: { confirm: 'ログアウトしますか？' } %></li>
     </ul>
   </nav>
   </header>
@@ -24,5 +24,9 @@
     <%= yield %>
   </body>
 
-  <footer></footer>
+  <footer>
+    <% if Rails.env.development? then %>
+    <%= render 'admin/layouts/debug_section' %>
+    <% end %>
+  </footer>
 </html>
