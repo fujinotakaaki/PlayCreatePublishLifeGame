@@ -10,7 +10,14 @@
 
   <header>
     <h1>（管理者）</h1>
-    <%= link_to 'ろぐあうと', destroy_admin_session_path, method: :delete %>
+
+    <nav>
+    <ul>
+      <li><%= link_to "Top for user", root_path %></li>
+      <li><%= link_to "Top for Admin", admin_root_path %></li>
+      <li><%= link_to '管理者ログアウト', destroy_admin_session_path, method: :delete %></li>
+    </ul>
+  </nav>
   </header>
 
   <body>
