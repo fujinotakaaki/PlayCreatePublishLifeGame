@@ -1,1 +1,1 @@
-console.log('I am common.js');
+console.log('Read common.js');
