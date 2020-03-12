@@ -34,9 +34,10 @@ ActiveRecord::Schema.define(version: 2020_03_02_160054) do
   create_table "display_fotmats", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name"
-    t.string "alive_and_dead"
-    t.integer "font_color", default: 9498256
-    t.integer "background_color", default: 0
+    t.string "alive"
+    t.string "dead"
+    t.string "font_color", default: "#90EE90"
+    t.string "background_color", default: "#000"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -76,8 +77,8 @@ ActiveRecord::Schema.define(version: 2020_03_02_160054) do
     t.integer "user_id", null: false
     t.integer "category_id", default: 1, null: false
     t.integer "display_format_id", default: 1, null: false
-    t.string "name", default: "名前なし"
-    t.text "introduction", default: "説明文なし"
+    t.string "name"
+    t.text "introduction"
     t.string "image_id"
     t.boolean "is_torus", default: false, null: false
     t.integer "margin_top"

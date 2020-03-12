@@ -4,8 +4,13 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates :name, presence: true
+  # ニックネームは定義必須
+  validates :name,          presence: true
+  # 説明文は200文字以内
+  validates :introduction, length: { maximum: 200 }
+
   attachment :profile_image
+
   has_one    :making,              dependent: :destroy#, class_name: Making
   has_many :patterns,             dependent: :destroy
   has_many :display_formats

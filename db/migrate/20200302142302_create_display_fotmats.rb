@@ -6,12 +6,14 @@ class CreateDisplayFotmats < ActiveRecord::Migration[5.2]
       t.integer :user_id,             null: false
       # 表示形式名称
       t.string   :name
-      # セルの表示形式
-      t.string   :alive_and_dead
-      # セルの色
-      t.integer :font_color,                          default: 0x90EE90 # lightgreen
-      # 背景色
-      t.integer :background_color,             default: 000            # black
+      # 生セルの表示形式
+      t.string   :alive
+      # 死セルの表示形式
+      t.string   :dead
+      # セルの色(lightgreen)
+      t.string :font_color,                             default: '#90EE90'
+      # 背景色(black)
+      t.string :background_color,                default: '#000'
 
       t.timestamps
     end

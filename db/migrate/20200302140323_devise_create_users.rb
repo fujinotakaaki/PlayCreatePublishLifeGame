@@ -33,16 +33,13 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       # t.string   :unlock_token # Only if unlock strategy is :email or :both
       # t.datetime :locked_at
 
-      # ニックネーム
-      t.string     :name
-      # 自己紹介文
-      t.text        :introduction
-      # プロフィールイメージ
-      t.string     :profile_image_id
+      t.string     :name,                   comment: 'ニックネーム'
+      t.text        :introduction,         comment: '自己紹介文'
+      t.string     :profile_image_id, comment: 'プロフィールイメージ'
       t.timestamps null: false
     end
 
-    add_index :users, :email,                unique: true
+    add_index :users, :email,                             unique: true
     add_index :users, :reset_password_token, unique: true
     # add_index :users, :confirmation_token,   unique: true
     # add_index :users, :unlock_token,         unique: true

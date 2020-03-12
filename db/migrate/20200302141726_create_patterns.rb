@@ -9,13 +9,13 @@ class CreatePatterns < ActiveRecord::Migration[5.2]
       # 表示形式との関連付け
       t.integer   :display_format_id, null: false	, default: 1
       # パターン名
-      t.string     :name,                                       default: '名前なし'
+      t.string     :name
       # パターン紹介文
-      t.text        :introduction,                             default: '説明文なし'
+      t.text        :introduction
       # パターン代表イメージ
       t.string     :image_id
-      # 上下左右を循環させるか
-      t.boolean :is_torus,                 null: false,  default: false # 非トーラス状
+      # 上下左右を循環させるか(非トーラス状)
+      t.boolean :is_torus,                 null: false,  default: false
       #上側余白
       t.integer   :margin_top
       #下側余白
@@ -24,8 +24,8 @@ class CreatePatterns < ActiveRecord::Migration[5.2]
       t.integer   :margin_left
       #右側余白
       t.integer   :margin_right
-      # 公開・非公開の設定
-      t.boolean :is_secret,                null: false, default: false # false => 公開
+      # 公開・非公開の設定(false => 公開)
+      t.boolean :is_secret,                null: false, default: false
 
       t.timestamps
     end
