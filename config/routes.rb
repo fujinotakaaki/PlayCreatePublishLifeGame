@@ -26,6 +26,8 @@ Rails.application.routes.draw do
 
   # ===管理者側のルーティング===
   namespace :admin do
+    # Homesのルーティング
+    get 'top' => 'admin/homes#top', as: 'root'
     # ユーザのルーティング
     resources :members, except: [ :new, :create, :destroy ]
     # ジャンルのルーティング
