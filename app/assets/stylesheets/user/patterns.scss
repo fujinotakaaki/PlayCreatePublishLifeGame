@@ -1,3 +1,26 @@
 // Place all the styles related to the Patterns controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.article {
+  height: 100px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid gray;
+  display: flex;
+  align-items: center;
+}
+
+.lifegame {
+  padding: 30px 10px;
+  margin: 0 auto;
+  text-align: center;
+  color: limegreen;
+  background-color: black;
+  font-size: 1em;
+  line-height: 1em;
+  letter-spacing: 0em;
+  /* font-variant-east-asian: full-width;
+  -moz-font-feature-settings: "fwid";
+  -webkit-font-feature-settings: "fwid";
+  font-feature-settings: "fwid"; */
+}

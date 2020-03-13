@@ -10,6 +10,7 @@ db/seeds.rb
 # Ignore image
 app/assets/images/*
 !app/assets/images/no_image.jpg
+!app/assets/images/no_pattern_image.jpg
 !app/assets/images/.keep
 
 # Ignore bundler config.

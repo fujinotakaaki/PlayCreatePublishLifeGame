@@ -1,2 +1,13 @@
-<h1>Patterns#index</h1>
-<p>Find me in app/views/patterns/index.html.erb</p>
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+
+    <% @patterns.each do | pattern | %>
+    <div class="row">
+      <%= render 'patterns/article', pattern: pattern %>
+    </div>
+    <% end %>
+
+    <%= paginate @patterns, class: "paginate" %>
+
+  </div>
+</div>
