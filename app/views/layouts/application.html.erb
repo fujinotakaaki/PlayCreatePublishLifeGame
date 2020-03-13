@@ -5,11 +5,12 @@
   <title><%= rand(88)%2==0 ? "WebCamp" : "Play!Create!Publish! LifeGame" %></title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-
+  <%= include_gon %>
   <%= stylesheet_link_tag    "user", media: "all", "data-turbolinks-track": "reload" %>
   <%= javascript_include_tag "user", "data-turbolinks-track": "reload" %>
 </head>
 
+<body>
 <header>
   <h1><%= Rails.env.development? ? "WebCamp" : "Play!Create!Publish! LifeGame" %></h1>
   <nav>
@@ -54,11 +55,10 @@
   </nav>
 </header>
 
-<body>
   <div class="container">
     <%= yield %>
   </div>
-</body>
 
 <footer></footer>
+</body>
 </html>

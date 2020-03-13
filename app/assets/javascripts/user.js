@@ -18,4 +18,3 @@
 //= require_tree ./common
 //= require_tree ./lifegame
 //= require_tree ./user
-console.log('Read user.js');

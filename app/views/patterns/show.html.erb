@@ -4,53 +4,14 @@
 <p>
    <input type="button" value="開始"        id="startcount"     onclick="startShowing();">
    <input type="button" value="一時停止" id="stopcount"     onclick="stopShowing();">
-   <input type="button" value="盤面変更" id="update_bord" onclick="next_map()">
-   <% interval_ruby = 50 + 50*rand(3).floor %>
-   interval = <%= interval_ruby %>ms <= ページ更新ごとに変化します。（50ms, 100ms, 150ms）
+   interval = 100ms
 </p>
 <p id="ShowInfo">(ここにカウントが表示されます)</p>
-<p id="ShowLifeGame", class="lifegame">(ここにライフゲームが表示されます)</p>
+<p id="ShowLifeGame" class="lifegame">(ここにライフゲームが表示されます)</p>
+
 
 <script>
-  // ライフゲームのオプション設定を行う変数（宣言必須項目1）
-  var options = new Object;
-  // デフォルト値 { name:'', alive:'#', dead:'.', upside_down:false, flip:false, rotate:0 };
-
-  // 単独設定
-  const interval = <%= interval_ruby %>;
-  // const interval = 100; // （宣言必須項目２）
-  // ##########世代交代のインターバル設定##########
-  options = { alive:'■', dead:'□' }; // ■□マス表示
-  // options = { alive:'生', dead:'　' }; // 生きてるセルだけ表示
-  // options.alive = '生'; // 生状態セル表示
-  // options.dead = '　'; // 死状態セル表示
-  // ##########使用する盤面の設定（デフォルトはグライダー銃）##########
-  // options.name = 'Mix' // 非常に苦労したやつ
-  const pattern = [
-  '60P312',          "Achim's_p144",
-  "Achim's_p8",      'Clock1',
-  'Clock2',          "Coe's_p8",
-  'Galaxy',          'GliderGun',
-  'HertzOscillator', 'Mix',
-  'Pentadecathlon',  'Pinwhell',
-  'Pulsar',          'QueenBeeLoop', 'QueenBeeShuttle',
-  'Twin_Galaxy_1',   'Twin_Galaxy_2', '94P27.1',
-  'Twin_Pulsar', 'still_life'
-];
-  const pattern_count = pattern.length; // 登録されている盤面の数を格納
-  console.log('pattern:' + pattern_count + '種');
-  console.log('pattern=',pattern);
-  options.name = '94P27.1';
-  // options.name = pattern[ Math.floor( Math.random() * pattern_count ) ]; // 登録されている盤面からランダムに選択
-  // ##############################################################
-  // すみません、上下反転 => 左右反転 => 回転の順で、処理されます
-  // options.upside_down = true; // 上下反転表示
-  // options.flip = true; // 左右反転表示
-  // options.rotate = 931; // 回転表示（反時計回りに options.rotate x 90度回転）
-  // #########################################################################################
-  // 盤面ナンバー（宣言必須項目３）
-  var life_game_number = pattern.indexOf(options.name);
-  // ライフゲームを格納する変数（宣言必須項目４）
-  var life_game = new LifeGame( options );
-  // alert( "この表示が出ればライフゲーム が動きます" );
+  // turbolinksのせいで２回実行されるが、とりあえず問題はなさそう
+  // console.log('<%= Time.zone.now %>');
+  initializeLifeGame();
 </script>

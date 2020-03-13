@@ -1,18 +1,31 @@
-console.log('Read LifeGame_enviroment.js');
+// グローバル変数の定義
+// 世代数カウント
+var generation_count;
+// ライフゲームパターンの初期設定
+var pattern_data;
+var intervalProcessingID;
 
-// 一時停止ボタンの無効化
-$( function() {
-  $("#stopcount").prop("disabled", true );
-});
-// 世代数
-var generation = 0;
-// 生きているセルの数を表示するか
-const alive_cells_count_show = true;
+// ライフゲーム実行のための初期化メソッド（showページ遷移時に発火）
+function initializeLifeGame() {
+  // 動作中のライフゲームを強制終了させる
+  if ( Number.isFinite( intervalProcessingID ) ) {
+    stopShowing();
+  }
+  // 世代数カウント初期化
+  generation_count = 0;
+  // ライフゲームのオプション設定
+  // let options = { alive: gon.display_format.alive, dead: gon.display_format.dead }; // 表示形式の設定
+  // ライフゲームパターンの初期設定
+  pattern_data = new LifeGame(  );
+  // 初期盤面の表示
+  showingPattern();
+}
 
-// ライフゲーム実行処理
+
+// ライフゲーム実行処理（開始ボタン押下で発火）
 function startShowing() {
-  // 世代交代の間隔の設定
-  PassageID = setInterval( 'upDateLifeGame()', interval );
+  // 繰り返し処理の実行
+  intervalProcessingID = setInterval( 'upDate()', 100 );
   // 開始ボタンの無効化
   $("#startcount").prop("disabled", true );
   // 一時停止ボタンの有効化
@@ -20,10 +33,10 @@ function startShowing() {
 }
 
 
-// ライフゲーム停止処理
+// ライフゲーム一時停止処理（一時停止ボタン押下で発火）
 function stopShowing() {
-  // タイマーのクリア
-  clearInterval( PassageID );
+  // 繰り返し処理の一時停止
+  clearInterval( intervalProcessingID );
   // 開始ボタンの有効化
   $("#startcount").prop("disabled", false );
   // 一時停止ボタンの無効化
@@ -31,41 +44,21 @@ function stopShowing() {
 }
 
 
-// 画面の世代交代処理
-function upDateLifeGame( performGenerationChange = true ) {
-  // 画面に表示するメッセージ変数の作成
-  var msg = '第' + generation + '世代（ No.' + ( life_game_number + 1) + ' : ' + options.name + '）';
-  // 生きているセルの情報を取得するか
-  if ( alive_cells_count_show ) {
-    // 生きているセルの数を取得
-    msg +=  ' => 生きているセルの数: ' + life_game.GetAliveCellsCount + '個';
-  }
-  // メッセージ更新
-  $('#ShowInfo').text( msg );
-  // 表示中のパターン更新
-  $('#ShowLifeGame').html( life_game.GetMap );
-  // 世代交代処理
-  if ( performGenerationChange ) {
-    // 世代数のカウントアップ
-    generation++;
-    // パターンの世代交代実行
-    life_game.UpDate;
-  }
+// 繰り返し処理
+function upDate() {
+  // 画面上のパターンの更新
+  showingPattern()
+  // 世代数のカウントアップ
+  generation_count++;
+  // パターンの世代交代実行
+  pattern_data.generationChange;
 }
 
 
-// パターン変更処理
-function next_map() {
-  // 世代数の初期化
-  generation = 0;
-  // サンプルパターンの変更（番号変更）
-  life_game_number++;
-  // サンプルパターン数を超える場合は0番から
-  life_game_number = life_game_number % pattern_count;
-  // サンプルパターン名取得
-  options.name = pattern[ life_game_number ];
-  // ライフゲーム変数の初期化
-  life_game = new LifeGame( options );
-  // 画面へ反映
-  upDateLifeGame( false );
+// htmlテキストのインサート処理
+function showingPattern() {
+  // 表示中のメッセージ更新
+  $('#ShowInfo').text( '第' + generation_count + '世代' );
+  // 表示中のパターン更新
+  $('#ShowLifeGame').html( pattern_data.GetPatternText );
 }

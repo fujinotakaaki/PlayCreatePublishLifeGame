@@ -14,6 +14,11 @@ class PatternsController < ApplicationController
 
   def show
     @pattern = Pattern.find( params[ :id ] )
+    gon.push(
+      pattern: @pattern,
+      pattern_rows: @pattern.pattern_rows,
+      display_format: @pattern.display_format,
+    )
   end
 
   def update

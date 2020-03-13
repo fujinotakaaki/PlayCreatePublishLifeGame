@@ -1,6 +1,5 @@
-
 class LifeGameMap {
-  constructor( options={ name:0, upside_down:false, flip:false, rotate:0 } ) {
+  constructor( options = { name: 0, upside_down: false, flip: false, rotate: 0 } ) {
     var bord;
     // life_game_map.jpから初期盤面を取得
     switch ( options.name ) {
