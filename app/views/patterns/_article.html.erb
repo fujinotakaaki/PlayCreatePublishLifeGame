@@ -1,10 +1,27 @@
 
-<div class="article">
-  <div class="col-sm-1" >
-    <%= attachment_image_tag pattern, :image, size:'50x50', format: 'jpeg', fallback: 'no_pattern_image.jpg', size:'50x50' %>
+<div class="article" style="<%= style_option %>">
+  <div class="col-sm-2">
+    <%= link_to pattern_path( pattern ) do
+    attachment_image_tag pattern,
+    :image,
+    fallback: 'no_pattern_image.jpg',
+    size: image_side_length,
+    class: "center-block",
+    style:"margin-top: #{ ( 100 - image_side_length ) / 2 }px"
+    end %>
   </div>
   <div class="col-sm-8">
-    <h3><%= link_to pattern.name, pattern_path( pattern ) %></h3>
-    <p><%= pattern.introduction.truncate( 20 ) %></p>
+    <h3>
+      <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+      <%= pattern.name %>
+    </h3>
+    <p>
+      <%= pattern.introduction.truncate( character_limit ) %><br>
+      <% if action_name != 'show' then %>
+      <span class="pattern-submit-user">
+        by <%= link_to pattern.user.name, member_path( pattern.user_id ) %>さん
+      </span>
+      <% end %>
+    </p>
   </div>
 </div>

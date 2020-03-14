@@ -4,7 +4,7 @@ class PatternsController < ApplicationController
 
   def index
     # config/initializers/kaminari_config.rb
-    @patterns = Pattern.all.page( params[ :page ] ).reverse_order
+    @patterns = Pattern.page( params[ :page ] ).reverse_order
   end
 
   def edit
@@ -14,10 +14,11 @@ class PatternsController < ApplicationController
 
   def show
     @pattern = Pattern.find( params[ :id ] )
+    @latest_comment = PostComment.order(created_at: :desc).find_by( pattern_id: params[ :id ] )
     gon.push(
-      pattern: @pattern,
-      pattern_rows: @pattern.pattern_rows,
-      display_format: @pattern.display_format,
+      # pattern: @pattern,
+      # pattern_rows: @pattern.pattern_rows,
+      display_format: @pattern.display_format
     )
   end
 

@@ -6,21 +6,49 @@
   height: 100px;
   margin-bottom: 20px;
   border-bottom: 2px solid gray;
-  display: flex;
   align-items: center;
+  h3 {
+    font-weight: bold;
+  }
+  div {
+    height: 100%;
+  }
 }
 
-.lifegame {
-  padding: 30px 10px;
+#show-pattern {
+  padding: 30px 0;
   margin: 0 auto;
   text-align: center;
   color: limegreen;
   background-color: black;
-  font-size: 1em;
-  line-height: 1em;
-  letter-spacing: 0em;
-  /* font-variant-east-asian: full-width;
-  -moz-font-feature-settings: "fwid";
-  -webkit-font-feature-settings: "fwid";
-  font-feature-settings: "fwid"; */
+  // text-align: justify;
+  // text-justify: inter-ideograph;
+  // font-size: 1em;
+  // line-height: 1em;
+  // letter-spacing: 0em;
+}
+
+#patterns-show-nav {
+  margin: 20px 0;
+  color: #999;
+  ul {
+    text-align: left;
+    li {
+      text-align: center;
+      margin: 0 10px;
+      display: inline-block;
+      list-style: none;
+    }
+  }
+}
+
+.pattern-submit-user {
+  color: #999;
+  font-weight: bold;
+  a {
+    color: inherit;
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }

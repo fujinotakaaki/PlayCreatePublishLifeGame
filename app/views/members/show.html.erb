@@ -1,2 +1,14 @@
-<h1>Members#show</h1>
-<p>Find me in app/views/members/show.html.erb</p>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <%= attachment_image_tag @user, :profile_image, size:"30x30", format: "jpeg", fallback: "no_image.jpg", size:"30x30" %>
+    <%= @user.name %>
+    <%= @user.introduction %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <%= render 'patterns/index', patterns: @patterns %>
+  </div>
+</div>

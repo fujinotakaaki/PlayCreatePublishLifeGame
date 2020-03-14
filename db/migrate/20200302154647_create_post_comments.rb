@@ -7,7 +7,7 @@ class CreatePostComments < ActiveRecord::Migration[5.2]
       # パターンとの関連付け
       t.integer :pattern_id, null: false
       # コメント
-      t.text      :comment
+      t.string      :body
 
       t.timestamps
     end

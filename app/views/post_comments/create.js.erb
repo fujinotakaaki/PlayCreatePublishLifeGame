@@ -1,0 +1,10 @@
+
+<% if @comment.errors.any? then %>
+<% @comment.errors.full_messages.each do | msg | %>
+// コメントのバリデーション内容しか表示されないはず
+alert( "<%= msg %>" );
+<% end %>
+<% else %>
+$( "#comments-index" ).append( "<%= escape_javascript( render 'post_comments/article', comment: @comment ) %>" );
+$( "#comment-form" ).val("");
+<% end %>

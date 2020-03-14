@@ -1,0 +1,7 @@
+
+<p class="comment-article">
+  <span class="pattern-submit-user">
+    <%= "#{ date_format( comment.created_at ) } / #{ comment.user.name }" %><br>
+  </span>
+  <%= comment.body %>
+</p>

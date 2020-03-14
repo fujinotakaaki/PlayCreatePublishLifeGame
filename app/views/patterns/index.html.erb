@@ -1,13 +1,5 @@
 <div class="row">
   <div class="col-md-10 col-md-offset-1">
-
-    <% @patterns.each do | pattern | %>
-    <div class="row">
-      <%= render 'patterns/article', pattern: pattern %>
-    </div>
-    <% end %>
-
-    <%= paginate @patterns, class: "paginate" %>
-
+    <%= render 'patterns/index', patterns: @patterns %>
   </div>
 </div>
