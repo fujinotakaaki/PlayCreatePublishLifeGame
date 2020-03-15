@@ -1,29 +1,32 @@
 class LifeGame {
   // 世代交代後のパターン
   new_map = new Array;
-  constructor( pattern = [ '.' ], options = { alive: '#', dead: '.' } ) {
-    // 初期パターン格納
-    // this.map = pattern;
-    this.map = ["..............", "..............", ".##...#.......", ".##.##........", ".....#.#......", "......#.......", "......###..##.", "...........##.", "..............", ".............."];
+
+  // パターン情報と表示形式情報のインプット
+  constructor( pattern = ["...............", "...............", "...............", "...##.######...", "...##.######...", "...##..........", "...##.....##...", "...##.....##...", "...##.....##...", "..........##...", "...######.##...", "...######.##...", "...............", "...............", "..............."],
+  options = { alive: '#', dead: '.' } ) {
+    // 初期パターン取得
+    this.map = pattern;
     // パターン定義域取得
-    [ this.height, this.width ] = [ this.map.length, this.map[0].length ];
-    // セル状態の定義
+    [ this.height, this.width ] = [ pattern.length, pattern[0].length ];
+    // セル状態の定義取得
     [ this.alive, this.dead ] = [ options.alive, options.dead ];
   }
 
   // パターンのHTMLテキスト出力メソッド
   get GetPatternText() {
+    // ビット列を表示形式に変換
     // this.ChangeInitialMap();
+    // HTMLテキストとして返す
     return this.map.join( '<br>' );
   }
 
-  // 世代交代操作
+  // 世代交代処理メソッド
   get generationChange() {
-    // 本処理
-    // マップ上部から開始(y=0)
+    // パターン（配列）の行インデックス番号
     for ( let y = 0; y < this.height; y++ ) {
-      var row = new String;
-      // マップ左から開始(x=0)
+      let row = new String;
+      // パターンの各セル（配列の要素１個１個）を処理
       for ( let x = 0; x < this.width; x++ ) {
         row = row.concat( this.DeadOrAlive( y, x ) );
       }

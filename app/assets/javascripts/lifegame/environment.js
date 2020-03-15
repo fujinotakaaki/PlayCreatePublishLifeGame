@@ -8,7 +8,7 @@ var intervalProcessingID;
 
 // ライフゲーム実行のための初期化メソッド（showページ遷移時に発火）
 function initializeLifeGame() {
-  // 動作中のライフゲームを強制終了させる
+  // 繰り返し処理実行中の場合を強制終了させる
   if ( Number.isFinite( intervalProcessingID ) ) {
     stopProcess();
   }
@@ -16,19 +16,22 @@ function initializeLifeGame() {
   generation_count = 0;
   // ライフゲームのオプション設定
   let options = {
+    // 「生」セルの表示
     alive: gon.display_format.alive,
+    // 「死」セルの表示
     dead: gon.display_format.dead
   };
-  // ライフゲームパターンの初期設定
-  pattern_data = new LifeGame(  );
+  // ライフゲームの初期化設定
+  pattern_data = new LifeGame;
+  // pattern_data = new LifeGame( gon.pattern, options );
   // 初期盤面の表示
   showingPattern();
 }
 
 
-// ライフゲーム実行処理（開始ボタン押下で発火）
+// ライフゲーム開始処理（開始ボタン押下で発火）
 function startProcess() {
-  // 繰り返し処理の実行
+  // 繰り返し処理の開始・再開
   intervalProcessingID = setInterval( 'upDate()', 100 );
   // 開始ボタンの無効化
   $("#start-process").prop("disabled", true );
@@ -39,7 +42,7 @@ function startProcess() {
 
 // ライフゲーム一時停止処理（一時停止ボタン押下で発火）
 function stopProcess() {
-  // 繰り返し処理の一時停止
+  // 繰り返し処理の停止
   clearInterval( intervalProcessingID );
   // 開始ボタンの有効化
   $("#start-process").prop("disabled", false );
@@ -50,7 +53,7 @@ function stopProcess() {
 
 // 繰り返し処理
 function upDate() {
-  // 画面上のパターンの更新
+  // 画面表示を更新
   showingPattern()
   // 世代数のカウントアップ
   generation_count++;
@@ -59,7 +62,7 @@ function upDate() {
 }
 
 
-// htmlテキストのインサート処理
+// 画面表示の更新処理
 function showingPattern() {
   // 表示中のメッセージ更新
   $('#show-info').text( '第' + generation_count + '世代' );
