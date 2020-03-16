@@ -10,6 +10,7 @@ class MembersController < ApplicationController
   def show
     # ユーザ情報取得
     @user = User.find( params[ :id ] )
+    @patterns = @user.patterns.page(params[:page]).reverse_order
   end
 
   def edit

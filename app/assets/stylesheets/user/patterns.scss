@@ -1,3 +1,51 @@
 // Place all the styles related to the Patterns controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.article {
+  height: 100px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid gray;
+  align-items: center;
+  h3 {
+    font-weight: bold;
+  }
+  div {
+    height: 100%;
+  }
+}
+
+#show-pattern {
+  padding: 30px 0;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 30px;
+  color: limegreen;
+  background-color: black;
+  line-height: 0.6em;
+}
+
+#patterns-show-nav {
+  margin: 20px 0;
+  color: #999;
+  ul {
+    text-align: left;
+    li {
+      text-align: center;
+      margin: 0 10px;
+      display: inline-block;
+      list-style: none;
+    }
+  }
+}
+
+.pattern-submit-user {
+  color: #999;
+  font-weight: bold;
+  a {
+    color: inherit;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

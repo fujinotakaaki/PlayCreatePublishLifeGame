@@ -1,0 +1,7 @@
+<% patterns.each do | pattern | %>
+<div class="row">
+  <%= render 'patterns/article', pattern: pattern, character_limit: 30, image_side_length: 60, style_option: String.new %>
+</div>
+<% end %>
+
+<%= paginate patterns, class: "paginate" %>

@@ -1,2 +1,72 @@
-<h1>Patterns#show</h1>
-<p>Find me in app/views/patterns/show.html.erb</p>
+<div class="row">
+  <div class="col-md-12">
+    <nav id='patterns-show-nav'>
+      <ul>
+        <li>
+          作成日: <%= date_format( @pattern.created_at ) %>
+        </li>
+        <li>
+          <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+          閲覧数: <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>工事中<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+        </li>
+        <li>
+          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          コメント: <%= @pattern.post_comments.size %>
+        </li>
+        <li>
+          <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
+          お気に入り: <%= @pattern.favorites.size %>
+        </li>
+      </ul>
+    </nav>
+
+    <%= render 'patterns/article', pattern: @pattern, character_limit: 201, image_side_length: 90, style_option: 'border: none; pointer-events: none;' %>
+
+    <p>
+      <input type="button" value="開始"        id="start-process" onclick="startProcess();">
+      <input type="button" value="一時停止" id="stop-process" onclick="stopProcess();">
+      <input type="button" value="リフレッシュ" id="refresh-button"   onclick="initializeLifeGame();">
+      interval = 100ms
+    </p>
+    <p id="show-info">(ここにカウントが表示されます)</p>
+    <p id="show-pattern">(ここにライフゲームが表示されます)</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div id="comments-index">
+      <h3>最新のコメント</h3>
+      <%= render 'post_comments/article', comment: @latest_comment %>
+    </div>
+
+    <div>
+      <% if user_signed_in? then %>
+      <!--form_withはajax通信っぽいことがデフォルト設定 (local: falseのため)-->
+      <%= form_with url: pattern_post_comment_path( @pattern ) do | f |%>
+      <%= f.text_field :body, id: 'comment-form' %>
+      <%= f.submit '投稿', class: 'btn btn-default' %>
+      <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <h3>関連するパターン</h3>
+    <h1>
+      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+      工事中
+      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+    </h1>
+  </div>
+</div>
+
+
+
+<script>
+  // turbolinksのせいで２回実行されるが、
+  // タイマー処理の初期化を実施するだけなので
+  // 問題なしと判断
+  // console.log('<%= Time.zone.now %>');
+  initializeLifeGame();
+</script>

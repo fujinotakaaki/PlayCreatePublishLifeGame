@@ -75,3 +75,5 @@ gem "refile-mini_magick"
 gem 'kaminari','~> 1.1.1'
 # 閲覧数カウント機能
 gem 'impressionist'
+# コントローラからjsへデータの受け渡しが可能になる機能
+gem 'gon'

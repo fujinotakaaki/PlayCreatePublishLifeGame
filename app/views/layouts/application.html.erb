@@ -1,58 +1,64 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>PlayCreatePublishLifeGame</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'user', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'user', 'data-turbolinks-track': 'reload' %>
-  </head>
-  <header>
-    <h1>WebCamp</h1>
-    <nav>
+<head>
+  <title>Play!Create!Publish! LifeGame</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= include_gon %>
+  <%= stylesheet_link_tag    "user", media: "all", "data-turbolinks-track": "reload" %>
+  <%= javascript_include_tag "user", "data-turbolinks-track": "reload" %>
+</head>
+
+<body>
+<header>
+  <h1>Play!Create!Publish! LifeGame</h1>
+  <nav>
     <ul>
-      <% if user_signed_in? %>
-      <li><%= attachment_image_tag current_user, :profile_image, size:'30x30', format: 'jpeg', fallback: 'no_image.jpg', size:'30x30' %></li>
-      <li id='menue-parent'>
+      <li><%= link_to "トップ", root_path %></li>
+      <!-- li><%= link_to "PCPLGとは？", about_path %></li -->
+      <li><%= link_to "about", about_path %></li>
+      <li><%= link_to "投稿一覧", patterns_path %></li>
+
+      <% if user_signed_in? then %>
+      <li><%= attachment_image_tag current_user, :profile_image, size:"30x30", format: "jpeg", fallback: "no_image.jpg", size:"30x30" %></li>
+      <li id="menue-parent">
         こんにちは、<br>
         <%= current_user.name %>さん▼
-        <ul id='menue-child'>
+        <ul id="menue-child">
           <li>
-            <span class="glyphicon glyphicon-list" aria-hidden="true" style='color: rgba(0,0,0,0);'></span>　メニュー
+            <span class="glyphicon glyphicon-list" aria-hidden="true" style="color: rgba(0,0,0,0);"></span>　メニュー
           </li>
           <li>
-            <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
-            <%= link_to '　パターン作成', edit_making_path %>
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            <%= link_to "　パターン作成", edit_making_path %>
           </li>
           <li>
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-            <%= link_to '　マイページ', member_path( current_user ) %>
+            <%= link_to "　マイページ", member_path( current_user ) %>
           </li>
           <li>
             <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
-            <%= link_to '　ログアウト', destroy_user_session_path, method: :delete %>
+            <%= link_to "　ログアウト", destroy_user_session_path, method: :delete %>
           </li>
         </ul>
       </li>
       <% else %>
-      <li style='text-align: left;'>
+      <li style="text-align: left;">
         <%= link_to new_user_session_path do %>
         ようこそ！<br>
-        ログイン<span class="glyphicon glyphicon-log-in" aria-hidden="true" style='font-size: 10px;'></span>
+        ログイン<span class="glyphicon glyphicon-log-in" aria-hidden="true" style="font-size: 10px;"></span>
         <% end %>
       </li>
       <% end %>
-
-      <li><%= link_to "TOP", root_path %></li>
-      <li><%= link_to "About", about_path %></li>
     </ul>
   </nav>
-  </header>
+</header>
 
-  <body>
+  <div class="container">
     <%= yield %>
-  </body>
+  </div>
 
-  <footer></footer>
+<footer></footer>
+</body>
 </html>
