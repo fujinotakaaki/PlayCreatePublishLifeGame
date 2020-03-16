@@ -5,6 +5,6 @@
 alert( "<%= msg %>" );
 <% end %>
 <% else %>
-$( "#comments-index" ).append( "<%= escape_javascript( render 'post_comments/article', comment: @comment ) %>" );
-$( "#comment-form" ).val("");
+$( ".comments__index" ).append( "<%= escape_javascript( render 'post_comments/article', comment: @comment ) %>" );
+$( ".comments__form" ).val("");
 <% end %>

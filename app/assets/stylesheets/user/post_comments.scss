@@ -2,15 +2,15 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#comments-index {
-  width: 100%;
-}
-
-.comment-article {
-  word-wrap: break-word;
-}
-
-#comment-form {
-  min-height: 50px;
-  width: 100%;
+.comments {
+  &__index {
+    width: 100%;
+  }
+  &__artivle {
+    word-wrap: break-word;
+  }
+  &__form {
+    min-height: 50px;
+    width: 100%;
+  }
 }
