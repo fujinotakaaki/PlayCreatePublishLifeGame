@@ -51,8 +51,8 @@ class LifeGame {
     for ( let [ t, s ] of mooreNeighborhood ) {
       // セルの状態は文字列のため、数値に変換必須
       aliveCellsCount +=  Number( this.pattern?.[ y+t ]?.[ x+s ]
+        || ( this.isTorus ? this.pattern[ ( y + t + this.height ) % this.height ][ ( x + s + this.width ) % this.width ] : 0 ) );
         // ※平坦トーラス面の場合は循環先のセル状態を考慮する
-        || ( this.isTorus ? this.pattern[ ( y + this.height ) % this.height ][ ( x + this.width ) % this.width ] : 0 ) );
     }
 
     // (3) 世代更新後の中心座標のセルの生死状態判定
