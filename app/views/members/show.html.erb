@@ -2,9 +2,19 @@
 <div class="row">
   <div class="col-md-10 col-md-offset-1">
     <div class='members__show'>
+      <div class="col-sm-2">
       <%= attachment_image_tag @user, :profile_image, size: 50, fallback: "no_image.jpg" %>
-      <%= @user.name %>
-      <%= @user.introduction %>
+    </div>
+      <div class="col-sm-8">
+      <h4>ニックネーム</h4>
+      <p>
+        <%= @user.name %>
+      </p>
+      <h4>自己紹介</h4>
+      <p>
+        <%= @user.introduction %>
+      </p>
+    </div>
     </div>
     <%= render 'patterns/index', patterns: @patterns %>
   </div>

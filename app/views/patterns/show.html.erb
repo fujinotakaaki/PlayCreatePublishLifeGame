@@ -1,26 +1,8 @@
 <div class="row">
   <div class="col-md-12">
-    <nav class='patterns__show--nav'>
-      <ul>
-        <li>
-          作成日: <%= date_format( @pattern.created_at ) %>
-        </li>
-        <li>
-          <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-          閲覧数: <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>工事中<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-        </li>
-        <li>
-          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-          コメント: <%= @pattern.post_comments.size %>
-        </li>
-        <li>
-          <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
-          お気に入り: <%= @pattern.favorites.size %>
-        </li>
-      </ul>
-    </nav>
+    <%= render 'patterns/property', pattern: @pattern %>
 
-    <%= render 'patterns/article', pattern: @pattern, character_limit: 201, image_side_length: 90, style_option: 'border: none; pointer-events: none;' %>
+    <%= render 'patterns/article', pattern: @pattern, character_limit: 201, image_side_length: 90 %>
 
     <p>
       <input type="button" value="開始"               class="lifeGame__start"       onclick="startProcess();">

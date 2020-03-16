@@ -3,8 +3,8 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .patterns {
-  &__article {
-    height: 100px;
+  &__article{
+    height: 150px;
     margin-bottom: 20px;
     border-bottom: 2px solid gray;
     align-items: center;
@@ -14,10 +14,26 @@
     div {
       height: 100%;
     }
+    &--show {
+      border: none;
+      pointer-events: none;
+    }
   }
-  &__show {
-    &--nav {
+  &__property {
+    &--show {
       margin: 20px 0;
+      color: #999;
+      ul {
+        text-align: left;
+        li {
+          text-align: center;
+          margin: 0 10px;
+          display: inline-block;
+          list-style: none;
+        }
+      }
+    }
+    &--index {
       color: #999;
       ul {
         text-align: left;

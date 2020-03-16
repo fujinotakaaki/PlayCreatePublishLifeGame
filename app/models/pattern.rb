@@ -6,9 +6,9 @@ class Pattern < ApplicationRecord
 
   attachment :image
 
-  belongs_to :user
-  belongs_to :category
-  belongs_to :display_format
+  belongs_to :user, :counter_cache => true
+  belongs_to :category, :counter_cache => true
+  belongs_to :display_format, :counter_cache => true
   has_many  :pattern_rows,      dependent: :destroy
   has_many  :post_comments, dependent: :destroy
   has_many  :favorites,             dependent: :destroy
