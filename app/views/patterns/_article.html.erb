@@ -1,5 +1,5 @@
 
-<div class="article" style="<%= style_option %>">
+<div class="patterns__article" style="<%= style_option %>">
   <div class="col-sm-2">
     <%= link_to pattern_path( pattern ) do
     attachment_image_tag pattern,
@@ -18,7 +18,7 @@
     <p>
       <%= pattern.introduction.truncate( character_limit ) %><br>
       <% if action_name != 'show' then %>
-      <span class="pattern-submit-user">
+      <span class="patterns__submit--user">
         by <%= link_to pattern.user.name, member_path( pattern.user_id ) %>さん
       </span>
       <% end %>

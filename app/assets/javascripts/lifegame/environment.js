@@ -25,7 +25,7 @@ function initializeLifeGame() {
   };
   // ライフゲームの初期化設定
   patternData = new LifeGame( gon.pattern, options );
-  $('#show-pattern').css({
+  $('.lifeGame__show').css({
     'color': `${gon.displayFormat.font_color}`,
     'background-color': `${gon.displayFormat.background_color}`
   });
@@ -66,17 +66,17 @@ function upDate() {
 // 画面表示の更新処理
 function showingPattern() {
   // 表示中のメッセージ更新
-  $('#show-info').text( '第' + generationCount + '世代' );
+  $('.lifeGame__info').text( '第' + generationCount + '世代' );
   // 表示中のパターン更新
-  $('#show-pattern').html( patternData.getPatternText );
+  $('.lifeGame__show').html( patternData.getPatternText );
 }
 
 // ボタン押下可否の切り替え
 function buttonsFreezeOrRelease( bool ) {
   // 開始ボタン
-  $("#start-process").prop("disabled", bool );
+  $(".lifeGame__start").prop("disabled", bool );
   // 一時停止ボタン
-  $("#stop-process").prop("disabled", ! bool );
+  $(".lifeGame__stop").prop("disabled", ! bool );
   // リフレッシュボタン
-  $("#refresh-button").prop("disabled", bool );
+  $(".lifeGame__refresh").prop("disabled", bool );
 }
