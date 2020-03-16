@@ -14,7 +14,7 @@ class MembersController < ApplicationController
   end
 
   def edit
-    # なし
+    @user = current_user
   end
 
   def update

@@ -42,7 +42,6 @@
 
     <div>
       <% if user_signed_in? then %>
-      <!--form_withはajax通信っぽいことがデフォルト設定 (local: falseのため)-->
       <%= form_with url: pattern_post_comment_path( @pattern ) do | f |%>
       <%= f.text_field :body, id: 'comment-form' %>
       <%= f.submit '投稿', class: 'btn btn-default' %>

@@ -8,7 +8,7 @@ class PatternsController < ApplicationController
   end
 
   def edit
-    # before_action :baria_userでデータ取得済みのため下記処理は実施しない
+    # before_action :baria_userでデータ定義済みのため下記処理は実施しない
     # @pattern = Pattern.find( params[ :id ] )
   end
 
@@ -20,19 +20,19 @@ class PatternsController < ApplicationController
       # パターンを１次元配列に変換したものを格納
       pattern: pattern_conversion_to_js( @pattern, @pattern.pattern_rows.pluck( :binary_number ) ),
       # 表示形式の格納
-      display_format: @pattern.display_format,
+      displayFormat: @pattern.display_format,
       # 平坦トーラス面として扱うか
-      is_torus: @pattern.is_torus
+      isTorus: @pattern.is_torus
     )
   end
 
   def update
-    # before_action :baria_userでデータ取得済みのため下記処理は実施しない
+    # before_action :baria_userでデータ定義済みのため下記処理は実施しない
     # @pattern = Pattern.find( params[ :id ] )
   end
 
   def destroy
-    # before_action :baria_userでデータ取得済みのため下記処理は実施しない
+    # before_action :baria_userでデータ定義済みのため下記処理は実施しない
     # @pattern = Pattern.find( params[ :id ] )
   end
 
@@ -46,7 +46,7 @@ class PatternsController < ApplicationController
     end
   end
 
-# dbからjsにパターンの情報を読み込めるようにデータを編集するメソッド
+  # dbからjsにパターンの情報を読み込めるようにデータを編集するメソッド
   def pattern_conversion_to_js( pattern, rows )
     # 最も大きい数を取得
     largest_number = rows.max
@@ -64,8 +64,6 @@ class PatternsController < ApplicationController
     end
     # 下側マージンの挿入（不具合予防のため深いコピーで作成）
     pattern_js += Array.new( pattern.margin_bottom ){ ?0 * pattern_bit_length }
-    # puts 'ここ確認'
-    # puts pattern_js
     # js用パターンデータを返す
     return pattern_js
   end

@@ -1,8 +1,8 @@
 // グローバル変数の定義
 // 世代数カウント
-var generation_count;
+var generationCount;
 // ライフゲームパターンの初期設定
-var pattern_data;
+var patternData;
 // 繰り返し処理変数
 var intervalProcessingID;
 
@@ -13,21 +13,21 @@ function initializeLifeGame() {
     stopProcess();
   }
   // 世代数カウント初期化
-  generation_count = 0;
+  generationCount = 0;
   // ライフゲームのオプション設定
   let options = {
     // 「生」セルの表示
-    alive: gon.display_format.alive,
+    alive: gon.displayFormat.alive,
     // 「死」セルの表示
-    dead: gon.display_format.dead,
+    dead: gon.displayFormat.dead,
     // 平坦トーラス面として扱うか
-    is_torus: gon.is_torus
+    isTorus: gon.isTorus
   };
   // ライフゲームの初期化設定
-  pattern_data = new LifeGame( gon.pattern, options );
+  patternData = new LifeGame( gon.pattern, options );
   $('#show-pattern').css({
-    'color': `${gon.display_format.font_color}`,
-    'background-color': `${gon.display_format.background_color}`
+    'color': `${gon.displayFormat.font_color}`,
+    'background-color': `${gon.displayFormat.background_color}`
   });
   // 初期盤面の表示
   showingPattern();
@@ -39,7 +39,7 @@ function startProcess() {
   // 繰り返し処理の開始・再開
   intervalProcessingID = setInterval( 'upDate()', 300 );
   // ボタン押下可否の切り替え
-  buttonFreezeOrRelease( true );
+  buttonsFreezeOrRelease( true );
 }
 
 
@@ -48,7 +48,7 @@ function stopProcess() {
   // 繰り返し処理の停止
   clearInterval( intervalProcessingID );
   // ボタン押下可否の切り替え
-  buttonFreezeOrRelease( false );
+  buttonsFreezeOrRelease( false );
 }
 
 
@@ -57,26 +57,26 @@ function upDate() {
   // 画面表示を更新
   showingPattern()
   // 世代数のカウントアップ
-  generation_count++;
+  generationCount++;
   // パターンの世代交代実行
-  pattern_data.GenerationChange;
+  patternData.generationChange;
 }
 
 
 // 画面表示の更新処理
 function showingPattern() {
   // 表示中のメッセージ更新
-  $('#show-info').text( '第' + generation_count + '世代' );
+  $('#show-info').text( '第' + generationCount + '世代' );
   // 表示中のパターン更新
-  $('#show-pattern').html( pattern_data.GetPatternText );
+  $('#show-pattern').html( patternData.getPatternText );
 }
 
 // ボタン押下可否の切り替え
-function buttonFreezeOrRelease( bool ) {
+function buttonsFreezeOrRelease( bool ) {
   // 開始ボタン
   $("#start-process").prop("disabled", bool );
   // 一時停止ボタン
-  $("#stop-process").prop("disabled", !bool );
+  $("#stop-process").prop("disabled", ! bool );
   // リフレッシュボタン
   $("#refresh-button").prop("disabled", bool );
 }
