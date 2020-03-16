@@ -23,8 +23,9 @@
     <%= render 'patterns/article', pattern: @pattern, character_limit: 201, image_side_length: 90, style_option: 'border: none; pointer-events: none;' %>
 
     <p>
-      <input type="button" value="開始"        id="start-process"     onclick="startProcess();">
-      <input type="button" value="一時停止" id="stop-process"     onclick="stopProcess();">
+      <input type="button" value="開始"        id="start-process" onclick="startProcess();">
+      <input type="button" value="一時停止" id="stop-process" onclick="stopProcess();">
+      <input type="button" value="リフレッシュ" id="refresh-button"   onclick="initializeLifeGame();">
       interval = 100ms
     </p>
     <p id="show-info">(ここにカウントが表示されます)</p>

@@ -20,7 +20,9 @@ class PatternsController < ApplicationController
       # パターンを１次元配列に変換したものを格納
       pattern: pattern_conversion_to_js( @pattern, @pattern.pattern_rows.pluck( :binary_number ) ),
       # 表示形式の格納
-      display_format: @pattern.display_format
+      display_format: @pattern.display_format,
+      # 平坦トーラス面として扱うか
+      is_torus: @pattern.is_torus
     )
   end
 
@@ -48,14 +50,9 @@ class PatternsController < ApplicationController
   def pattern_conversion_to_js( pattern, rows )
     # 最も大きい数を取得
     largest_number = rows.max
-    # 最も大きい数の桁数を算出
-    largest_number_bit_length =
-    if largest_number.zero? then
-      1 # 0なら1桁とする
-    else
-      ( Math.log2( largest_number ) + 1 ).to_i # 計算によって求める
-    end
-    # 左右の余白を含めたパターンの幅を計算
+    # 最も大きい数の桁数を算出（但し、0なら1桁とする）
+    largest_number_bit_length = largest_number.zero? ? 1 : ( Math.log2( largest_number ) + 1 ).to_i
+    # 左右の余白を含めたマップ幅を計算
     pattern_bit_length = pattern.margin_left + largest_number_bit_length + pattern.margin_right
     # jsでパターンを扱うための変数作成
     pattern_js = Array.new

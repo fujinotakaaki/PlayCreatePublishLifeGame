@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title><%= rand(88)%2==0 ? "WebCamp" : "Play!Create!Publish! LifeGame" %></title>
+  <title>Play!Create!Publish! LifeGame</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <%= include_gon %>
@@ -12,7 +12,7 @@
 
 <body>
 <header>
-  <h1><%= Rails.env.development? ? "WebCamp" : "Play!Create!Publish! LifeGame" %></h1>
+  <h1>Play!Create!Publish! LifeGame</h1>
   <nav>
     <ul>
       <li><%= link_to "トップ", root_path %></li>

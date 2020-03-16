@@ -6,10 +6,10 @@ var pattern_data;
 // 繰り返し処理変数
 var intervalProcessingID;
 
-// ライフゲーム実行のための初期化メソッド（showページ遷移時に発火）
+// ライフゲーム実行のための初期化メソッド（showページ遷移時orリフレッシュボタンで発火）
 function initializeLifeGame() {
   // 繰り返し処理実行中の場合を強制終了させる
-  if ( Number.isFinite( intervalProcessingID ) ) {
+  if ( Number.isInteger( intervalProcessingID ) ) {
     stopProcess();
   }
   // 世代数カウント初期化
@@ -19,11 +19,16 @@ function initializeLifeGame() {
     // 「生」セルの表示
     alive: gon.display_format.alive,
     // 「死」セルの表示
-    dead: gon.display_format.dead
+    dead: gon.display_format.dead,
+    // 平坦トーラス面として扱うか
+    is_torus: gon.is_torus
   };
   // ライフゲームの初期化設定
-  pattern_data = new LifeGame;
-  // pattern_data = new LifeGame( gon.pattern, options );
+  pattern_data = new LifeGame( gon.pattern, options );
+  $('#show-pattern').css({
+    'color': `${gon.display_format.font_color}`,
+    'background-color': `${gon.display_format.background_color}`
+  });
   // 初期盤面の表示
   showingPattern();
 }
@@ -32,11 +37,9 @@ function initializeLifeGame() {
 // ライフゲーム開始処理（開始ボタン押下で発火）
 function startProcess() {
   // 繰り返し処理の開始・再開
-  intervalProcessingID = setInterval( 'upDate()', 100 );
-  // 開始ボタンの無効化
-  $("#start-process").prop("disabled", true );
-  // 一時停止ボタンの有効化
-  $("#stop-process").prop("disabled", false );
+  intervalProcessingID = setInterval( 'upDate()', 300 );
+  // ボタン押下可否の切り替え
+  buttonFreezeOrRelease( true );
 }
 
 
@@ -44,10 +47,8 @@ function startProcess() {
 function stopProcess() {
   // 繰り返し処理の停止
   clearInterval( intervalProcessingID );
-  // 開始ボタンの有効化
-  $("#start-process").prop("disabled", false );
-  // 一時停止ボタンの無効化
-  $("#stop-process").prop("disabled", true );
+  // ボタン押下可否の切り替え
+  buttonFreezeOrRelease( false );
 }
 
 
@@ -58,7 +59,7 @@ function upDate() {
   // 世代数のカウントアップ
   generation_count++;
   // パターンの世代交代実行
-  pattern_data.generationChange;
+  pattern_data.GenerationChange;
 }
 
 
@@ -68,4 +69,14 @@ function showingPattern() {
   $('#show-info').text( '第' + generation_count + '世代' );
   // 表示中のパターン更新
   $('#show-pattern').html( pattern_data.GetPatternText );
+}
+
+// ボタン押下可否の切り替え
+function buttonFreezeOrRelease( bool ) {
+  // 開始ボタン
+  $("#start-process").prop("disabled", bool );
+  // 一時停止ボタン
+  $("#stop-process").prop("disabled", !bool );
+  // リフレッシュボタン
+  $("#refresh-button").prop("disabled", bool );
 }

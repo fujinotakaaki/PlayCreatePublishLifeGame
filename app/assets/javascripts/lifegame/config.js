@@ -1,121 +1,85 @@
 class LifeGame {
   // 世代交代後のパターン
-  new_map = new Array;
+  new_pattern = new Array;
 
   // パターン情報と表示形式情報のインプット
-  constructor( pattern = ["...............", "...............", "...............", "...##.######...", "...##.######...", "...##..........", "...##.....##...", "...##.....##...", "...##.....##...", "..........##...", "...######.##...", "...######.##...", "...............", "...............", "..............."],
-  options = { alive: '#', dead: '.' } ) {
+  constructor( pattern = [ "0000", "0110", "0110", "0000" ], options = { alive: '■', dead: '□', is_torus: false} ) {
     // 初期パターン取得
-    this.map = pattern;
+    this.pattern = pattern;
     // パターン定義域取得
     [ this.height, this.width ] = [ pattern.length, pattern[0].length ];
     // セル状態の定義取得
     [ this.alive, this.dead ] = [ options.alive, options.dead ];
+    // 平坦トーラス面として扱うかのフラグ
+    this.isTorus = options.is_torus;
   }
 
   // パターンのHTMLテキスト出力メソッド
   get GetPatternText() {
-    // ビット列を表示形式に変換
-    // this.ChangeInitialMap();
     // HTMLテキストとして返す
-    return this.map.join( '<br>' );
+    return this.pattern.map( str => str.replace( /1/g, this.alive).replace( /0/g, this.dead) ).join( '<br>' );
   }
 
   // 世代交代処理メソッド
-  get generationChange() {
-    // パターン（配列）の行インデックス番号
+  get GenerationChange() {
+    // パターン（配列）の行番号y
     for ( let y = 0; y < this.height; y++ ) {
+      // 世代更新後のパターンのy行目について、ビット列を格納する変数
       let row = new String;
       // パターンの各セル（配列の要素１個１個）を処理
       for ( let x = 0; x < this.width; x++ ) {
-        row = row.concat( this.DeadOrAlive( y, x ) );
+        // 座標(x,y)のセル( this.pattern[y][x] )の世代更新後の状態を取得・保存 => "0"or"1"を追記
+        // console.log(`DeadOrAlive(x,y) = (${x},${y})`);
+        row += this.DeadOrAlive( y, x );
       }
-      // 各行の操作が終了したら新世代配列に追加
-      this.new_map.push( row );
+      // 更新後の行が確定したら新世代のパターン（配列）に追加
+      this.new_pattern.push( row );
     }
-    // 新世代を現在世代に反映
-    this.map = this.new_map;
-    // 新世代配列
-    this.new_map = new Array;
+    // 新世代パターンを現在世代パターンに反映
+    this.pattern = this.new_pattern;
+    // 新世代パターン（配列）の初期化
+    this.new_pattern = new Array;
   }
 
 
   // セルの誕生、生存、過疎、過密処理
   DeadOrAlive( y, x ) {
-    // 周辺セル座標の配列取得
-    var around = this.AroundCombination( y, x );
-    // 調査対象セルのうち生きたセルの数
-    var cell_count = 0;
-    // 周辺セルの調査
-    while ( around.length != 0 ) {
-      var [ t, s ] = around.shift();
-      // 生きたセルがあればカウントアップ
-      if ( this.InOrOut( t, s ) && this.map[t][s]==this.alive ) { cell_count++; }
+    // (1) 周辺セル（８ヵ所）の座標生成
+    let relative_position = [ [1,1], [1,0], [1,-1], [0,1], [0,-1], [-1,1], [-1,0], [-1,-1] ]
+
+    let alive_cells_count = 0;
+    // (2) 周辺の生きているセルのカウントアップ（マップ外は「死」扱い）
+    for ( let [t,s] of relative_position ) {
+      // ※但し、平坦トーラス面の場合は循環先のセル状態を考慮する
+      alive_cells_count +=  Number( this.pattern?.[ y+t ]?.[ x+s ] || ( this.isTorus ? this.CallTorusProcessing( y+t, x+s ) : 0 ) );
     }
-    // 返す値のデフォルトの設定
-    var str = this.dead;
-    // 次世代の対象セルの状態決定
-    if ( cell_count==3 || ( cell_count==2 && this.map[y][x]==this.alive ) ) { str = this.alive; }
-    return str;
-  }
-  // 周辺セル座標の配列作成
-  AroundCombination( y, x ) {
-    var arr = new Array;
-    for ( let t = -1; t <= 1; t++ ) {
-      for ( let s = -1; s <= 1; s++ ) {
-        if ( s!=0 || t!=0 ) { arr.push( [ y+t, x+s ] ); }
-      }
+    // (3) 世代更新後の中心座標のセルの生死状態判定
+    // ひとまず次世代では「死」と仮定
+    let next_condition = 0;
+    // 次世代で「生」になる可能性があるか判定
+    if ( /0/.test( this.pattern[y][x] ) ) {
+      // 元々死の状態だった場合 => 誕生するか判定
+      if ( /3/.test( alive_cells_count ) ) { next_condition = 1; }
+    } else {
+      // 元々生の状態だった場合 => 生存するか判定
+      if ( /2|3/.test( alive_cells_count ) ) { next_condition = 1; }
     }
-    return arr;
+    // 次世代での状態を返す => "0"or"1"
+    return String( next_condition );
   }
 
-  // マップ内外判定
-  InOrOut( y, x ) {
-    // はみ出してたらfalseにしたい
-    return (0<=y && y<this.height && 0<=x && x<this.width);
-  }
-
-  // 初期パターンの書式変換
-  ChangeInitialMap() {
-    console.log( 'Rebuilding map' );
-    // パターン更新後の格納変数
-    var apply_format_map = new Array;
-    // 更新前のパターンの各行
-    var row1 = new Array;
-    // 更新前のパターンの各行を配列にsplitしたもの
-    var row2 = new String;
-    // 生状態表示
-    const alive = this.alive;
-    // 死状態表示
-    const dead = this.dead;
-    // 変更する文字列を格納する変数
-    var char = new String
-    // 各行取得処理
-    while ( this.map.length !=0 ) {
-      // 各行取得
-      row1 = this.map.shift()
-      // row1書き出し
-      // console.log('row1=', row1);
-      // 各行配列化合
-      row2 = row1.split('');
-      // row2書き出し
-      // console.log('row2=', row2);
-      // 更新後の行の文字列化
-      var row3 = new String;
-      // 文字列化された行を先頭から処理
-      while ( row2.length != 0 ) {
-        // 変換する文字の決定
-        if ( row2.shift() == '#' ) { char = alive; }
-        else { char = dead; }
-        // 更新後の行にセルの状態を追加
-        row3 = row3.concat( char )
-      }
-      // row3書き出し
-      // console.log('row3=', row3);
-      apply_format_map.push( row3 )
+  CallTorusProcessing( y, x ) {
+    // y座標がマップ外の場合
+    if ( y == -1 || y == this.height ) {
+      // y座標の循環先へ
+      y = ( y + this.height ) % this.height
     }
-    // console.log('finish');
-    this.map = apply_format_map;
-    // console.log( apply_format_map.join("\n") );
+    // x座標がマップ外の場合
+    if ( x == -1 || x == this.width ) {
+      // x座標の循環先へ
+      x = ( x + this.width ) % this.width
+    }
+    // 循環先の座標の状態を返す（ 0 or 1 ）
+    return this.pattern[y][x];
   }
 } // class
