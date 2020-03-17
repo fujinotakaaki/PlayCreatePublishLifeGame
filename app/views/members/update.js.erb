@@ -1,0 +1,5 @@
+<% if @user.errors.any? then %>
+alert( "<%= @user.errors.full_messages.join( '<br>' ) %>" );
+<% else %>
+$(".members__show--divRight").html( "<%= escape_javascript( render 'members/detail', user: @user ) %>" );
+<% end %>

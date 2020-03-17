@@ -11,7 +11,7 @@
       <%= pattern.name %>
     </h3>
     <p>
-      <span class="patterns__article--categryHeadline">カテゴリー：　<%= pattern.category.name %></span><br>
+      <span class="patterns__article--submitUser">カテゴリー：　<%= pattern.category.name %></span><br>
       <%= pattern.introduction.truncate( character_limit ) %><br>
       <% if action_name != 'show' then %>
       <span class="patterns__article--submitUser">

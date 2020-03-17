@@ -1,0 +1,27 @@
+<% if /edit/.match?( action_name ) then %>
+
+<%= form_with model: user, url: member_path( user ) do | f | %>
+<%= f.hidden_field :id, value: current_user.id %>
+<%= f.text_field :name, value: user.name, class: "members__edit--name" %><br>
+<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+自己紹介文
+<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><br>
+
+<%= f.text_area :introduction, value: user.introduction, class: "members__edit--introduction" %><br>
+<%= f.submit '完了' %>
+<% end %>
+
+<% else %>
+<h4 class="members__show--headline">
+<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+<%= user.name %><br>
+</h4>
+<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+自己紹介文
+<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><br>
+<%= user.introduction.blank? ? '本文がありません' : user.introduction %><br>
+<% if user.id == current_user&.id then %>
+<input type="button" value="編集" onclick="editUserInfo( this );" class="<%= "btn btn-default members__show--#{ current_user&.id || 0 }" %>">
+<% end %>
+
+<% end %>

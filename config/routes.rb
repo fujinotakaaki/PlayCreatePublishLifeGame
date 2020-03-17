@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # ===一般ユーザ側のルーティング===
   # ユーザのルーティング
-  resources :members, except: [:new, :create, :destroy]
+  resources :members, except: [:index, :new, :create, :destroy]
   # パターンのルーティング
   resources :patterns, except: [ :new ] do
     # コメント投稿のルーティング

@@ -8,7 +8,7 @@ var intervalProcessingID;
 
 // ライフゲーム実行のための初期化メソッド（showページ遷移時orリフレッシュボタンで発火）
 function initializeLifeGame() {
-  // 繰り返し処理実行中の場合を強制終了させる
+  // 繰り返し処理実行中の場合は強制終了させる
   if ( Number.isInteger( intervalProcessingID ) ) {
     stopProcess();
   }
