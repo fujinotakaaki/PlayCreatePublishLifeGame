@@ -41,3 +41,4 @@ Play!Create!Publish! LifeGame!は「<em>ライフゲーム</em>」をブラウ�
 
 ### 機能一覧
 https://docs.google.com/spreadsheets/d/1THA7St5KWVXG3m5_0csY30HWZ9mJq7_NR9KPX5ndgLE/edit?usp=sharing
+[demo](https://drive.google.com/file/d/1UmGmBX0fgOJniyhrB3qhuBKhb1Pufayp/view?usp=sharing)
