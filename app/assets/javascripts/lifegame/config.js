@@ -3,7 +3,7 @@ class LifeGame {
   newPattern = new Array;
 
   // 盤面情報と表示形式情報の設定
-  constructor( pattern = [ "0000", "0110", "0110", "0000" ], options = { alive: '■', dead: '□', isTorus: false} ) {
+  constructor( pattern = [ "0000", "0111", "1110", "0000" ], options = { alive: '■', dead: '□', isTorus: false} ) {
     // 初期盤面の取得（要素がビット列の１次元配列）
     this.pattern = pattern;
     // 盤面の定義域取得
@@ -17,7 +17,7 @@ class LifeGame {
   // 盤面のHTMLテキストへの出力メソッド
   get getPatternText() {
     // ビット列を表示形式に変換して返す（ 不具合①：this.alive = '0'だと正しく変換できない）
-    return this.pattern.map( str => str.replace( /1/g, this.alive).replace( /0/g, this.dead) ).join( '<br>' );
+    return this.pattern.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
   }
 
   // 世代交代の処理メソッド

@@ -1,20 +1,12 @@
-
-  <div class="">
-    <div class='members__show'>
-      <div class="">
-        <%= attachment_image_tag @user, :profile_image, size: 90, fallback: "no_image.jpg" %>
-      </div>
-      <div class="">
-        <p class='members__show--body'>
-          <h3><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <%= @user.name %></h3>
-          自己紹介: <%= @user.introduction.blank? ? '本文がありません' : @user.introduction %>
-        </p>
-      </div>
-    </div>
+<div class="clearfix">
+  <div class="members__show--divLeft">
+    <%= attachment_image_tag @user, :profile_image, fallback: "no_image.jpg", class: "members__show--img" %>
   </div>
-
-<div class="">
-  <div class='members__show'>
-    <%= render 'patterns/index', patterns: @patterns %>
+  <div class="members__show--divRight">
+    <%= render 'members/detail', user: @user %>
   </div>
+</div>
+
+<div class='members__show'>
+  <%= render 'patterns/index', patterns: @patterns %>
 </div>
