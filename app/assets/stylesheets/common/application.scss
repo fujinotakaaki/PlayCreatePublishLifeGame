@@ -22,12 +22,23 @@
    box-sizing: border-box;
  }
 
+ .clearfix::after {
+   content: "";
+   display: block;
+   clear: both;
+ }
+
+ body {
+   // background-color: #000;
+ }
+
  header {
    color: white;
    background-color: black;
    padding: 10px 30px;
+   margin-bottom: 40px;
    h1 {
-     color: white;
+     color: limegreen;
    }
    img {
      border: thin solid dimgray;

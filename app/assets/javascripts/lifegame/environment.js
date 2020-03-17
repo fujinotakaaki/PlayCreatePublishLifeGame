@@ -1,9 +1,9 @@
 // グローバル変数の定義
 // 世代数カウント
 var generationCount;
-// ライフゲームパターンの初期設定
+// ライフゲームを定義する変数
 var patternData;
-// 繰り返し処理変数
+// 繰り返し処理の変数
 var intervalProcessingID;
 
 // ライフゲーム実行のための初期化メソッド（showページ遷移時orリフレッシュボタンで発火）
@@ -23,14 +23,15 @@ function initializeLifeGame() {
     // 平坦トーラス面として扱うか
     isTorus: gon.isTorus
   };
-  // ライフゲームの初期化設定
-  patternData = new LifeGame( gon.pattern, options );
+  // 表示形式の反映
   $('.lifeGame__show').css({
     'color': `${gon.displayFormat.font_color}`,
     'background-color': `${gon.displayFormat.background_color}`
   });
+  // ライフゲームの初期化設定
+  patternData = new LifeGame( gon.pattern, options );
   // 初期盤面の表示
-  showingPattern();
+  showCurrentGeneration();
 }
 
 
@@ -55,7 +56,7 @@ function stopProcess() {
 // 繰り返し処理
 function upDate() {
   // 画面表示を更新
-  showingPattern()
+  showCurrentGeneration()
   // 世代数のカウントアップ
   generationCount++;
   // パターンの世代交代実行
@@ -64,7 +65,7 @@ function upDate() {
 
 
 // 画面表示の更新処理
-function showingPattern() {
+function showCurrentGeneration() {
   // 表示中のメッセージ更新
   $('.lifeGame__info').text( '第' + generationCount + '世代' );
   // 表示中のパターン更新

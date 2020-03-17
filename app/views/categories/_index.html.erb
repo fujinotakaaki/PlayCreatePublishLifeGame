@@ -1,0 +1,15 @@
+<div class="categories__index">
+  <h4 class='categories__index--headline'>
+    <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+    カテゴリー
+    <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+  </h4>
+  <% Category.all.pluck( :id, :name ).each do | category | %>
+  <ul>
+    <li class="categories__index--li">
+      <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+      <%= link_to category.second, category_path( category.first ) %>
+    </li>
+  </ul>
+  <% end %>
+</div>

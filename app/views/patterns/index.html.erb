@@ -1,5 +1,12 @@
-<div class="row">
-  <div class="col-md-10 col-md-offset-1">
-    <%= render 'patterns/index', patterns: @patterns %>
-  </div>
-</div>
+
+<h2 class="patterns__index">
+  <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+  <% if @category_name.nil? then %>
+  全投稿
+  <% else %>
+  カテゴリー「<%= @category_name %>」
+  <% end %>
+  一覧
+</h2>
+
+<%= render 'patterns/index', patterns: @patterns %>

@@ -1,28 +1,24 @@
 
-<div class="patterns__article <%= "patterns__article--#{action_name}" %>">
-  <div class="col-sm-2">
-    <%= link_to pattern_path( pattern ) do
-    attachment_image_tag pattern,
-    :image,
-    fallback: 'no_pattern_image.jpg',
-    size: image_side_length,
-    class: "center-block",
-    style:"margin-top: #{ ( 150 - image_side_length ) / 2 }px"
-    end %>
+<div class="clearfix patterns__article <%= "patterns__article--#{controller_name}#{action_name.camelize}" %>">
+  <div class="patterns__article--divLeft" >
+    <%= link_to pattern_path( pattern ) do %>
+    <%= attachment_image_tag pattern, :image, fallback: 'no_pattern_image.jpg', class: "center-block patterns__article--img" %>
+    <% end %>
   </div>
-  <div class="col-sm-8">
+  <div class="patterns__article--divRight">
     <h3>
       <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
       <%= pattern.name %>
     </h3>
     <p>
+      <span class="patterns__article--categryHeadline">カテゴリー：　<%= pattern.category.name %></span><br>
       <%= pattern.introduction.truncate( character_limit ) %><br>
       <% if action_name != 'show' then %>
-      <span class="patterns__submit--user">
+      <span class="patterns__article--submitUser">
         by <%= link_to pattern.user.name, member_path( pattern.user_id ) %>さん
       </span>
-      <% end %>
       <%= render 'patterns/property', pattern: pattern %>
+      <% end %>
     </p>
   </div>
 </div>

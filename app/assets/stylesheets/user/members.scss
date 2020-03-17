@@ -4,8 +4,12 @@
 
 .members {
   &__show {
-    min-height: 150px;
     width: 100%;
     margin: 20px 10px;
+    &--headline {
+      vertical-align: center;
+    }
+    &--body {
+    }
   }
 }

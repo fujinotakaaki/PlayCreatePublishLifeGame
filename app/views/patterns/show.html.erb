@@ -1,8 +1,8 @@
-<div class="row">
-  <div class="col-md-12">
+
+  <div class="patterns__show">
     <%= render 'patterns/property', pattern: @pattern %>
 
-    <%= render 'patterns/article', pattern: @pattern, character_limit: 201, image_side_length: 90 %>
+    <%= render 'patterns/article', pattern: @pattern, character_limit: 201 %>
 
     <p>
       <input type="button" value="開始"               class="lifeGame__start"       onclick="startProcess();">
@@ -13,26 +13,25 @@
     <p class="lifeGame__info">(ここにカウントが表示されます)</p>
     <p class="lifeGame__show">(ここにライフゲームが表示されます)</p>
   </div>
-</div>
 
-<div class="row">
-  <div class="col-md-6">
+<div class="clearfix patterns__show--bottom">
+  <div class="patterns__show--bottomLeft">
     <div class="comments__index">
       <h3>最新のコメント</h3>
       <%= render 'post_comments/article', comment: @latest_comment %>
     </div>
 
+    <% if user_signed_in? then %>
     <div>
-      <% if user_signed_in? then %>
       <%= form_with url: pattern_post_comment_path( @pattern ) do | f |%>
       <%= f.text_field :body, class: 'comments__form' %>
       <%= f.submit '投稿', class: 'btn btn-default' %>
       <% end %>
-      <% end %>
     </div>
+    <% end %>
   </div>
 
-  <div class="col-md-6">
+  <div class="patterns__show--bottomRight">
     <h3>関連するパターン</h3>
     <h1>
       <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
@@ -40,8 +39,8 @@
       <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
     </h1>
   </div>
-</div>
 
+</div>
 
 
 <script>

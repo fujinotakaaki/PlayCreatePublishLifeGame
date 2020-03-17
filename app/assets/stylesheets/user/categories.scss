@@ -1,3 +1,27 @@
 // Place all the styles related to the Categories controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.categories {
+  &__index {
+    color: limegreen;
+    background-color: #000;
+    // background-color: #444;
+    margin: 70px 0;
+    border:  3px solid black;
+    &--headline {
+      margin: 5px;
+      border-bottom: 7px double #333;
+      text-align: center;
+      padding: 5px;
+    }
+    &--li {
+      margin: 0 15px;
+      padding: 5px;
+      list-style: none;
+      a {
+        color: limegreen;
+      }
+    }
+  }
+}
