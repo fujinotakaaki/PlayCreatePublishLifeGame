@@ -1,3 +1,22 @@
 // Place all the styles related to the Favorites controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.favorites {
+  &__create {
+    color: inherit;
+    &:hover {
+      color: inherit;
+      font-weight: bold;
+      text-decoration: none;
+  }
+  }
+  &__destroy {
+    color: inherit;
+    &:hover {
+      color: inherit;
+      font-weight: bold;
+      text-decoration: none;
+  }
+  }
+}

@@ -24,7 +24,7 @@ function initializeLifeGame() {
     isTorus: gon.isTorus
   };
   // 表示形式の反映
-  $('.lifeGame__show').css({
+  $('.patterns__show--lifeGameShow').css({
     'color': `${gon.displayFormat.font_color}`,
     'background-color': `${gon.displayFormat.background_color}`
   });
@@ -67,17 +67,17 @@ function upDate() {
 // 画面表示の更新処理
 function showCurrentGeneration() {
   // 表示中のメッセージ更新
-  $('.lifeGame__info').text( '第' + generationCount + '世代' );
+  $('.patterns__show--lifeGameInfo').text( '第' + generationCount + '世代' );
   // 表示中のパターン更新
-  $('.lifeGame__show').html( patternData.getPatternText );
+  $('.patterns__show--lifeGameDisplay').html( patternData.getPatternText );
 }
 
 // ボタン押下可否の切り替え
 function buttonsFreezeOrRelease( bool ) {
   // 開始ボタン
-  $(".lifeGame__start").prop("disabled", bool );
+  $(".patterns__show--lifeGameStart").prop("disabled", bool );
   // 一時停止ボタン
-  $(".lifeGame__stop").prop("disabled", ! bool );
+  $(".patterns__show--lifeGameStop").prop("disabled", ! bool );
   // リフレッシュボタン
-  $(".lifeGame__refresh").prop("disabled", bool );
+  $(".patterns__show--lifeGameRefresh").prop("disabled", bool );
 }
