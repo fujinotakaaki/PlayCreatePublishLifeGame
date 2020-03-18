@@ -4,12 +4,17 @@ class PatternsController < ApplicationController
 
   def index
     # ページングの設定はconfig/initializers/kaminari_config.rb
-    @patterns = Pattern.page( params[ :page ] ).reverse_order
+    if  !!params[ :category_id ] then
+      # カテゴリー別表示をする場合
+      @patterns = Pattern.where( category_id: params[ :category_id ] ).page( params[ :page ] ).reverse_order
+    else
+      # 全表示をする場合
+      @patterns = Pattern.page( params[ :page ] ).reverse_order
+    end
   end
 
   def edit
-    # before_action :baria_userでデータ定義済みのため下記処理は実施しない
-    # @pattern = Pattern.find( params[ :id ] )
+    @pattern = Pattern.find( params[ :id ] )
   end
 
   def show
@@ -27,30 +32,27 @@ class PatternsController < ApplicationController
   end
 
   def update
-    # before_action :baria_userでデータ定義済みのため下記処理は実施しない
-    # @pattern = Pattern.find( params[ :id ] )
+    @pattern = Pattern.find( params[ :id ] )
   end
 
   def destroy
-    # before_action :baria_userでデータ定義済みのため下記処理は実施しない
-    # @pattern = Pattern.find( params[ :id ] )
+    @pattern = Pattern.find( params[ :id ] )
   end
 
   private
   def baria_user
-    @pattern = Pattern.find( params[ :id ] )
     # ログインユーザと製作者が一致しているか判定
-    unless @pattern.user_id  == current_user.id then
+    unless Pattern.find( params[ :id ] ).user_id  == current_user.id then
       # 不一致 => 一覧ページへ
       redirect_to current_user
     end
   end
 
-  # dbからjsにパターンの情報を読み込めるようにデータを編集するメソッド
+  # dbのパターン情報をJSのライフゲーム用のデータに変換するメソッド
   def pattern_conversion_to_js( pattern, rows )
-    # 最も大きい数を取得
+    # 最も大きい2進数を取得
     largest_number = rows.max
-    # 最も大きい数の桁数を算出（但し、0なら1桁とする）
+    # 最も大きい2進数の桁数を算出（但し、0b0なら1桁とする）
     largest_number_bit_length = largest_number.zero? ? 1 : ( Math.log2( largest_number ) + 1 ).to_i
     # 左右の余白を含めたマップ幅を計算
     pattern_bit_length = pattern.margin_left + largest_number_bit_length + pattern.margin_right

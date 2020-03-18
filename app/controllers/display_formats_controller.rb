@@ -2,11 +2,6 @@ class DisplayFormatsController < ApplicationController
   before_action :authenticate_user!, except: [ :index ]
   before_action :baria_user,                  only: [ :edit, :update, :destroy ]
 
-  def index
-    # 全データ取得
-    @display_formats = DisplayFormat.all
-  end
-
   def create
     # 新規データ取得
     @display_format = current_user.display_formats.new( display_format_params )
