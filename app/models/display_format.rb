@@ -7,6 +7,8 @@ class DisplayFormat < ApplicationRecord
 
   # 表示形式名は定義する
   validates :name, presence: true
+  # cssのline-height負の値ではいけない
+  validates :line_height_rate, :numericality => { greater_than_or_equal_to: 0 }
 
   # セル状態に関するバリデーション
   validates_each :alive, :dead do | record, attr, value |

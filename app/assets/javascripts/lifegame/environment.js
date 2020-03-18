@@ -26,8 +26,8 @@ function initializeLifeGame() {
   // 表示形式の反映
   $('.patterns__show--lifeGameDisplay').css({
     'color': `${ gon.displayFormat.font_color }`,
-    'background-color': `${ gon.displayFormat.background_color }`
-    // 'line-height': `${ gon.displayFormat.line_height_rate }`
+    'background-color': `${ gon.displayFormat.background_color }`,
+    'line-height': `${ gon.displayFormat.line_height_rate / 100 }`
   });
   // ライフゲームの初期化設定
   patternData = new LifeGame( gon.pattern, options );
