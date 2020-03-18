@@ -13,7 +13,16 @@
     </li>
     <li>
       <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
-      お気に入り: <%= pattern.favorites.size %>
+      <% if /show/.match?( action_name ) && !!current_user then %>
+      <% if !Favorite.find_by( user_id: current_user.id, pattern_id: pattern.id ) then %>
+      <%= render 'favorites/create', pattern_id: pattern.id %>
+      <% else %>
+      <%= render 'favorites/destroy', pattern_id: pattern.id %>
+      <% end %>
+      <% else %>
+      お気に入り数
+      <% end %>
+      <%= ": #{ pattern.favorites.size }" %>
     </li>
   </ul>
 </nav>

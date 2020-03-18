@@ -1,0 +1,10 @@
+// パターン詳細画面で「お気に入り解除」された際のお気に入り項目の更新
+// liタグ中のグリフアイコンの追加
+spanTag = $(".favorites__destroy").closest('li').find("span").clone(true)
+// お気に入り数の抽出
+var liTagInfo = /(\d+)/.exec( $(".favorites__destroy").closest('li').text() );
+// 1) liタグの中身を空にする
+// 2) グリフアイコンの追加
+// 3) お気に入り登録ボタンの追加
+// 4) お気に入り数のカウントダウン
+$(".favorites__destroy").closest('li').text('').html( spanTag ).append( " <%= escape_javascript( render 'favorites/create', pattern_id: @pattern_id ) %>" ).append( `: ${ Number( liTagInfo[1] ) - 1 }` );

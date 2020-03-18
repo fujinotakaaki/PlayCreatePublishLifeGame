@@ -1,5 +1,5 @@
 
-<div class="clearfix patterns__article <%= "patterns__article--#{controller_name}#{action_name.camelize}" %>">
+<div class="clearfix patterns__article <%= "patterns__article--#{ controller_name + action_name.camelize }" %>">
   <div class="patterns__article--divLeft" >
     <%= link_to pattern_path( pattern ) do %>
     <%= attachment_image_tag pattern, :image, fallback: 'no_pattern_image.jpg', class: "center-block patterns__article--img" %>
