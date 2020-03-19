@@ -1,17 +1,8 @@
 
   <div class="patterns__show">
     <%= render 'patterns/property', pattern: @pattern %>
-
     <%= render 'patterns/article', pattern: @pattern, character_limit: 201 %>
-
-    <p>
-      <input type="button" value="開始"               class="patterns__show--lifeGameStart"       onclick="startProcess();">
-      <input type="button" value="一時停止"        class="patterns__show--lifeGameStop"       onclick="stopProcess();">
-      <input type="button" value="リフレッシュ" class="patterns__show--lifeGameRefresh"   onclick="initializeLifeGame();">
-      interval = 100ms
-    </p>
-    <p class="patterns__show--lifeGameInfo">(ここにカウントが表示されます)</p>
-    <p class="patterns__show--lifeGameDisplay">(ここにライフゲームが表示されます)</p>
+    <%= render 'patterns/emulation' %>
   </div>
 
 <div class="clearfix patterns__show--bottom">
@@ -36,12 +27,3 @@
     <%= render 'patterns/article', pattern: @latest_same_category_pattern_sample, character_limit: 20 %>
     <%= link_to 'このカテゴリーのパターンを見に行く', patterns_path( category_id: @pattern.category_id) %>
 </div>
-
-
-<script>
-  // turbolinksのせいで２回実行されるが、
-  // タイマー処理の初期化を実施するだけなので
-  // 問題なしと判断
-  // console.log('<%= Time.zone.now %>');
-  initializeLifeGame();
-</script>

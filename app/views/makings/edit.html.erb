@@ -1,3 +1,19 @@
-<h1>Makings#edit</h1>
-<p>Find me in app/views/makings/edit.html.erb</p>
-@making = <%= @making.inspect %>
+<div class="makings__edit--top">
+  <%= render 'makings/form' %>
+</div>
+
+<div class="makings__edit--bottom">
+  <%= render 'patterns/emulation' %>
+  <%= link_to '投稿', ?#, class: "btn btn-default" %>
+</div>
+
+<script type="text/javascript">
+  // パターン作成中は作業しやすいようにレイアウトを調整する
+  $( function() {
+    $("body").css({'background-color': '#eee'});
+    // カテゴリ欄の削除
+    $(".application__layouts--leftSection").remove();
+    // パターン表示を画面最大にできるようにする
+    $(".application__layouts--rightSection").removeClass().addClass('col-lg-12');
+  });
+</script>

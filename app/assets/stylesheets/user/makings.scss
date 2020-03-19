@@ -1,0 +1,20 @@
+// Place all the styles related to the Makings controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.makings {
+  &__edit {
+    &--top {
+      width: 100%;
+      margin-top: 10px;
+    }
+    &--bottom {
+      width: 100%;
+      margin-top: 10px;
+    }
+    &--textarea {
+      height: 30px;
+      width: 100%;
+    }
+  }
+}

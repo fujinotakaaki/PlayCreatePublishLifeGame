@@ -14,21 +14,21 @@ function initializeLifeGame() {
   }
   // 世代数カウント初期化
   generationCount = 0;
-  // ライフゲームのオプション設定
-  let options = {
-    // 「生」セルの表示
-    alive: gon.displayFormat.alive,
-    // 「死」セルの表示
-    dead: gon.displayFormat.dead,
-    // 平坦トーラス面として扱うか
-    isTorus: gon.isTorus
-  };
-  // 表示形式の反映
-  $('.patterns__show--lifeGameDisplay').css({
-    'color': `${ gon.displayFormat.font_color }`,
-    'background-color': `${ gon.displayFormat.background_color }`,
-    'line-height': `${ gon.displayFormat.line_height_rate / 100 }`
-  });
+  // options変数の生成（ライフゲームの表示形式に関する設定）
+  let options;
+  // 表示形式情報があればoptions変数に設定情報を格納
+  if ( !!gon.displayFormat ) {
+    options = {
+      // 「生」セルの表示
+      alive: gon.displayFormat.alive,
+      // 「死」セルの表示
+      dead: gon.displayFormat.dead,
+      // 平坦トーラス面として扱うか
+      isTorus: gon.isTorus
+    };
+    // セルの表示情報を画面に適用
+    applyDisplayFormat();
+  }
   // ライフゲームの初期化設定
   patternData = new LifeGame( gon.pattern, options );
   // 初期盤面の表示
@@ -81,4 +81,16 @@ function buttonsFreezeOrRelease( bool ) {
   $(".patterns__show--lifeGameStop").prop("disabled", ! bool );
   // リフレッシュボタン
   $(".patterns__show--lifeGameRefresh").prop("disabled", bool );
+  // Making#editのsubmitボタン
+  $(".makings__edit--submit").prop("disabled", bool );
+}
+
+// セル表示状態をCSSを通して適用
+function applyDisplayFormat() {
+  // jQueryによって適用
+  $('.patterns__show--lifeGameDisplay').css({
+    'color': `${ gon.displayFormat.font_color }`,
+    'background-color': `${ gon.displayFormat.background_color }`,
+    'line-height': `${ gon.displayFormat.line_height_rate / 100 }`
+  });
 }
