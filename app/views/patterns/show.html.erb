@@ -33,13 +33,8 @@
 
   <div class="patterns__show--bottomRight">
     <h3>関連するパターン</h3>
-    <h1>
-      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-      工事中
-      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-    </h1>
-  </div>
-
+    <%= render 'patterns/article', pattern: @latest_same_category_pattern_sample, character_limit: 20 %>
+    <%= link_to 'このカテゴリーのパターンを見に行く', patterns_path( category_id: @pattern.category_id) %>
 </div>
 
 

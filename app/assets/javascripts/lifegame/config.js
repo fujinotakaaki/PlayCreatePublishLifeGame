@@ -1,4 +1,6 @@
 class LifeGame {
+  // 中央座標から見て前後左右斜めの相対位置の組み合わせ（ムーア近傍）
+  MOORE_NEIGHBORHOOD = [ [1,1], [1,0], [1,-1], [0,1], [0,-1], [-1,1], [-1,0], [-1,-1] ]
   // 世代交代後の盤面
   newPattern = new Array;
 
@@ -43,19 +45,16 @@ class LifeGame {
 
   // セルの誕生、生存、過疎、過密処理
   deadOrAlive( y, x ) {
-    // (1) 周辺セル（８ヵ所）の座標生成
-    let mooreNeighborhood = [ [1,1], [1,0], [1,-1], [0,1], [0,-1], [-1,1], [-1,0], [-1,-1] ]
-
     let aliveCellsCount = 0;
-    // (2) 周辺の生きているセルのカウントアップ（マップ外は「死」扱い）
-    for ( let [ t, s ] of mooreNeighborhood ) {
+    // (1) 周辺の生きているセルのカウントアップ（マップ外は「死」扱い）
+    for ( let [ t, s ] of this.MOORE_NEIGHBORHOOD ) {
       // セルの状態は文字列のため、数値に変換必須
       aliveCellsCount +=  Number( this.pattern?.[ y+t ]?.[ x+s ]
         || ( this.isTorus ? this.pattern[ ( y + t + this.height ) % this.height ][ ( x + s + this.width ) % this.width ] : 0 ) );
-        // ※平坦トーラス面の場合は循環先のセル状態を考慮する
+        // ※平坦トーラス面の場合は循環先のセルの状態を考慮する
     }
 
-    // (3) 世代更新後の中心座標のセルの生死状態判定
+    // (2) 世代更新後の中心座標のセルの生死状態判定
     // ひとまず次世代では「死」と仮定
     let nextCondition = 0;
     // 次世代で「生」になる可能性があるか判定

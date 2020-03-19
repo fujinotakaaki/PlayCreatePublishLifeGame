@@ -1,3 +1,4 @@
+
 // ユーザ名とイントロダクション編集画面の呼び出しメソッド
 function editUserInfo( ele ) {
   // 会員IDの取得
@@ -11,5 +12,10 @@ function editUserInfo( ele ) {
       dataType: "script"
     })
   }
+  return false;
+}
+
+function fib(n) {
+  console.log('unko');
   return false;
 }
