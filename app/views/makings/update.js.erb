@@ -1,12 +1,16 @@
 <% if @convertion_error_message.present? then %>
 // データ変換エラーメッセージの表示
-alert("<%= @convertion_error_message %>");
+alert("！！警告！！\n<%= @convertion_error_message %>");
 <% elsif @making.errors.any? then %>
 // バリデーションエラーメッセージの表示
-alert( "<%= @making.errors.full_messages.join( '<br>' ) %>" );
+alert( "！！警告！！\n<%= @making.errors.full_messages.join( '\n' ) %>" );
 <% else %>
 // 画面表示への反映
-initializeLifeGame( "<%= pattern_conversion_to_js( @making, @making_row_integers ).join( ?, ) %>".split(',') );
+initializeLifeGame( "<%= @update_making_pattern.join( ?, ) %>".split(',') );
+// インターフェース（ボタン類）の復活
+$(".patterns__show--lifeGameInterface").html( "<%= escape_javascript( render 'patterns/interface' ) %>" );
+// 「変更を保存」ボタンを非表示にする
+$(".makings__edit--submit").css({ "display": "none" });
 // 作成中パターンのデータが更新成功の通知
 alert("更新に成功しました。");
 <% end %>

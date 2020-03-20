@@ -21,11 +21,11 @@ class MakingsController < ApplicationController
   def update
     # パターンの上下左右の余白、各行の数値化配列を受け取る
     # （エラーが発生した時は第１引数はnilを、第２引数はエラーメッセージを格納）
-    making_params, @making_row_integers = convert_text_for_db_data( params[ :making_text ] )
+    making_params, making_row_integers = convert_text_for_db_data( params[ :making_text ] )
     # テキストデータが正常に変換されたかチェック
     if making_params.nil? then
       # 第２引数のエラーメッセージを格納
-      @convertion_error_message = @making_row_integers
+      @convertion_error_message = making_row_integers
       return
     end
     # データ更新を実施するデータをピックアップ
@@ -35,9 +35,11 @@ class MakingsController < ApplicationController
       # 更新前の行データを削除する
       @making.making_rows&.destroy_all
       # 更新後のパターンの行データを保存する
-      @making_row_integers.each do | natural_number |
+      making_row_integers.each do | natural_number |
         MakingRow.new( making_id: params[:id], binary_number: natural_number ).save
       end
+      # 更新後のパターンデータ
+      @update_making_pattern = pattern_conversion_to_js( @making, making_row_integers )
     end
   end
 

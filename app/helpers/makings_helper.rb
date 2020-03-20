@@ -1,5 +1,3 @@
-require 'prime'
-
 module MakingsHelper
   CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE = {
     length: 'パターンの幅が不揃いです。',

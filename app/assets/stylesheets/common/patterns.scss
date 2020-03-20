@@ -12,13 +12,16 @@
       margin: 20px 0;
     }
     &--bottomLeft {
-      max-width: 40%;
+      width: 45%;
       float: left;
-      margin: 0 5%;
+      margin-right: 5%;
     }
     &--bottomRight {
-      min-width: 50%;
+      width: 50%;
       float: left;
+      h3 {
+        font-weight: bold;
+      }
     }
     &--lifeGameDisplay {
       padding: 30px;

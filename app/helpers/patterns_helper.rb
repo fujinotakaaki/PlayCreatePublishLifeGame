@@ -2,7 +2,7 @@ module PatternsHelper
   # Patterns#indexで検索タイトルを取得するメソッド
   def get_index_title( path )
     # 絞り込みキーワード抽出（ $1 = 検索項目, $2 = id ）
-    %r(/patterns\?(\w+)_id=(\d+)).match( path )
+    %r{/patterns\?(\w+)_id=(\d+)}.match( path )
     # タイトルの選定
     if /category/.match?( $1 ) then
       # カテゴリー検索だった場合(match?メソッドなので$1, $2は更新されない)

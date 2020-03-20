@@ -26,11 +26,11 @@ $(document).on('keypress', '#making_text', function(e){
 // 編集が行われた場合に画面表示を切り替える処理
 $(document).on('keyup', '#making_text', function(){
   // エミュレーション用画面切替と作成中パターンの反映
-   banEmulationAndReflectMakingPattern(this);
+   removeInterfaceAndDisplayMakingPattern(this);
 });
 
 // ボタン除去とプレビュー表示への切替
-function banEmulationAndReflectMakingPattern() {
+function removeInterfaceAndDisplayMakingPattern() {
   // 編集中のビット列を表示形式に変換する
   let convertDisplayText = $("#making_text").val().split("\n").map( bitString => bitString.replace( /[^01]/g, "" ).replace( /0/g, "□" ).replace( /1/g, "■" ) ).join("<br>")
   // 編集内容に合わせてリアルタイムにパターンへ反映させる
@@ -39,10 +39,12 @@ function banEmulationAndReflectMakingPattern() {
   $(".patterns__show--lifeGameInfo").text( "プレビューを表示中" );
   // 操作ボタンの削除（編集中のパターンはエミュレートできないため）
   $(".patterns__show--lifeGameInterface").text('');
+  // 「変更を保存」ボタンを表示する
+  $(".makings__edit--submit").css({ "display": "" });
 }
 
 
-function autoComplement( side="right" ) {
+function autoComplement( side ) {
   // 右側に補完するか判定（falseなら左側に補完）
   let autoCompleteToRightSide = /right/i.test( side );
   // テキストエリアのテキストを行区切りで配列化
@@ -62,5 +64,5 @@ function autoComplement( side="right" ) {
   // テキストエリアに処理結果を反映する
   $("#making_text").val( autoComplementMakingPatternArray.join("\n") );
   // エミュレーション用画面切替と処理結果の反映
-   banEmulationAndReflectMakingPattern();
+   removeInterfaceAndDisplayMakingPattern();
 }

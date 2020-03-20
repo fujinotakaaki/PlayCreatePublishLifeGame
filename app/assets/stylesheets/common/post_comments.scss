@@ -10,7 +10,13 @@
     word-wrap: break-word;
   }
   &__form {
-    min-height: 50px;
     width: 100%;
+    &--body {
+      resize: none;
+      width: 70%;
+    }
+    &--submit {
+      width: 70%;
+    }
   }
 }

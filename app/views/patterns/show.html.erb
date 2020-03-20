@@ -1,29 +1,32 @@
 
   <div class="patterns__show">
     <%= render 'patterns/property', pattern: @pattern %>
-    <%= render 'patterns/article', pattern: @pattern, character_limit: 201 %>
+    <%= render 'patterns/article', pattern: @pattern, character_limit: 255 %>
     <%= render 'patterns/emulation' %>
   </div>
 
 <div class="clearfix patterns__show--bottom">
   <div class="patterns__show--bottomLeft">
     <div class="comments__index">
-      <h3>最新のコメント</h3>
+      <h3 class="comments__index--headline">最新のコメント</h3>
       <%= render 'post_comments/article', comment: @latest_comment %>
     </div>
 
     <% if user_signed_in? then %>
-    <div>
+    <div class="comments__form">
       <%= form_with url: pattern_post_comment_path( @pattern ) do | f |%>
-      <%= f.text_field :body, class: 'comments__form' %>
-      <%= f.submit '投稿', class: 'btn btn-default' %>
+      <%= f.text_area :body, class: "comments__form--body", rows: 3 %>
+      <%= f.submit '投稿', class: "btn btn-default comments__form--submit" %>
       <% end %>
     </div>
     <% end %>
   </div>
 
   <div class="patterns__show--bottomRight">
-    <h3>関連するパターン</h3>
+    <h3>
+      <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+      このカテゴリに関連するパターン
+    </h3>
     <%= render 'patterns/article', pattern: @latest_same_category_pattern_sample, character_limit: 20 %>
     <%= link_to 'このカテゴリーのパターンを見に行く', patterns_path( category_id: @pattern.category_id) %>
 </div>
