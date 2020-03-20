@@ -5,9 +5,9 @@ var generationCount;
 var patternData;
 // 繰り返し処理の変数
 var intervalProcessingID;
-
-// ライフゲーム実行のための初期化メソッド（showページ遷移時orリフレッシュボタンで発火）
-function initializeLifeGame() {
+// ライフゲーム変数の初期化メソッド（patterns/emulation.html.erb呼出時orリフレッシュボタンで発火）
+// makingPatternArrayはパターンを作成し、画面に反映させる際に使用される
+function initializeLifeGame( makingPatternArray = undefined ) {
   // 繰り返し処理実行中の場合は強制終了させる
   if ( Number.isInteger( intervalProcessingID ) ) {
     stopProcess();
@@ -30,7 +30,7 @@ function initializeLifeGame() {
     applyDisplayFormat();
   }
   // ライフゲームの初期化設定
-  patternData = new LifeGame( gon.pattern, options );
+  patternData = new LifeGame( makingPatternArray || gon.pattern, options );
   // 初期盤面の表示
   showCurrentGeneration();
 }

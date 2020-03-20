@@ -1,6 +1,6 @@
-<p>
-  <input type="button" value="開始"               class="patterns__show--lifeGameStart"       onclick="startProcess();">
-  <input type="button" value="一時停止"        class="patterns__show--lifeGameStop"       onclick="stopProcess();">
+<p class="patterns__show--lifeGameInterface">
+  <input type="button" value="開始" class="patterns__show--lifeGameStart" onclick="startProcess();">
+  <input type="button" value="一時停止" class="patterns__show--lifeGameStop" onclick="stopProcess();">
   <input type="button" value="リフレッシュ" class="patterns__show--lifeGameRefresh"   onclick="initializeLifeGame();">
   interval = 100ms
 </p>
@@ -14,9 +14,12 @@
 </p>
 
 <script>
+  // lifegame/environment.jsの関数実行
+  // ライフゲームの表示初期化
+  $(function(){
+    initializeLifeGame();
+  });
   // turbolinksのせいで２回実行されるが、
   // タイマー処理の初期化を実施するだけなので
   // 問題なしと判断
-  // console.log('<%= Time.zone.now %>');
-  initializeLifeGame();
 </script>

@@ -6,8 +6,8 @@ class User < ApplicationRecord
 
   # ニックネームは定義必須
   validates :name,          presence: true
-  # 説明文は200文字以内
-  validates :introduction, length: { maximum: 200 }
+  # 説明文は300文字以内
+  validates :introduction, length: { maximum: 300 }
 
   attachment :profile_image
 

@@ -1,1 +1,12 @@
-alert("Very Success");
+<% if @convertion_error_message.present? then %>
+// データ変換エラーメッセージの表示
+alert("<%= @convertion_error_message %>");
+<% elsif @making.errors.any? then %>
+// バリデーションエラーメッセージの表示
+alert( "<%= @making.errors.full_messages.join( '<br>' ) %>" );
+<% else %>
+// 画面表示への反映
+initializeLifeGame( "<%= pattern_conversion_to_js( @making, @making_row_integers ).join( ?, ) %>".split(',') );
+// 作成中パターンのデータが更新成功の通知
+alert("更新に成功しました。");
+<% end %>

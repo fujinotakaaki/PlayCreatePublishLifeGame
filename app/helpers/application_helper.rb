@@ -7,7 +7,7 @@ module ApplicationHelper
     # 最も大きい2進数を取得
     largest_number = pattern_rows.max
     # 最も大きい2進数の桁数を算出（但し、"0b0"なら1桁とする）
-    largest_number_bit_length = largest_number.positive? ? 1+ Math.log2( largest_number ).to_i : 1
+    largest_number_bit_length = largest_number.positive? ? largest_number.bit_length : 1
     # 左右の余白を含めたマップ幅を計算
     pattern_bit_length = pattern.margin_left + largest_number_bit_length + pattern.margin_right
     # jsでパターンを扱うための変数作成

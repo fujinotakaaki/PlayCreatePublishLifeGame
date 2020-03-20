@@ -1,10 +1,16 @@
 <div class="makings__edit--top">
-  <%= render 'makings/form' %>
+  <%= form_with url: making_path, method: :patch do | f | %>
+  <%= f.hidden_field :id, value: @making.id %>
+  <%= f.text_area :making_text, value: @making_pattern.join( "\n" ), class: "makings__edit--textarea", rows: @making_pattern.size, type: 'number' %>
+  <%= f.submit 'エミュレート', class: "makings__edit--submit" %>
+  <input type="button" value="左側から自動補完" class="makings__edit--autoComplementLeftSide" onclick="autoComplement( 'left' );">
+  <input type="button" value="右側から自動補完" class="makings__edit--autoComplementRightSide" onclick="autoComplement( 'right' );">
+  <% end %>
 </div>
 
 <div class="makings__edit--bottom">
   <%= render 'patterns/emulation' %>
-  <%= link_to '投稿', ?#, class: "btn btn-default" %>
+  <%= link_to '投稿(工事中)', ?#, class: "btn btn-default" %>
 </div>
 
 <script type="text/javascript">
@@ -13,7 +19,7 @@
     $("body").css({'background-color': '#eee'});
     // カテゴリ欄の削除
     $(".application__layouts--leftSection").remove();
-    // パターン表示を画面最大にできるようにする
+    // パターン表示を画面最大に
     $(".application__layouts--rightSection").removeClass().addClass('col-lg-12');
   });
 </script>
