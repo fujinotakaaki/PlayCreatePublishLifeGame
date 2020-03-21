@@ -3,7 +3,9 @@
   <%= form_with url: making_path, method: :patch do | f | %>
   <%= f.hidden_field :id, value: @making.id %>
   <%= f.text_area :making_text, value: @making_pattern.join( "\n" ), class: "makings__edit--textarea", rows: @making_pattern.size, type: 'number' %>
+  <!--「変更を保存」ボタンはデフォルトがdisplay: none;-->
   <%= f.submit '変更を保存', class: "makings__edit--submit" %>
+  <input type="button" value="検証" class="makings__edit--verification" onclick="verificationMakingPattern();">
   <% end %>
 </div>
 
@@ -14,11 +16,3 @@
   <%= render 'patterns/emulation' %>
   <%= link_to '投稿(工事中)', ?#, class: "btn btn-default" %>
 </div>
-
-<script type="text/javascript">
-  // パターン作成中は作業しやすいようにレイアウトを調整する
-  $( function() {
-    // ページ遷移時は「変更を保存」ボタンを非表示にする
-    $(".makings__edit--submit").css({ "display": "none" });
-  });
-</script>

@@ -1,8 +1,8 @@
 class Pattern < ApplicationRecord
   # パターン名は定義必須
   validates :name, presence: true
-  # パターン説明文は定義必須、かつ200文字以内
-  validates :introduction, presence: true, length: { maximum: 200 }
+  # パターン説明文は定義必須、かつ511文字以内
+  validates :introduction, presence: true, length: { maximum: 511 }
 
   attachment :image
 

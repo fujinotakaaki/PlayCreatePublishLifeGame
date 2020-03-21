@@ -11,6 +11,8 @@ initializeLifeGame( "<%= @update_making_pattern.join( ?, ) %>".split(',') );
 $(".patterns__show--lifeGameInterface").html( "<%= escape_javascript( render 'patterns/interface' ) %>" );
 // 「変更を保存」ボタンを非表示にする
 $(".makings__edit--submit").css({ "display": "none" });
+// 更新したパターンを画面中央に戻す
+$(".patterns__show--lifeGameDisplay").css({ "text-align": "" });
 // 作成中パターンのデータが更新成功の通知
 alert("更新に成功しました。");
 <% end %>
