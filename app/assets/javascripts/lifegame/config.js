@@ -8,14 +8,21 @@ class LifeGame {
   constructor( pattern = [ "0000", "0111", "1110", "0000" ], options = { alive: '■', dead: '□', isTorus: false } ) {
     // 初期盤面の取得（要素がビット列の１次元配列）
     this.pattern = pattern;
+    // リフレッシュメソッド用初期盤面の格納変数（浅いコピーだが、実装上不具合は見られない2020.03.21）
+    this.initialPattern = pattern;
     // 盤面の定義域取得
     [ this.height, this.width ] = [ pattern.length, pattern[0].length ];
-    // Makings#editからアクセスされる場合は表示形式の情報がないため、デフォルト設定が必要
-    // options = options || { alive: '■', dead: '□', isTorus: false };
     // セル状態の表示を定義
     [ this.alive, this.dead ] = [ options.alive, options.dead ];
     // 平坦トーラス面として扱うかのフラグ設定
     this.isTorus = options.isTorus;
+  }
+
+  // 世代更新を行っていない初期状態に戻すメソッド
+  get patternRefresh() {
+    // 初期世代の配置に置き換える（浅いコピーだが、実装上不具合は見られない2020.03.21）
+    this.pattern = this.initialPattern;
+    return false;
   }
 
   // 盤面のHTMLテキストへの出力メソッド
@@ -42,6 +49,7 @@ class LifeGame {
     this.pattern = this.newPattern;
     // 次世代パターン（配列）の初期化
     this.newPattern = new Array;
+    return false;
   }
 
 

@@ -1,0 +1,15 @@
+
+<input type="button" value="検証" class="btn btn-primary makings__edit--verification" onclick="verificationMakingPattern();">
+
+<div class="btn-group">
+	<button type="button" class="btn btn-danger">
+		一括処理
+	</button>
+	<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+		<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu" role="menu">
+		<li role="presentation"><a role="menuitem" tabindex="-1" href="#" onclick="autoComplement( 'right' ); return false;">自動補完（右側）</a></li>
+		<li role="presentation"><a role="menuitem" tabindex="-1" href="#" onclick="autoComplement( 'left' ); return false;">自動補完（左側）</a></li>
+	</ul>
+</div>

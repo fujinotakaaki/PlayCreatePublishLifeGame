@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>Play!Create!Publish! LifeGame</title>
   <%= csrf_meta_tags %>
@@ -11,7 +10,6 @@
 </head>
 
 <body>
-
   <header>
     <h1>Play!Create!Publish! LifeGame</h1>
     <%= render 'layouts/headerMenue' %>
@@ -19,21 +17,19 @@
 
   <div class="container">
     <div class="row">
-
+      <%= render 'layouts/alert' %>
+    </div>
+    <div class="row">
       <div class="col-md-2 application__layouts--leftSection">
         <%= render 'categories/index' %>
       </div>
-
       <div class="col-md-10 application__layouts--rightSection">
         <%= yield %>
       </div>
-
     </div>
   </div>
 
   <footer>
-    い
   </footer>
-
 </body>
 </html>

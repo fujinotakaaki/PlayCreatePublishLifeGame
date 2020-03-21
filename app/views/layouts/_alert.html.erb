@@ -1,0 +1,28 @@
+<% if controller_name == 'makings' then %>
+<!--サクセスメッセージ-->
+<div class="alert alert-success application__alert--common application__alert--success" role="alert">
+  <h3 class="application__alert--headline">
+    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+     Success
+  </h3>
+  <p class="application__alert--body">成功です！！</p>
+</div>
+
+<!--警告メッセージ-->
+<div class="alert alert-warning application__alert--common application__alert--warning" role="alert">
+  <h3 class="application__alert--headline">
+    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+    Warning
+  </h3>
+  <p class="application__alert--body">異常が検知されました。</p>
+</div>
+
+<!--重要なメッセージ-->
+<div class="alert alert-danger application__alert--common application__alert--danger" role="alert">
+  <h3 class="application__alert--headline">
+    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+    Danger
+  </h3>
+  <p class="application__alert--body">重要な問題が検知されました。</p>
+</div>
+<% end %>

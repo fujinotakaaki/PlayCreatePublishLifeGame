@@ -12,5 +12,8 @@
  *
  *= require_tree ./common
  *= require_tree ./admin
+ *= require_self
  */
- 
+
+ @import "bootstrap-sprockets";
+ @import "bootstrap";

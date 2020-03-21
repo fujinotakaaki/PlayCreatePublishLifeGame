@@ -7,15 +7,15 @@ var patternData;
 var intervalProcessingID;
 // ライフゲーム変数の初期化メソッド（patterns/emulation.html.erb呼出時orリフレッシュボタンで発火）
 // makingPatternArrayはパターンを作成し、画面に反映させる際に使用される
-function initializeLifeGame( makingPatternArray = undefined ) {
+function initializeLifeGame( makingPatternArray = false, refreshOnly = false ) {
   // 繰り返し処理実行中の場合は強制終了させる
-  if ( !!intervalProcessingID ) { stopProcess(); }
+  if ( !! intervalProcessingID ) { stopProcess(); }
   // 世代数カウント初期化
   generationCount = 0;
   // options変数の生成（ライフゲームの表示形式に関する設定）
   let options;
   // 表示形式情報があればoptions変数に設定情報を格納
-  if ( !!gon.displayFormat ) {
+  if ( !! gon.displayFormat ) {
     options = {
       // 「生」セルの表示
       alive: gon.displayFormat.alive,
@@ -27,9 +27,15 @@ function initializeLifeGame( makingPatternArray = undefined ) {
     // セルの表示情報を画面に適用
     applyDisplayFormat();
   }
-  // ライフゲームの初期化設定
-  patternData = new LifeGame( makingPatternArray || gon.pattern, options );
-  // 初期盤面の表示
+  // 初期化処理
+  if ( refreshOnly && !! patternData ) {
+    // 定義済み盤面の初期化
+    patternData.patternRefresh;
+  }else {
+    // 新規盤面の設定
+    patternData = new LifeGame( makingPatternArray || gon.pattern, options );
+  }
+  // 盤面の表示
   showCurrentGeneration();
 }
 

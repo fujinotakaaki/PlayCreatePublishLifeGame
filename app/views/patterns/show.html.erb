@@ -1,9 +1,9 @@
 
-  <div class="patterns__show">
-    <%= render 'patterns/property', pattern: @pattern %>
-    <%= render 'patterns/article', pattern: @pattern, character_limit: 1000 %>
-    <%= render 'patterns/emulation' %>
-  </div>
+<div class="patterns__show">
+  <%= render 'patterns/property', pattern: @pattern %>
+  <%= render 'patterns/article', pattern: @pattern, character_limit: 1000 %>
+  <%= render 'patterns/emulation' %>
+</div>
 
 <div class="clearfix patterns__show--bottom">
   <div class="patterns__show--bottomLeft">
@@ -29,4 +29,5 @@
     </h3>
     <%= render 'patterns/article', pattern: @latest_same_category_pattern_sample, character_limit: 20 %>
     <%= link_to 'このカテゴリーのパターンを見に行く', patterns_path( category_id: @pattern.category_id) %>
+  </div>
 </div>
