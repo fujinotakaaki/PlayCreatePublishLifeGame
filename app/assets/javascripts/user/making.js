@@ -38,7 +38,6 @@ function removeInterfaceAndChangindPreviewWindow() {
 function normalizationMakingPattern( makingPatternArray = undefined ) {
   // 引数がundefinedの場合は、作成中パターンの「各ビット列の配列」を取得（"0"と"1"以外の文字は除去）
   makingPatternArray = makingPatternArray || getMakingPatternTextareaInfo( true )[0];
-  // console.log(makingPatternArray.join("unko"));
   // テキストエリアに反映
   $(".makings__edit--textarea").val( makingPatternArray.join("\n") );
   // セルの状態表示に変換
@@ -89,19 +88,33 @@ function getMakingPatternTextareaInfo( normalization = true ) {
 function verificationMakingPattern() {
   // 作成中パターンの「各ビット列の配列」と「最長のビット列の長さ」を取得
   let [ makingPatternArray, maxBitLength ] = getMakingPatternTextareaInfo( false );
-  // 「最長のビット列の長さが1以上」かつ「各ビット列の長さが等しい」か判定
-  easyValidation = maxBitLength && makingPatternArray.every( currentBitString => currentBitString.length == maxBitLength );
-  if ( easyValidation ) { // easyValidation = true
+
+  // ===バリデーション処理===================================
+  let errorMessages = "";
+  // (1) 最長のビット列の長さが1以上か
+  if ( ! maxBitLength ) {
+    errorMessages += "\n・セルがありません。";
+  }
+  // (2) 各ビット列の長さが等しいか
+  if ( ! makingPatternArray.every( currentBitString => currentBitString.length == maxBitLength ) ) {
+    errorMessages += "\n・パターンが不揃いです。";
+  }
+  // (3) "0"または"1"以外の文字が含まれていないか
+  if ( ! makingPatternArray.every( currentBitString => ! /[^01]/.test( currentBitString ) ) ) {
+    errorMessages += "\n・不適切な文字が混入してます。";
+  }
+  // (4) 「生」セルは存在するか
+  if ( makingPatternArray.every( currentBitString => ! /1/.test( currentBitString ) ) ) {
+    errorMessages += "\n・「生」セルがありません。";
+  }
+  // =====================================================
+
+  // エラーが存在したか判定
+  if ( ! errorMessages ) {
     // 「変更を保存」ボタンの復活
     $(".makings__edit--submit").css({ "display": "inline-block"});
   }else {
-    // パターンとして不適切な場合
-    if ( Number.isInteger( easyValidation ) ) { // easyValidation = 0
-      // 最長のビット列の長さが0の場合 => セルが存在しない場合
-      alert("セルがありません。");
-    }else { // easyValidation = false
-      // パターンの幅が不揃いの場合
-      alert("パターンの幅が不揃いです。");
-    }
+    // エラー検出とエラー内容の通知
+    alert( `異常検出${ errorMessages }` );
   }
 }
