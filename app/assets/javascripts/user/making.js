@@ -18,46 +18,59 @@ $(document).on( 'keypress', '.makings__edit--textarea', function(e) {
   }
 }).on('keyup', '.makings__edit--textarea', function() {
   // エミュレーション画面をプレビュー画面へ切替
-  removeInterfaceAndReplacePreviewWindow();
+  changePreviewMode();
   // テキストエリアの整形とパターン表示への反映
   normalizationMakingPattern();
 });
 
 
 // ボタン除去とプレビュー表示への切替メソッド（パターンに変更があった場合の処理）
-function removeInterfaceAndReplacePreviewWindow() {
+function changePreviewMode(  ) {
   // 「変更を保存」ボタンを非表示にする（元々の設定に戻す）
-  makingPatternSubmitButtonDisplay( false );
-  // 操作ボタンの削除（編集中のパターンはエミュレートできないため）
-  $(".patterns__show--lifeGameInterface").text('');
+  displayInterfaceAndRemoveSubmit( false );
   // 世代情報を「プレビューを表示中」に切替え
   $(".patterns__show--lifeGameInfo").text( "プレビューを表示中" );
-  // 編集内容に合わせてリアルタイムにパターンへ反映させる
-  $(".patterns__show--lifeGameDisplay").css({ "text-align": "left" });
   // アラート表示を全部消す
   callMessageWindow();
 }
 
-// 「変更を保存」ボタン表示切り替えメソッド
-function makingPatternSubmitButtonDisplay( bool ) {
-  // trueなら表示
-  $("#makings__edit--submit").css({ "display":
-  bool && "inline-block" || ""
-});
+
+// 「変更を保存」ボタン、操作ボタン、パターン表示位置切り替えメソッド
+function displayInterfaceAndRemoveSubmit( displaying = false, onlySubmitButtonsCange = false ) {
+  // 「変更を保存」ボタン
+  $("#makings__edit--submit").css({ "display": displaying && "inline-block" || "" });
+  // 「変更を保存」ボタン以外のボタン表示も切り替えるか
+  if ( ! onlySubmitButtonsCange ) {
+    // 各操作ボタン
+    $(".patterns__show--lifeGameInterface").css({ "display": ! displaying && "none" || "" });
+    // パターン表示を左寄設定
+    $(".patterns__show--lifeGameDisplay").css({ "text-align": ! displaying && "left" || "" });
+  }
+  return false;
 }
 
 
 // ヘッダー直下のアラートを操作するメソッド
-function callMessageWindow( kind = "", messages = "" ) {
+function callMessageWindow( kind = "", messages = false ) {
   // 表示されている全てのアラートを非表示にする（元々の設定に戻す）
   $(".application__alert--common").css({ "display": "" });
   // 第１引数にアラートの種類が指定されていればその種類のアラートを表示する
-  if ( !! kind ) {
-    let selectDivAlert = $(`.application__alert--${ kind }`).css({ "display": "block" });
-    // さらに、メッセージがあれば置換する
-    if ( !! messages ) { selectDivAlert.children("p").html( messages ); }
+  let selectDivAlert = $(`.application__alert--${ kind }`).css({ "display": "block" });
+  // さらに、メッセージがあれば置換する
+  switch ( toString.call( messages ) ) {
+    // 文字列or数値の場合
+    case "[object String]": case "[object Number]":
+    selectDivAlert.children("ul").html( `<li>${ messages }</li>` );
+    break;
+
+    // 配列で渡された場合
+    case "[object Array]":
+    selectDivAlert.children("ul").html( `<li>${ messages .join( "</li><li>" )}</li>` );
+    break;
   }
 }
+
+
 
 
 // 「テキストエリアのテキスト置換」と「そのテキストのプレビュー画面への反映」メソッド
@@ -107,7 +120,7 @@ function autoComplement( side ) {
     }
   });
   // エミュレーション画面をプレビュー画面へ切替
-  removeInterfaceAndReplacePreviewWindow();
+  changePreviewMode();
   // テキストエリアの整形とパターン表示への反映
   normalizationMakingPattern( autoComplementMakingPatternArray );
 }
@@ -119,31 +132,33 @@ function verificationMakingPattern() {
   let [ makingPatternArray, maxBitLength ] = getMakingPatternTextareaInfo( false );
 
   // ===バリデーション処理===================================
-  let errorMessages = "";
+  let errorMessages = new Array;
   // (1) 最長のビット列の長さが1以上か
   if ( ! maxBitLength ) {
-    errorMessages += "・セルがありません。<br>";
+    errorMessages.push("セルがありません。");
   }
   // (2) 各ビット列の長さが等しいか
   if ( ! makingPatternArray.every( currentBitString => currentBitString.length == maxBitLength ) ) {
-    errorMessages += "・パターンが不揃いです。<br>";
+    errorMessages.push("パターンが不揃いです。");
   }
   // (3) "0"または"1"以外の文字が含まれていないか
   if ( ! makingPatternArray.every( currentBitString => ! /[^01]/.test( currentBitString ) ) ) {
-    errorMessages += "・不適切な文字が混入してます。<br>";
+    errorMessages.push("不適切な文字が混入してます。");
   }
-  // (4) 「生」セルは存在するか
-  if ( makingPatternArray.every( currentBitString => ! /1/.test( currentBitString ) ) ) {
-    errorMessages += "・「生」セルがありません。<br>";
+  // (4) 「生」セルは存在するか（最初のテストが不通過なら実行しない）
+  if ( !! maxBitLength && makingPatternArray.every( currentBitString => ! /1/.test( currentBitString ) ) ) {
+    errorMessages.push("「生」セルがありません。");
   }
   // =====================================================
-
+console.log(errorMessages);
   // エラーが存在したか判定
-  if ( ! errorMessages ) {
-    // 「変更を保存」ボタンの復活処理
-    makingPatternSubmitButtonDisplay( true )
+  if ( ! errorMessages.length ) {
     // サクセスメッセージの表示
     callMessageWindow( "success", "保存可能なパターンです。" );
+    // 「変更を保存」ボタンの復活処理
+    displayInterfaceAndRemoveSubmit( true );
+    // 検証を通過したパターンの反映
+    initializeLifeGame( makingPatternArray );
     return true;
   }else {
     // エラー検出とエラー内容の表示
@@ -152,11 +167,23 @@ function verificationMakingPattern() {
   return false;
 }
 
+
 // パターンアップデート前のバリデーションメソッド
 $(function(){
-  $("#makings__edit--submit").on( "click", function() {
-    // バリデーション処理の結果によって送信・中止を決定
-    // return verificationMakingPattern();
-    return false;
+  // ここまだ改善必要Making#edit以外も反応するはず
+  // ここまだ改善必要Making#edit以外も反応するはず
+  // ここまだ改善必要Making#edit以外も反応するはず
+  // ここまだ改善必要Making#edit以外も反応するはず
+  // ここまだ改善必要Making#edit以外も反応するはず
+  // ここまだ改善必要Making#edit以外も反応するはず
+  // ここまだ改善必要Making#edit以外も反応するはず
+  // ここまだ改善必要Making#edit以外も反応するはず
+  // ここまだ改善必要Making#edit以外も反応するはず
+  // ここまだ改善必要Making#edit以外も反応するはず
+  // ここまだ改善必要Making#edit以外も反応するはず
+  // ここまだ改善必要Making#edit以外も反応するはず
+  $("form").submit( function() {
+    // 検証に使用するメソッドの返り値で決定
+    return verificationMakingPattern();
   });
 });

@@ -3,16 +3,12 @@
 callMessageWindow( "danger", "<%= @convertion_error_message %>" );
 <% elsif @making.errors.any? then %>
 // バリデーションエラーメッセージの表示
-callMessageWindow( "danger", "<%= @making.errors.full_messages.join( '\n' ) %>" );
+callMessageWindow( "danger", "<%= @making.errors.full_messages %>" );
 <% else %>
+// 更新後のパターン反映
+initializeLifeGame( "<%= @update_making_pattern.join( ?, ) %>".split(',') );
 // 作成中パターンのデータ更新成功の通知
 callMessageWindow( "success", "更新に成功しました。" );
-// 画面表示への反映
-initializeLifeGame( "<%= @update_making_pattern.join( ?, ) %>".split(',') );
 // インターフェース（ボタン類）の復活
-$(".patterns__show--lifeGameInterface").html( "<%= escape_javascript( render 'patterns/interface' ) %>" );
-// 更新したパターンを画面中央に戻す
-$(".patterns__show--lifeGameDisplay").css({ "text-align": "" });
+displayInterfaceAndRemoveSubmit( false, true );
 <% end %>
-// 「変更を保存」ボタンを非表示にする（元々の設定に戻す）
-makingPatternSubmitButtonDisplay( false )

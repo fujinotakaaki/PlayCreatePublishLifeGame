@@ -4,7 +4,7 @@
   <h3>
     パターン編集エリア
     <%= render 'makings/edit_helper' %>
-    <!--「変更を保存」ボタンはデフォルトがdisplay: none;-->
+    <!--「変更を保存」ボタンはdisplay: none;がデフォルト設定-->
     <%= f.submit '変更を保存', class: "btn btn-success", id: "makings__edit--submit" %>
   </h3>
   <%= f.hidden_field :id, value: @making.id %>

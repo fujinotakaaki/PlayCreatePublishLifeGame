@@ -16,6 +16,9 @@
       resize: vertical;
       width: 100%;
     }
+    &--body {
+      word-wrap: break-word;
+    }
   }
 }
 
