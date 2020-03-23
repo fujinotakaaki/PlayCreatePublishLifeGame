@@ -65,27 +65,52 @@
   <%= render 'patterns/emulation' %>
 </div>
 
-<script type="text/javascript">
+<script>
   $( function() {
-    // アップロードするファイルを選択
+    // 画像アップロード時にサムネイルを表示するメソッド
     $("#pattern_image").change( function() {
-      var upLoadFile = $(this).prop("files")[0];
-
-      // 画像以外は処理を停止
-      if (! upLoadFile.type.match("image.*")) {
-        // クリア
-        $(this).val("");
-        return;
+      // ファイル情報取得
+      let upLoadFile = $(this).prop("files")[0];
+      // 投稿済みの画像があった場合は除く
+      $(".patterns__new--img").remove();
+      // 画像でない場合はそのファイルを削除・強制終了
+      if ( ! upLoadFile.type.match("image.*") ) {
+        $(this).val(""); // クリア
+        callMessageWindow( 'danger', '画像以外のファイルは投稿できません。' )
+        return false;
       }
-
-      // 画像表示
-      var reader = new FileReader();
+      let reader = new FileReader();
       reader.onload = function() {
+        // imgタグに必要な情報を追加
         var img_src = $("<img>").attr( "src", reader.result ).attr( "class", "patterns__new--img" );
+        // imgタグの挿入
         $("#pattern_image").after( img_src );
       }
-      $(".patterns__new--img").remove();
+      // 画像表示
       reader.readAsDataURL( upLoadFile );
+    });
+
+    // 表示形式のプルダウンリストの値が変化した際に発動するメソッド
+    $("#pattern_display_format_id").change( function( info ) {
+      // 選択されたDisplayFormatのIDを取得
+      let display_format_id = $(this).val();
+      // IDからDisplayFormatのデータを取得
+      $.ajax({
+        url: `/display_formats/${ display_format_id }`,
+        type: 'get',
+        dataType : 'json'
+
+      }).done( function(data){
+        // 成功した場合
+        console.log('通信成功');
+        //セルの状態表示反映（lifegame/environments.js参照）
+        initializeLifeGame( false, false, data );
+
+      }).fail( function(data) {
+        // 失敗した場合
+        console.log('通信失敗');
+      });
+      return false;
     });
   });
 </script>

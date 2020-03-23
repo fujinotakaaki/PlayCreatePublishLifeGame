@@ -8,37 +8,51 @@ var intervalProcessingID;
 
 
 // ライフゲーム変数の初期化メソッド（patterns/emulation.html.erb呼出時orリフレッシュボタンで発火）
-// makingPatternArrayはパターンを作成し、画面に反映させる際に使用される
-function initializeLifeGame( makingPatternArray = false, refreshOnly = false ) {
+// applyMakingPatternArrayはパターンを作成し、画面に反映させる際に使用される
+function initializeLifeGame( applyMakingPatternArray = false, refreshOnly = false, changeDisplayFormatOnly = false ) {
   // 繰り返し処理実行中の場合は強制終了させる
   if ( !! intervalProcessingID ) { stopProcess(); }
   // 世代数カウント初期化
   generationCount = 0;
-  // options変数の生成（ライフゲームの表示形式に関する設定）
+
+  // options変数の生作成（セルの状態表示に関する設定）
   let options;
   // 表示形式情報があればoptions変数に設定情報を格納
-  if ( !! gon.displayFormat ) {
-    options = {
+  if ( !! changeDisplayFormatOnly || !! gon.displayFormat ) {
+    options = changeDisplayFormatOnly.cellConditions
+    || {
       // 「生」セルの表示
-      alive: gon.displayFormat.alive,
+      alive:     gon.displayFormat.alive,
       // 「死」セルの表示
-      dead: gon.displayFormat.dead,
+      dead:    gon.displayFormat.dead,
       // 平坦トーラス面として扱うか
       isTorus: gon.isTorus
     };
-    // セルの表示情報を画面に適用
-    applyDisplayFormat();
+    // セルのcssの設定情報を画面に適用
+    applyDisplayFormat( changeDisplayFormatOnly.cssOptions
+      || {
+      fontColor:              gon.displayFormat.font_color,
+      backgroundColor: gon.displayFormat.background_color,
+      lineHeightRate:     gon.displayFormat.line_height_rate
+    });
   }
+
+  // セルの表示状態変更処理
+  if ( !! changeDisplayFormatOnly ) {
+    patternData.changeCellConditions( options );
+  }
+
   // 初期化処理
   if ( refreshOnly ) {
     // 定義済み盤面の初期化
     patternData.patternRefresh;
   }else {
     // 新規盤面の設定
-    patternData = new LifeGame( makingPatternArray || gon.pattern, options );
+    patternData = new LifeGame( applyMakingPatternArray || gon.pattern, options );
   }
   // 盤面の表示
   showCurrentGeneration();
+  console.log('完了');
 }
 
 
@@ -89,12 +103,12 @@ function buttonsFreezeOrRelease( bool ) {
 }
 
 
-// セル表示状態をCSSを通して適用
-function applyDisplayFormat() {
+// ライフゲーム画面のCSS設定を変更するメソッド
+function applyDisplayFormat( cssOptions = { fontColor: "limegreen", backgroundColor: "black", lineHeightRate: 60 } ) {
   // jQueryによって適用
   $('.patterns__show--lifeGameDisplay').css({
-    'color': `${ gon.displayFormat.font_color }`,
-    'background-color': `${ gon.displayFormat.background_color }`,
-    'line-height': `${ gon.displayFormat.line_height_rate / 100 }`
+    'color':                     `${ cssOptions.fontColor }`,
+    'background-color': `${ cssOptions.backgroundColor }`,
+    'line-height':            `${ Number( cssOptions.lineHeightRate ) / 100 }`
   });
 }

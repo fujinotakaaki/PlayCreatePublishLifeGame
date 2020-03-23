@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     resource :favorite, only: [ :create, :destroy ]
   end
   # 表示形式のルーティング
-  resources :display_formats, except: [ :show ]
+  resources :display_formats
   # パターン作成のルーティング
   resource :making, only: [ :edit, :update, :destroy ]
   # ジャンルのルーティング

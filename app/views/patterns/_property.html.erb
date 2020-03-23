@@ -19,7 +19,7 @@
       <% if /show/.match?( action_name ) && !! current_user then %>
       <!--ログイン中のユーザの場合-->
       <!--お気に入り登録・削除の表示-->
-      <% if !! Favorite.find_by( user_id: current_user.id, pattern_id: pattern.id ) then %>
+      <% if pattern.favoreted?( current_user ) then %>
       <!--登録済の場合-->
       <%= render 'favorites/destroy', pattern_id: pattern.id %>
       <% else %>

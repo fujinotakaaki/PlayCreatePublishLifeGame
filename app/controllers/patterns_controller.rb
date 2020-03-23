@@ -30,7 +30,7 @@ class PatternsController < ApplicationController
 
   def index
     # ページングの設定はconfig/initializers/kaminari_config.rb
-    if  !!params[ :category_id ] then
+    if  !! params[ :category_id ] then
       # カテゴリー別表示をする場合
       @patterns = Pattern.where( category_id: params[ :category_id ] ).page( params[ :page ] ).reverse_order
     else
@@ -46,9 +46,9 @@ class PatternsController < ApplicationController
   def show
     @pattern = Pattern.find( params[ :id ] )
     # このパターンに対していちばん最近投稿されたコメントをピックアップ
-    @latest_comment = PostComment.order(created_at: :desc).find_by( pattern_id: params[ :id ] )
-    # いちばん最近投稿されたカテゴリが同じパターンをピックアップ（自分がそうだったら２番目）
-    @latest_same_category_pattern_sample = Pattern.where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id ).last
+    @latest_comments = PostComment.order(created_at: :desc).where( pattern_id: params[ :id ] ).limit(5)
+    # 最近投稿されたカテゴリが同じパターン2件をピックアップ（自分を除く）
+    @sampling_patterns = Pattern.order(created_at: :desc).where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id ).limit(2)
     # パターンデータを、jsで扱えるようにデータを格納
     gon.push(
       # パターンを１次元配列に変換したものを格納
@@ -70,8 +70,12 @@ class PatternsController < ApplicationController
 
   private
   def create_pattern_params
-    params.require( :pattern ).permit( :name, :introduction, :image, :margin_top, :margin_bottom, :margin_left, :margin_right,
-      pattern_rows_attributes: [:binary_number] )
+    params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id, :margin_top,
+      :margin_bottom, :margin_left, :margin_right, :is_torus, pattern_rows_attributes: [:binary_number] )
+  end
+
+  def update_pattern_params
+    params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id, :is_torus, :is_secret )
   end
 
   def baria_user

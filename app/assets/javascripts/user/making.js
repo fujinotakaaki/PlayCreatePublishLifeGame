@@ -1,3 +1,5 @@
+// callMessageWindow()メソッドはapplication.js参照
+
 // "0", "1", "Enter"以外の入力を阻害するメソッド
 $(document).on( 'keypress', '.makings__edit--textarea', function(e) {
   // 押下したキーの種類で処理分岐
@@ -51,29 +53,6 @@ function displayInterface( displaying = false, onlySubmitButtonsCange = false ) 
   }
   return false;
 }
-
-
-// ヘッダー直下のアラートを操作するメソッド
-function callMessageWindow( kind = "", messages = false ) {
-  // 表示されている全てのアラートを非表示にする（元々の設定に戻す）
-  $(".application__alert--common").css({ "display": "" });
-  // 第１引数にアラートの種類が指定されていればその種類のアラートを表示する
-  let selectDivAlert = $(`.application__alert--${ kind }`).css({ "display": "block" });
-  // さらに、メッセージがあれば置換する
-  switch ( toString.call( messages ) ) {
-    // 文字列or数値の場合
-    case "[object String]": case "[object Number]":
-    selectDivAlert.children("ul").html( `<li>${ messages }</li>` );
-    break;
-
-    // 配列で渡された場合
-    case "[object Array]":
-    selectDivAlert.children("ul").html( `<li>${ messages .join( "</li><li>" )}</li>` );
-    break;
-  }
-}
-
-
 
 
 // 「テキストエリアのテキスト置換」と「そのテキストのプレビュー画面への反映」メソッド

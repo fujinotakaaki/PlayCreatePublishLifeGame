@@ -12,10 +12,22 @@ class LifeGame {
     this.initialPattern = pattern;
     // 盤面の定義域取得
     [ this.height, this.width ] = [ pattern.length, pattern[0].length ];
-    // セル状態の表示を定義
+    // セルの表示を定義
     [ this.alive, this.dead ] = [ options.alive, options.dead ];
     // 平坦トーラス面として扱うかのフラグ設定
     this.isTorus = options.isTorus;
+  }
+
+  // 盤面のHTMLテキストへの出力メソッド
+  get getPatternText() {
+    // ビット列を表示形式に変換して返す（ 不具合①：this.alive = '0'だと正しく変換できない）
+    return this.pattern.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
+  }
+
+  // セルの表示定義変更メソッド
+  changeCellConditions( options = { alive: '■', dead: '□' }  ) {
+    [ this.alive, this.dead ] = [ options.alive, options.dead ];
+    return false;
   }
 
   // 世代更新を行っていない初期状態に戻すメソッド
@@ -23,12 +35,6 @@ class LifeGame {
     // 初期世代の配置に置き換える（浅いコピーだが、実装上不具合は見られない2020.03.21）
     this.pattern = this.initialPattern;
     return false;
-  }
-
-  // 盤面のHTMLテキストへの出力メソッド
-  get getPatternText() {
-    // ビット列を表示形式に変換して返す（ 不具合①：this.alive = '0'だと正しく変換できない）
-    return this.pattern.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
   }
 
   // 世代交代の処理メソッド

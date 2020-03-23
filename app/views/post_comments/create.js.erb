@@ -2,7 +2,6 @@
 <% if @comment.errors.any? then %>
 // バリデーション内容をアラートで表示
 alert( "<%= @comment.errors.full_messages.join('\n') %>" );
-<% end %>
 <% else %>
 // 投稿内容をindexのトップに反映
 $( ".comments__index--headline" ).after( "<%= escape_javascript( render 'post_comments/article', comment: @comment ) %>" );

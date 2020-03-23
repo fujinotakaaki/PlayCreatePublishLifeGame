@@ -12,6 +12,12 @@ class Pattern < ApplicationRecord
   has_many  :pattern_rows,      dependent: :destroy
   has_many  :post_comments, dependent: :destroy
   has_many  :favorites,             dependent: :destroy
+  # has_many :follower_user, through: :followed, source: :follower # 自分をフォローしている人
 
   accepts_nested_attributes_for :pattern_rows
+
+  # お気に入り登録されていればtrueを返す
+  def favoreted?( user )
+    !! Favorite.find_by( user_id: user.id, pattern_id: id )
+  end
 end

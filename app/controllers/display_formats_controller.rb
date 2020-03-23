@@ -2,6 +2,10 @@ class DisplayFormatsController < ApplicationController
   before_action :authenticate_user!, except: [ :index ]
   before_action :baria_user,                  only: [ :edit, :update, :destroy ]
 
+  def new
+    @display_format = DisplayFormat.new
+  end
+
   def create
     # 新規データ取得
     @display_format = current_user.display_formats.new( display_format_params )
@@ -15,8 +19,18 @@ class DisplayFormatsController < ApplicationController
     end
   end
 
-  def new
-    @display_format = DisplayFormat.new
+  def show
+    # 詳細データの取得
+    display_format = DisplayFormat.find( params[ :id ] )
+    # json形式に変換
+    display_format_as_json = {
+      # cssの設定
+      cssOptions:   display_format.as_json( only: [ :font_color, :background_color, :line_height_rate ] ).transform_keys{ | key | key.camelize( :lower ) },
+      # セルの表記の設定
+      cellConditions: display_format.as_json( only: [ :alive, :dead ] ).transform_keys{ | key | key.camelize( :lower ) }.merge( { isTorus: false } )
+    }
+    # jsonデータを返す
+    render json: display_format_as_json
   end
 
   def edit

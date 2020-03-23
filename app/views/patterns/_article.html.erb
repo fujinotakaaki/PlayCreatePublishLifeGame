@@ -1,6 +1,6 @@
 <!--パターン情報の列挙用部分テンプレート-->
 
-<div class="clearfix patterns__article">
+<div class="clearfix patterns__article<%= %( patterns__article--anchorInactive) if character_limit > 512 %>">
   <!--パターンアピール画像-->
   <div class="patterns__article--divLeft" >
     <%= link_to pattern_path( pattern ) do %>

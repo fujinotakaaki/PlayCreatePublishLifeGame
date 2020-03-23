@@ -51,9 +51,19 @@
     h3 {
       font-weight: bold;
     }
+    &:hover {
+      background-color: white;
+    }
+    &--anchorInactive {
+      border: none;
+      pointer-events: none;
+    }
+    &--nothing {
+      font-size: 13px;
+    }
     &--img {
       max-height: 150px;
-      margin: 10px;
+      padding: 10px;
     }
     &--submitUser {
       color: #999;
