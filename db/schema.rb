@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_02_160054) do
+ActiveRecord::Schema.define(version: 2020_03_23_110715) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -50,13 +50,6 @@ ActiveRecord::Schema.define(version: 2020_03_02_160054) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "making_rows", force: :cascade do |t|
-    t.integer "making_id", null: false
-    t.integer "binary_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "makings", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "margin_top", default: 0
@@ -65,13 +58,7 @@ ActiveRecord::Schema.define(version: 2020_03_02_160054) do
     t.integer "margin_right", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "pattern_rows", force: :cascade do |t|
-    t.integer "pattern_id", null: false
-    t.integer "binary_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.text "normalized_rows_sequence"
   end
 
   create_table "patterns", force: :cascade do |t|
@@ -89,6 +76,7 @@ ActiveRecord::Schema.define(version: 2020_03_02_160054) do
     t.boolean "is_secret", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "normalized_rows_sequence"
   end
 
   create_table "post_comments", force: :cascade do |t|
