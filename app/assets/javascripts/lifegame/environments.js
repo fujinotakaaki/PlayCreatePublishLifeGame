@@ -52,7 +52,6 @@ function initializeLifeGame( applyMakingPatternArray = false, refreshOnly = fals
   }
   // 盤面の表示
   showCurrentGeneration();
-  console.log('完了');
 }
 
 
@@ -95,7 +94,7 @@ function showCurrentGeneration() {
 
 
 // ボタン押下可否の切り替え
-function buttonsFreezeOrRelease( bool ) {
+function buttonsFreezeOrRelease( bool = true ) {
   // 画面上の全てのボタンの押下状態の変更
   $("[type = button]").prop("disabled", bool );
   // 「一時停止」ボタンのみ、状態を逆転
@@ -107,8 +106,11 @@ function buttonsFreezeOrRelease( bool ) {
 function applyDisplayFormat( cssOptions = { fontColor: "limegreen", backgroundColor: "black", lineHeightRate: 60 } ) {
   // jQueryによって適用
   $('.patterns__show--lifeGameDisplay').css({
+    // 文字色の変更
     'color':                     `${ cssOptions.fontColor }`,
+    // 背景色の変更
     'background-color': `${ cssOptions.backgroundColor }`,
+    // 垂直方向の文字間隔の変更
     'line-height':            `${ Number( cssOptions.lineHeightRate ) / 100 }`
   });
 }

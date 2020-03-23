@@ -1,4 +1,4 @@
-// callMessageWindow()メソッドはapplication.js参照
+// Makingコントローラーで使用されるメソッド類
 
 // "0", "1", "Enter"以外の入力を阻害するメソッド
 $(document).on( 'keypress', '.makings__edit--textarea', function(e) {
@@ -27,12 +27,12 @@ $(document).on( 'keypress', '.makings__edit--textarea', function(e) {
 
 
 // ボタン除去とプレビュー表示への切替メソッド（パターンに変更があった場合の処理）
-function changePreviewMode(  ) {
+function changePreviewMode() {
   // 「変更を保存」ボタンを非表示にする（元々の設定に戻す）
   displayInterface( false );
   // 世代情報を「プレビューを表示中」に切替え
   $(".patterns__show--lifeGameInfo").text( "プレビューを表示中" );
-  // アラート表示を全部消す
+  // アラート表示を全部消す（user/application.js）
   callMessageWindow();
 }
 
@@ -135,35 +135,19 @@ function verificationMakingPattern() {
 
   // エラーが存在したか判定
   if ( ! errorMessages.length ) {
-    // サクセスメッセージの表示
+    // サクセスメッセージの表示（user/application.js）
     callMessageWindow( "success", "保存可能なパターンです。" );
     // 「変更を保存」ボタンの復活処理
     displayInterface( true );
-    // 検証を通過したパターンの反映
+    // 検証を通過したパターンの反映（lifegame/environments.js）
     initializeLifeGame( makingPatternArray );
     return true;
   }else {
-    // エラー検出とエラー内容の表示
+    // エラー検出とエラー内容の表示（user/application.js）
     callMessageWindow( "warning", errorMessages );
   }
   return false;
 }
-
-
-// パターンアップデート前のバリデーションメソッド
-$(function(){
-  $("form").submit( function() {
-    // アクション名を取得
-    let actionName = $(this).attr('action');
-    // メソッド名を取得
-    let methodName = $(this).attr('method');
-    // Makings#updateである場合
-    if ( /making/.test(actionName) && /post/i.test( methodName ) ) {
-      // 提出前のバリデーション実行 => falseなら送信中止
-      return verificationMakingPattern();
-    }
-  });
-});
 
 
 // 新規投稿画面遷移前の処理メソッド

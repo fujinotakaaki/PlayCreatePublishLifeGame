@@ -22,12 +22,12 @@ class DisplayFormatsController < ApplicationController
   def show
     # 詳細データの取得
     display_format = DisplayFormat.find( params[ :id ] )
-    # json形式に変換
+    # jsonデータ送信用に形式変換
     display_format_as_json = {
       # cssの設定
       cssOptions:   display_format.as_json( only: [ :font_color, :background_color, :line_height_rate ] ).transform_keys{ | key | key.camelize( :lower ) },
-      # セルの表記の設定
-      cellConditions: display_format.as_json( only: [ :alive, :dead ] ).transform_keys{ | key | key.camelize( :lower ) }.merge( { isTorus: false } )
+      # セルの表示定義設定
+      cellConditions: display_format.as_json( only: [ :alive, :dead ] ).transform_keys{ | key | key.camelize( :lower ) }
     }
     # jsonデータを返す
     render json: display_format_as_json

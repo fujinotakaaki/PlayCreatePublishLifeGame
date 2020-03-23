@@ -30,3 +30,20 @@
   このパターンを投稿する（パターン情報入力ページへ）
 </button>
 </div>
+
+<script type="text/javascript">
+  // パターンアップデート前のバリデーションメソッド
+  $(function(){
+    $("form").submit( function() {
+      // アクション名を取得
+      let actionName = $(this).attr('action');
+      // メソッド名を取得
+      let methodName = $(this).attr('method');
+      // Makings#updateである場合
+      if ( /making/.test(actionName) && /post/i.test( methodName ) ) {
+        // 提出前のバリデーション実行 => falseなら送信中止
+        return verificationMakingPattern();
+      }
+    });
+  });
+</script>
