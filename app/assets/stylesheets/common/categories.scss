@@ -18,8 +18,19 @@
       margin: 0 15px;
       padding: 5px;
       list-style: none;
+      &:hover {
+        color: yellow;
+        text-decoration: none;
+        a {
+          color: inherit;
+        }
+      }
       a {
         color: limegreen;
+        &:hover {
+          color: yellow;
+          text-decoration: none;
+        }
       }
     }
   }

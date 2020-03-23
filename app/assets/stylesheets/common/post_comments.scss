@@ -8,6 +8,9 @@
   }
   &__article {
     word-wrap: break-word;
+    &--nothing {
+      font-size: 13px;
+    }
   }
   &__form {
     width: 100%;

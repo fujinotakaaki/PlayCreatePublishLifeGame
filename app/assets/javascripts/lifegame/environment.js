@@ -5,6 +5,8 @@ var generationCount;
 var patternData;
 // 繰り返し処理の変数
 var intervalProcessingID;
+
+
 // ライフゲーム変数の初期化メソッド（patterns/emulation.html.erb呼出時orリフレッシュボタンで発火）
 // makingPatternArrayはパターンを作成し、画面に反映させる際に使用される
 function initializeLifeGame( makingPatternArray = false, refreshOnly = false ) {
@@ -28,7 +30,7 @@ function initializeLifeGame( makingPatternArray = false, refreshOnly = false ) {
     applyDisplayFormat();
   }
   // 初期化処理
-  if ( refreshOnly && !! patternData ) {
+  if ( refreshOnly ) {
     // 定義済み盤面の初期化
     patternData.patternRefresh;
   }else {
@@ -41,9 +43,9 @@ function initializeLifeGame( makingPatternArray = false, refreshOnly = false ) {
 
 
 // ライフゲーム開始処理（開始ボタン押下で発火）
-function startProcess() {
+function startProcess( intervalTime = 300 ) {
   // 繰り返し処理の開始・再開
-  intervalProcessingID = setInterval( 'upDate()', 300 );
+  intervalProcessingID = setInterval( 'upDate()', intervalTime );
   // ボタン押下可否の切り替え
   buttonsFreezeOrRelease( true );
 }
@@ -77,6 +79,7 @@ function showCurrentGeneration() {
   $('.patterns__show--lifeGameDisplay').html( patternData.getPatternText );
 }
 
+
 // ボタン押下可否の切り替え
 function buttonsFreezeOrRelease( bool ) {
   // 画面上の全てのボタンの押下状態の変更
@@ -84,6 +87,7 @@ function buttonsFreezeOrRelease( bool ) {
   // 「一時停止」ボタンのみ、状態を逆転
   $(".patterns__show--lifeGameStop").prop("disabled", ! bool );
 }
+
 
 // セル表示状態をCSSを通して適用
 function applyDisplayFormat() {

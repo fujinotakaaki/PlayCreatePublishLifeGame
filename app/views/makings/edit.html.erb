@@ -1,19 +1,32 @@
+<!--パターン作成ページ-->
 
+<!--ページ上部-->
 <div class="makings__edit--top">
-  <%= form_with url: making_path, method: :patch do | f | %>
+  <%= form_with( url: making_path, method: :patch ) do | f | %>
+  <!--ページ上部のタイトル-->
   <h3>
     パターン編集エリア
     <%= render 'makings/edit_helper' %>
     <!--「変更を保存」ボタンはdisplay: none;がデフォルト設定-->
-    <%= f.submit '変更を保存', class: "btn btn-success", id: "makings__edit--submit" %>
+    <%= f.submit '変更を保存', id: "makings__edit--update", class: "btn btn-success" %>
   </h3>
-  <%= f.hidden_field :id, value: @making.id %>
-  <%= f.text_area :making_text, value: @making_pattern.join( "\n" ), class: "makings__edit--textarea", rows: @making_pattern.size, type: 'number' %>
+  <!--作成中パターンのID-->
+  <%= f.hidden_field :id, value: @making.id, readonly: true %>
+  <!--作成中パターンの編集エリア-->
+  <%= f.text_area :making_text, value: @making_bit_strings_array.join( "\n" ), class: "makings__edit--textarea", rows: @making_bit_strings_array.size, type: 'number' %>
   <% end %>
 </div>
 
+<!--ページ下部-->
 <div class="makings__edit--bottom">
+  <!--ページ上部のタイトル-->
   <h3>作成中のパターン</h3>
+  <!--ライフゲームエミュレート画面-->
   <%= render 'patterns/emulation' %>
-  <%= link_to '投稿(工事中)', ?#, class: "btn btn-default" %>
+
+<!--パターン新規作成画面への移動アクション-->
+<button type="button" name="movePatternsNew" id="patterns__new" class="btn btn-default" onclick="movePatternsNew('<%= new_pattern_path %>');">
+  <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+  このパターンを投稿する
+</button>
 </div>

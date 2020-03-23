@@ -1,3 +1,5 @@
+<!--パターンに対するレスポンス情報用テンプレート-->
+
 <nav class=<%= "patterns__property--#{action_name}" %>>
   <ul>
     <li>
@@ -13,15 +15,22 @@
     </li>
     <li>
       <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
-      <% if /show/.match?( action_name ) && !!current_user then %>
-      <% if !Favorite.find_by( user_id: current_user.id, pattern_id: pattern.id ) then %>
-      <%= render 'favorites/create', pattern_id: pattern.id %>
-      <% else %>
+      <!--お気に入り項目-->
+      <% if /show/.match?( action_name ) && !! current_user then %>
+      <!--ログイン中のユーザの場合-->
+      <!--お気に入り登録・削除の表示-->
+      <% if !! Favorite.find_by( user_id: current_user.id, pattern_id: pattern.id ) then %>
+      <!--登録済の場合-->
       <%= render 'favorites/destroy', pattern_id: pattern.id %>
+      <% else %>
+      <!--未登録の場合-->
+      <%= render 'favorites/create', pattern_id: pattern.id %>
       <% end %>
       <% else %>
+      <!--非ログインユーザの場合-->
       お気に入り数
       <% end %>
+      <!--お気に入り登録ユーザ数-->
       <%= ": #{ pattern.favorites.size }" %>
     </li>
   </ul>

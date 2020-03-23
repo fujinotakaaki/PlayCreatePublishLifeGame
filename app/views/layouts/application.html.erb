@@ -10,25 +10,33 @@
 </head>
 
 <body>
+  <!--ヘッダーセクション-->
   <header>
     <h1>Play!Create!Publish! LifeGame</h1>
     <%= render 'layouts/headerMenue' %>
   </header>
 
+  <!--アラートセクション-->
   <div class="container">
     <div class="row">
       <%= render 'layouts/alert' %>
     </div>
+
+    <!--メインセクション-->
     <div class="row">
+      <!--メインセクション（左側：カテゴリ一覧）-->
       <div class="col-md-2 application__layouts--leftSection">
         <%= render 'categories/index' %>
       </div>
+      
+      <!--メインセクション（右側）-->
       <div class="col-md-10 application__layouts--rightSection">
         <%= yield %>
       </div>
     </div>
   </div>
 
+  <!--フッターセクション-->
   <footer>
   </footer>
 </body>

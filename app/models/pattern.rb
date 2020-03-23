@@ -12,4 +12,6 @@ class Pattern < ApplicationRecord
   has_many  :pattern_rows,      dependent: :destroy
   has_many  :post_comments, dependent: :destroy
   has_many  :favorites,             dependent: :destroy
+
+  accepts_nested_attributes_for :pattern_rows
 end

@@ -2,14 +2,16 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+#makings__edit--update {
+  display: none;
+}
+
 .makings {
   &__edit {
     &--top {
-      width: 100%;
       margin-top: 10px;
     }
     &--bottom {
-      width: 100%;
       margin-top: 10px;
     }
     &--textarea {
@@ -20,8 +22,4 @@
       word-wrap: break-word;
     }
   }
-}
-
-#makings__edit--submit {
-  display: none;
 }

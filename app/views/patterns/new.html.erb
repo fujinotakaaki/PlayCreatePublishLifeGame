@@ -1,0 +1,91 @@
+<!--作成したパターンの新規投稿ページ-->
+
+<div class="patterns__new">
+  <!--ページタイトル-->
+  <h3>投稿前パターン情報入力</h3>
+
+  <%= form_with model: @pattern, class: "form-horizontal" do | f | %>
+  <!--四方向のマージン（自動入力）-->
+  <%= f.hidden_field :margin_top, readonly: true %>
+  <%= f.hidden_field :margin_bottom, readonly: true %>
+  <%= f.hidden_field :margin_left, readonly: true %>
+  <%= f.hidden_field :margin_right, readonly: true %>
+
+  <!--パターン名（入力必須）-->
+  <div class="form-group">
+    <%= f.label :name, 'パターンの名前', class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
+  </div>
+
+  <!--カテゴリ選択（デフォルト：未分類）-->
+  <div class="form-group">
+    <%= f.label :category_id, 'カテゴリ', class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.select :category_id, Category.pluck( :name, :id ).to_h %>
+    </div>
+  </div>
+
+  <!--表示形式選択（デフォルト：Default 1）-->
+  <div class="form-group">
+    <%= f.label :display_format_id, 'セルの表示形式', class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.select :display_format_id, DisplayFormat.pluck( :name, :id ).to_h %>
+    </div>
+  </div>
+
+  <!--このパターン紹介文（入力必須）-->
+  <div class="form-group">
+    <%= f.label :introduction, 'このパターン紹介文', class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_area :introduction, rows: 3, class: "form-control" %>
+    </div>
+  </div>
+
+  <!--パターンのイメージ-->
+  <div class="form-group">
+    <%= f.label :iimage_id, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.attachment_field :image, placeholder: "アピール画像" %>
+    </div>
+  </div>
+
+
+  <!--パターンの各行の２進数表記（自動入力）-->
+  <%= f.fields_for :pattern_rows do | pattern_row | %>
+  <%= pattern_row.hidden_field :binary_number, readonly: true %>
+  <% end %>
+
+  <!--投稿ボタン-->
+  <%= f.submit "これで投稿する", class: "btn btn-primary"%>
+  <% end %>
+
+  <!--登校前パターンのプレビュー（エミュレート）画面-->
+  <%= render 'patterns/emulation' %>
+</div>
+
+<script type="text/javascript">
+  $( function() {
+    // アップロードするファイルを選択
+    $("#pattern_image").change( function() {
+      var upLoadFile = $(this).prop("files")[0];
+
+      // 画像以外は処理を停止
+      if (! upLoadFile.type.match("image.*")) {
+        // クリア
+        $(this).val("");
+        return;
+      }
+
+      // 画像表示
+      var reader = new FileReader();
+      reader.onload = function() {
+        var img_src = $("<img>").attr( "src", reader.result ).attr( "class", "patterns__new--img" );
+        $("#pattern_image").after( img_src );
+      }
+      $(".patterns__new--img").remove();
+      reader.readAsDataURL( upLoadFile );
+    });
+  });
+</script>

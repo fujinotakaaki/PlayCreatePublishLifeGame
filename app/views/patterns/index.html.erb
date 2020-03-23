@@ -1,6 +1,9 @@
+<!--パターン一覧ページ-->
 
+<!--一覧のタイトル-->
 <h2 class="patterns__index">
   <%= get_index_title( request.fullpath ) %>一覧
 </h2>
 
+<!--パターン一覧-->
 <%= render 'patterns/index', patterns: @patterns %>

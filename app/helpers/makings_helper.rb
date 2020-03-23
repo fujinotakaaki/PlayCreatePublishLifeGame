@@ -4,13 +4,13 @@ module MakingsHelper
     no_alive_cells: '「生」状態のセルがありません。'
   }
 
-  # making_textから
+  # making_pattern_textから
   # Makingの上下左右のマージン情報に、
   # MakingRowsの数値情報に、
   # 変換する
-  def convert_text_for_db_data( making_text )
+  def build_up_data_from( making_pattern_text )
     # 改行(\n)を検出してビット列に分割（改行が連続する場合、その間は無視される => 連続した改行はパターンの可視性が向上するから現状は採用）
-    rows = making_text.chomp.split # （空白でも分割されるが、現状はこれで）
+    rows = making_pattern_text.chomp.split # （空白でも分割されてしまうが、現状はこれで）
     # パターンの幅が揃っているか検証
     unless rows.map(&:length).uniq.one? then
       # 列数が一致しないため処理を中断
@@ -31,11 +31,11 @@ module MakingsHelper
       return nil, CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE[ :no_alive_cells ]
     end
     # 上下の余白を除去し、各要素を数値化
-    remove_vertical_offset_row_numbers = rows[ margin_top ... ( rows.size - margin_bottom ) ].map{ | bit_string | bit_string.to_i(2) }
+    remove_vertical_offset_binary_numbers = rows[ margin_top ... ( rows.size - margin_bottom ) ].map{ | bit_string | bit_string.to_i(2) }
     # 右側マージンの計算（各行の数値配列から、2の指数部が最小になるものの指数を取得）
-    margin_right = get_minimum_place_base2( remove_vertical_offset_row_numbers.select(&:positive?) )
+    margin_right = get_minimum_place_base2( remove_vertical_offset_binary_numbers.select(&:positive?) )
     # 左側マージンの計算（0でない最大値について、パターンの幅から最大値の桁数との差をとる）
-    margin_left = pattern_width - remove_vertical_offset_row_numbers.max.bit_length
+    margin_left = pattern_width - remove_vertical_offset_binary_numbers.max.bit_length
     # Makingモデルに合わせたデータの構築
     making_params = {
       margin_top: margin_top,
@@ -43,7 +43,7 @@ module MakingsHelper
       margin_left: margin_left,
       margin_right: margin_right
     }
-    return making_params, remove_vertical_offset_row_numbers.map{ | bit_string |  bit_string >> margin_right }
+    return making_params, remove_vertical_offset_binary_numbers.map{ | binary_number |  binary_number >> margin_right }
     # Makingオブジェクトへ上下左右のマージン情報（Hash）、
     # MakingRowsオブジェクトへ数値の配列（Array）、
     # の２つを返す

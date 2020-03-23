@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   # ユーザのルーティング
   resources :members, except: [:index, :new, :create, :destroy]
   # パターンのルーティング
-  resources :patterns, except: [ :new ] do
+  resources :patterns do
     # コメント投稿のルーティング
     resource :post_comment, only: [ :create ]
     #お気に入りのルーティング

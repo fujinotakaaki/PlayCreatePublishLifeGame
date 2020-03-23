@@ -1,3 +1,37 @@
-<input type="button" value="開始" class="patterns__show--lifeGameStart" onclick="startProcess();">
-<input type="button" value="一時停止" class="patterns__show--lifeGameStop" onclick="stopProcess();">
-<input type="button" value="リフレッシュ" class="patterns__show--lifeGameRefresh"   onclick="initializeLifeGame( false, true );">
+<!--ライフゲーム操作用インターフェース-->
+
+<!--リセットアクション-->
+<button type="button" name="refresh" class="btn btn-default patterns__show--lifeGameRefresh" onclick="initializeLifeGame( false, true );">
+  <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+  リセット
+</button>
+
+<!--一時停止アクション-->
+<button type="button" name="stop" class="btn btn-default patterns__show--lifeGameStop" onclick="stopProcess();">
+  <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+  一時停止
+</button>
+
+<!--開始アクション-->
+<button type="button" name="start" class="btn btn-default patterns__show--lifeGameStart" onclick="startProcess();">
+  <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+  開始( per 0.3s )
+</button>
+
+<!--早送りアクション-->
+<button type="button" name="stop" class="btn btn-default patterns__show--lifeGameStart" onclick="startProcess( 100 );">
+  <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+  早送り( per 0.1s )
+</button>
+
+<!--手動更新アクション-->
+<button type="button" name="stop" class="btn btn-default patterns__show--lifeGameGenerationChange" onclick="upDate();">
+  <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+  １世代更新
+</button>
+
+<!--超早送りアクション-->
+<button type="button" name="stop" class="btn btn-default patterns__show--lifeGameStart" onclick="startProcess(0);">
+  <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+  超早送り( PCくんがんばってね )
+</button>

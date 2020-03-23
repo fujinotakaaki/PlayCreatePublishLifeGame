@@ -1,12 +1,18 @@
+<!--ユーザ詳細ページ-->
+
+<!--ユーザ情報-->
 <div class="clearfix">
+  <!--プロフィール画像-->
   <div class="members__show--divLeft">
     <%= attachment_image_tag @user, :profile_image, fallback: "no_image.jpg", class: "members__show--img" %>
   </div>
+  <!--名前・自己紹介文-->
   <div class="members__show--divRight">
     <%= render 'members/detail', user: @user %>
   </div>
 </div>
 
+<!--投稿パターン一覧-->
 <div class='members__show'>
   <%= render 'patterns/index', patterns: @patterns %>
 </div>

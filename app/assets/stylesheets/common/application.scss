@@ -40,11 +40,15 @@
        height: 1.5em;
      }
    }
+   &__errors {
+     &--textField {
+       border: thin solid red;
+       background-border: rgba( 100, 0, 0, 0.2 );
+       background-color: rgba( 255, 0, 0, 0.1 );
+     }
+   }
  }
 
- body {
-   background-color: #eee;
- }
 
  header {
    color: white;
@@ -76,16 +80,22 @@
          vertical-align: middle;
          &:hover {
            color: yellow;
+           font-weight: bold;
          }
        }
      }
    }
  }
 
+ body {
+   background-color: #eee !important;
+ }
+
+
  footer {
    height: 150px;
    width: 100%;
-   background-color: #000;
+   background-color: black;
    color: #fff;
    margin-top: 30px;
  }

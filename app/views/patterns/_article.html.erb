@@ -1,18 +1,27 @@
+<!--パターン情報の列挙用部分テンプレート-->
 
-<div class="clearfix patterns__article <%= "patterns__article--#{ controller_name + action_name.camelize }" %>">
+<div class="clearfix patterns__article">
+  <!--パターンアピール画像-->
   <div class="patterns__article--divLeft" >
     <%= link_to pattern_path( pattern ) do %>
     <%= attachment_image_tag pattern, :image, fallback: 'no_pattern_image.jpg', class: "center-block patterns__article--img" %>
     <% end %>
   </div>
+
+  <!--パターン情報-->
   <div class="patterns__article--divRight">
+    <!--パターン名-->
     <h3>
       <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
       <%= pattern.name %>
     </h3>
+
     <p>
+      <!--パターン紹介文-->
       <span class="patterns__article--submitUser">カテゴリー：　<%= pattern.category.name %></span><br>
       <%= pattern.introduction.truncate( character_limit ) %><br>
+
+      <!--投稿者情報（showページでは表示しない）-->
       <% if action_name != 'show' then %>
       <span class="patterns__article--submitUser">
         by <%= link_to pattern.user.name, member_path( pattern.user_id ) %>さん

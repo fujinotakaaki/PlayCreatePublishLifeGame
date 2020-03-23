@@ -1,6 +1,9 @@
+<!--パターン一覧表示用部分テンプレート-->
 
+<!--パターン一覧-->
 <% patterns.each do | pattern | %>
   <%= render 'patterns/article', pattern: pattern, character_limit: 60 %>
 <% end %>
 
+<!--ページネーション用インターフェース-->
 <%= paginate patterns, class: "paginate" %>

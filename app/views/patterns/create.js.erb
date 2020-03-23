@@ -1,0 +1,17 @@
+// データ更新後の処理
+<% if @pattern.errors.any? then %>
+// 表示中のバリデーションエラー用のclassを除去する（名前）
+$("input").removeClass("application__errors--textField")
+// 表示中のバリデーションエラー用のclassを除去する（説明文）
+$("textarea").removeClass("application__errors--textField")
+// バリデーションエラーメッセージの表示
+callMessageWindow( "warning", "<%= @pattern.errors.full_messages.join( ?, ) %>".split(',') );
+// エラー項目にエラー用のclassを追加する
+<% @pattern.errors.each do | column, message | %>
+$("#pattern_<%= column %>").addClass("application__errors--textField");
+<% end %>
+
+<% else %>
+// 作成中パターンのデータ更新成功の通知
+callMessageWindow( "success", "投稿に成功しました。" );
+<% end %>

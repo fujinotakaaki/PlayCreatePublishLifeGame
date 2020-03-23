@@ -1,14 +1,13 @@
+// 作成中パターンの変更保存後の処理
 <% if @convertion_error_message.present? then %>
 // データ変換エラーメッセージの表示
 callMessageWindow( "danger", "<%= @convertion_error_message %>" );
 <% elsif @making.errors.any? then %>
 // バリデーションエラーメッセージの表示
-callMessageWindow( "danger", "<%= @making.errors.full_messages %>" );
+callMessageWindow( "danger", "<%= @making.errors.full_messages.join( ?, ) %>".split(',') );
 <% else %>
-// 更新後のパターン反映
-initializeLifeGame( "<%= @update_making_pattern.join( ?, ) %>".split(',') );
 // 作成中パターンのデータ更新成功の通知
 callMessageWindow( "success", "更新に成功しました。" );
 // インターフェース（ボタン類）の復活
-displayInterfaceAndRemoveSubmit( false, true );
+displayInterface( false, true );
 <% end %>

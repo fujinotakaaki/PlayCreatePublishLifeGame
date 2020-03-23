@@ -1,25 +1,36 @@
+<!--ユーザ詳細情報表示用部分テンプレート-->
+
 <% if action_name == 'edit' then %>
 
+<!--編集時用テンプレート-->
 <%= form_with model: user, url: member_path( user ) do | f | %>
+<!--ユーザID-->
 <%= f.hidden_field :id, value: current_user.id %>
+<!--ユーザ名-->
 <%= f.text_field :name, value: user.name, class: "members__edit--name" %><br>
+<!--自己紹介文-->
 <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
 自己紹介文
 <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><br>
 
 <%= f.text_area :introduction, value: user.introduction, class: "members__edit--introduction" %><br>
+<!--提出ボタン-->
 <%= f.submit '完了' %>
 <% end %>
 
 <% else %>
+<!--通常表示用テンプレート-->
+<!--ユーザ名表示-->
 <h4 class="members__show--headline">
 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 <%= user.name %><br>
 </h4>
+<!--自己紹介文表示-->
 <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
 自己紹介文
 <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><br>
 <%= user.introduction.blank? ? '本文がありません' : user.introduction %><br>
+<!--編集開始ボタンの表示設定-->
 <% if user.id == current_user&.id then %>
 <input type="button" value="編集" onclick="editUserInfo(this);" class="<%= "btn btn-default members__show--#{ current_user&.id || 0 }" %>">
 <% end %>

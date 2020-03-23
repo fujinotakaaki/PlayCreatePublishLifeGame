@@ -27,7 +27,7 @@ $(document).on( 'keypress', '.makings__edit--textarea', function(e) {
 // ボタン除去とプレビュー表示への切替メソッド（パターンに変更があった場合の処理）
 function changePreviewMode(  ) {
   // 「変更を保存」ボタンを非表示にする（元々の設定に戻す）
-  displayInterfaceAndRemoveSubmit( false );
+  displayInterface( false );
   // 世代情報を「プレビューを表示中」に切替え
   $(".patterns__show--lifeGameInfo").text( "プレビューを表示中" );
   // アラート表示を全部消す
@@ -35,16 +35,19 @@ function changePreviewMode(  ) {
 }
 
 
-// 「変更を保存」ボタン、操作ボタン、パターン表示位置切り替えメソッド
-function displayInterfaceAndRemoveSubmit( displaying = false, onlySubmitButtonsCange = false ) {
+// 画面表示切替関連のメソッド
+// ライフームの操作ボタン、「変更を保存」ボタン、「パターン投稿」ボタン、プレビュー表示の切替
+function displayInterface( displaying = false, onlySubmitButtonsCange = false ) {
   // 「変更を保存」ボタン
-  $("#makings__edit--submit").css({ "display": displaying && "inline-block" || "" });
+  $("#makings__edit--update").css({ "display": displaying && "inline-block" || "" });
   // 「変更を保存」ボタン以外のボタン表示も切り替えるか
   if ( ! onlySubmitButtonsCange ) {
     // 各操作ボタン
     $(".patterns__show--lifeGameInterface").css({ "display": ! displaying && "none" || "" });
     // パターン表示を左寄設定
     $(".patterns__show--lifeGameDisplay").css({ "text-align": ! displaying && "left" || "" });
+    // パターンの「新規投稿」ボタン
+    $("#patterns__new").css({ "display": displaying && "inline-block" || "" });
   }
   return false;
 }
@@ -150,13 +153,13 @@ function verificationMakingPattern() {
     errorMessages.push("「生」セルがありません。");
   }
   // =====================================================
-console.log(errorMessages);
+
   // エラーが存在したか判定
   if ( ! errorMessages.length ) {
     // サクセスメッセージの表示
     callMessageWindow( "success", "保存可能なパターンです。" );
     // 「変更を保存」ボタンの復活処理
-    displayInterfaceAndRemoveSubmit( true );
+    displayInterface( true );
     // 検証を通過したパターンの反映
     initializeLifeGame( makingPatternArray );
     return true;
@@ -170,20 +173,26 @@ console.log(errorMessages);
 
 // パターンアップデート前のバリデーションメソッド
 $(function(){
-  // ここまだ改善必要Making#edit以外も反応するはず
-  // ここまだ改善必要Making#edit以外も反応するはず
-  // ここまだ改善必要Making#edit以外も反応するはず
-  // ここまだ改善必要Making#edit以外も反応するはず
-  // ここまだ改善必要Making#edit以外も反応するはず
-  // ここまだ改善必要Making#edit以外も反応するはず
-  // ここまだ改善必要Making#edit以外も反応するはず
-  // ここまだ改善必要Making#edit以外も反応するはず
-  // ここまだ改善必要Making#edit以外も反応するはず
-  // ここまだ改善必要Making#edit以外も反応するはず
-  // ここまだ改善必要Making#edit以外も反応するはず
-  // ここまだ改善必要Making#edit以外も反応するはず
   $("form").submit( function() {
-    // 検証に使用するメソッドの返り値で決定
-    return verificationMakingPattern();
+    // アクション名を取得
+    let actionName = $(this).attr('action');
+    // メソッド名を取得
+    let methodName = $(this).attr('method');
+    // Makings#updateである場合
+    if ( /making/.test(actionName) && /post/i.test( methodName ) ) {
+      // 提出前のバリデーション実行 => falseなら送信中止
+      return verificationMakingPattern();
+    }
   });
 });
+
+
+// 新規投稿画面遷移前の処理メソッド
+function movePatternsNew( url ) {
+  // バリデーションチェック
+  if ( verificationMakingPattern() ) {
+    // 合格なら新規投稿画面へ遷移
+    location.href = url + '?making_pattern=' + $(".makings__edit--textarea").val().replace( /\n/g, "," );
+  }
+  return false;
+}

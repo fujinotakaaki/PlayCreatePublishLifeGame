@@ -2,8 +2,16 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+#patterns__new {
+  display: none;
+}
+
 .patterns {
-  &__index {
+  &__new {
+    &--img {
+      max-height: 150px;
+      max-width: 150px;
+    }
   }
   &__show {
     width: 100%;
@@ -32,6 +40,9 @@
       background-color: black;
       line-height: 0.6em;
     }
+    &--lifeGameInterface {
+      margin: 20px 0;
+    }
   }
   &__article{
     margin-bottom: 20px;
@@ -43,10 +54,6 @@
     &--img {
       max-height: 150px;
       margin: 10px;
-    }
-    &--patternsShow {
-      border: none;
-      pointer-events: none;
     }
     &--submitUser {
       color: #999;

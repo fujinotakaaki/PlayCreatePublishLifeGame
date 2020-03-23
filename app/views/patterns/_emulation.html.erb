@@ -1,6 +1,9 @@
-<p class="patterns__show--lifeGameInterface">
+<!--ライフゲーム実行用部分テンプレート-->
+
+<!--操作ボタン類-->
+<div class="patterns__show--lifeGameInterface">
   <%= render 'patterns/interface' %>
-</p>
+</div>
 
 <p class="patterns__show--lifeGameInfo">
   (ここに世代情報が表示されます)
@@ -10,12 +13,13 @@
   (ここにライフゲームが表示されます)
 </p>
 
+<!--呼び出し時の画面整形-->
 <script>
   $(function(){
     // カテゴリ欄の削除
     $(".application__layouts--leftSection").remove();
     // パターン表示を画面最大に
-    $(".application__layouts--rightSection").removeClass().addClass('col-lg-12');
+    $(".application__layouts--rightSection").removeClass().addClass("col-lg-12");
     // ライフゲームの表示初期化（lifegame/environment.js参照）
     initializeLifeGame();
   });
