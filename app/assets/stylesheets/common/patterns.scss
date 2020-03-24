@@ -34,6 +34,9 @@
         }
       }
     }
+    &--alignRight {
+      text-align: right;
+    }
   }
   &__show {
     width: 100%;
@@ -55,7 +58,7 @@
     }
     &--lifeGameDisplay {
       padding: 30px;
-      margin: 0 auto;
+      margin: 20px auto;
       text-align: center;
       font-size: 30px;
       color: limegreen;
@@ -63,7 +66,11 @@
       line-height: 0.6em;
     }
     &--lifeGameInterface {
+      padding: 0 20px;
       margin: 20px 0;
+    }
+    &--lifeGameInterfaceHeadline {
+      font-weight: bold;
     }
   }
   &__article{
