@@ -7,6 +7,9 @@
 # Ignore seed data
 db/seeds.rb
 
+# Ignore environments variable
+/.env
+
 # Ignore image
 app/assets/images/*
 !app/assets/images/no_image.jpg

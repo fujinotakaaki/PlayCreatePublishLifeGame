@@ -77,3 +77,5 @@ gem 'kaminari','~> 1.1.1'
 gem 'impressionist'
 # コントローラからjsへデータの受け渡しが可能になる機能
 gem 'gon'
+# 環境変数を管理
+gem 'dotenv-rails'
