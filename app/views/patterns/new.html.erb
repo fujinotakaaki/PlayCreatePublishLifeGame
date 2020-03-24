@@ -10,6 +10,8 @@
   <%= f.hidden_field :margin_bottom, readonly: true %>
   <%= f.hidden_field :margin_left, readonly: true %>
   <%= f.hidden_field :margin_right, readonly: true %>
+  <!--正規化行数列（自動入力）-->
+  <%= f.hidden_field :normalized_rows_sequence, readonly: true %>
 
   <!--パターン名（入力必須）-->
   <div class="form-group">
@@ -51,12 +53,6 @@
     </div>
   </div>
 
-
-  <!--パターンの各行の２進数表記（自動入力）-->
-  <%= f.fields_for :pattern_rows do | pattern_row | %>
-  <%= pattern_row.hidden_field :binary_number, readonly: true %>
-  <% end %>
-
   <!--投稿ボタン-->
   <%= f.submit "これで投稿する", class: "btn btn-primary"%>
   <% end %>
@@ -94,6 +90,7 @@
     $("#pattern_display_format_id").change( function( info ) {
       // 選択されたDisplayFormatのIDを取得
       let display_format_id = $(this).val();
+
       // IDからDisplayFormatのデータを取得
       $.ajax({
         url: `/display_formats/${ display_format_id }`,
@@ -102,13 +99,13 @@
 
       }).done( function(data){
         // 成功した場合
-        console.log('通信成功');
+        // console.log('通信成功');
         //セルの状態表示反映（lifegame/environments.js参照）
         initializeLifeGame( false, false, data );
 
       }).fail( function(data) {
         // 失敗した場合
-        console.log('通信失敗');
+        // console.log('通信失敗');
       });
       return false;
     });

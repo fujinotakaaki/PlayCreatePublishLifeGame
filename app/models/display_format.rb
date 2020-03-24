@@ -26,4 +26,14 @@ class DisplayFormat < ApplicationRecord
 
   belongs_to :user
   has_many  :patterns
+
+  # cssの設定情報を抽出し、json形式に変換するメソッド
+  def as_json_css_options
+    self.as_json( only: [ :font_color, :background_color, :line_height_rate ] ).transform_keys{ | key | key.to_s.camelize( :lower ).to_sym }
+  end
+
+  # セルの表示定義の設定情報を抽出し、json形式に変換するメソッド
+  def as_json_cell_conditions( is_torus = false )
+    self.as_json( only: [ :alive, :dead ] ).merge( { is_torus: is_torus } ).transform_keys{ | key | key.to_s.camelize( :lower ).to_sym }
+  end
 end

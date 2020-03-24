@@ -2,63 +2,83 @@
 
 <!--パターン作成関連ページorパターンの新規投稿ページでのみ表示-->
 <% if /makings/.match?( controller_name ) || /new/.match( action_name ) && /patterns/.match?( controller_name ) then %>
-<!--サクセスメッセージ-->
+<!--サクセス系メッセージ-->
 <div class="alert alert-success application__alert--common application__alert--success" role="alert">
   <button type="button" class="close application__alert--closeButton" onclick="callMessageWindow();">
-    <!--メッセージ削除アクション-->
+    <!--メッセージ非表示アクション-->
     <span aria-hidden="true">
       ×
     </span>
   </button>
-  <!--メッセージタイトル-->
+  <!--タイトル-->
   <h3 class="alert-heading application__alert--headline">
     <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
     Success
   </h3>
   <hr>
-  <!--メッセージ一覧-->
+  <!--一覧-->
   <ul class="mb-0 application__alert--body">
-    <li>成功です！！</li>
+    <li>サクセスメッセージ</li>
   </ul>
 </div>
 
-<!--警告メッセージ-->
-<div class="alert alert-warning application__alert--common application__alert--warning" role="alert">
+<!--お知らせ系メッセージ-->
+<div class="alert alert-info application__alert--common application__alert--info" role="alert">
   <button type="button" class="close application__alert--closeButton" onclick="callMessageWindow();">
-    <!--メッセージ削除アクション-->
+    <!--メッセージ非表示アクション-->
     <span aria-hidden="true">
       ×
     </span>
   </button>
-  <!--メッセージタイトル-->
+  <!--タイトル-->
   <h3 class="alert-heading application__alert--headline">
-    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+    information
+  </h3>
+  <hr>
+  <!--一覧-->
+  <ul class="mb-0 application__alert--body">
+    <li>お知らせメッセージ</li>
+  </ul>
+</div>
+
+<!--警告系メッセージ-->
+<div class="alert alert-warning application__alert--common application__alert--warning" role="alert">
+  <button type="button" class="close application__alert--closeButton" onclick="callMessageWindow();">
+    <!--メッセージ非表示アクション-->
+    <span aria-hidden="true">
+      ×
+    </span>
+  </button>
+  <!--タイトル-->
+  <h3 class="alert-heading application__alert--headline">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
     Warning
   </h3>
   <hr>
-  <!--メッセージ一覧-->
+  <!--一覧-->
   <ul class="mb-0 application__alert--body">
-    <li>異常が検知されました。</li>
+    <li>警告系メッセージ</li>
   </ul>
 </div>
 
-<!--重要なメッセージ-->
+<!--重要系メッセージ-->
 <div class="alert alert-danger application__alert--common application__alert--danger" role="alert">
   <button type="button" class="close application__alert--closeButton" onclick="callMessageWindow();">
-    <!--メッセージ削除アクション-->
+    <!--メッセージ非表示アクション-->
     <span aria-hidden="true">
       ×
     </span>
   </button>
-  <!--メッセージタイトル-->
+  <!--タイトル-->
   <h3 class="alert-heading application__alert--headline">
     <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
     Danger
   </h3>
   <hr>
-  <!--メッセージ一覧-->
+  <!--一覧-->
   <ul class="mb-0 application__alert--body">
-    <li>重要な問題が検知されました。</li>
+    <li>重要系メッセージ</li>
   </ul>
 </div>
 <% end %>

@@ -4,22 +4,20 @@ module MakingsHelper
     no_alive_cells: '「生」状態のセルがありません。'
   }
 
-  # making_pattern_textから
-  # Makingの上下左右のマージン情報に、
-  # MakingRowsの数値情報に、
-  # 変換する
-  def build_up_data_from( making_pattern_text )
-    # 改行(\n)を検出してビット列に分割（改行が連続する場合、その間は無視される => 連続した改行はパターンの可視性が向上するから現状は採用）
-    rows = making_pattern_text.chomp.split # （空白でも分割されてしまうが、現状はこれで）
+  # bit_string_arrayから、
+  # 上下左右のマージンとパターンの核となる部分について、
+  # 各行を指数表記した文字列の配列を、カンマ区切りの文字列として生成
+  def build_up_pattern_params_from( bit_string_array )
+    rows = bit_string_array
     # パターンの幅が揃っているか検証
     unless rows.map(&:length).uniq.one? then
       # 列数が一致しないため処理を中断
-      return nil, CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE[ :length ]
+      return CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE[ :length ]
     end
     # パターンの幅を取得
     pattern_width = rows.first.length
     # 0と1以外の文字が存在する場合は全て1に変換
-    rows.map!{ | row | row.gsub( /[^0]/, ?1 ) }
+    rows.map!{ | row | row.gsub( /[^01]/, ?1 ) }
     # ここからは各方向のマージン（空白）を計算
     # 上部
     margin_top = get_top_margin( rows )
@@ -28,25 +26,26 @@ module MakingsHelper
     # 空白の行数の合算が元々の行数を超えていないか判定
     unless margin_top + margin_bottom < rows.size then
       # 全部の行が0のため処理中断
-      return nil, CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE[ :no_alive_cells ]
+      return CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE[ :no_alive_cells ]
     end
     # 上下の余白を除去し、各要素を数値化
-    remove_vertical_offset_binary_numbers = rows[ margin_top ... ( rows.size - margin_bottom ) ].map{ | bit_string | bit_string.to_i(2) }
-    # 右側マージンの計算（各行の数値配列から、2の指数部が最小になるものの指数を取得）
-    margin_right = get_minimum_place_base2( remove_vertical_offset_binary_numbers.select(&:positive?) )
+    remove_vertical_zero_rows = rows[ margin_top ... ( rows.size - margin_bottom ) ].map{ | bit_string | bit_string.to_i(2) }
     # 左側マージンの計算（0でない最大値について、パターンの幅から最大値の桁数との差をとる）
-    margin_left = pattern_width - remove_vertical_offset_binary_numbers.max.bit_length
-    # Makingモデルに合わせたデータの構築
-    making_params = {
+    margin_left = pattern_width - remove_vertical_zero_rows.max.bit_length
+    # 右側マージンの計算（基数を2としたとき、指数が最小値のものを取得）
+    margin_right = get_minimum_exponent_base2( remove_vertical_zero_rows.select(&:positive?) )
+    # 各整数を右側マージンだけ右にビットシフトし、16進数に変換
+    normalized_rows_sequence_array = remove_vertical_zero_rows.map do | decimal_number |
+      decimal_number.zero? ? 0 : ( decimal_number >> margin_right ).to_s(16)
+    end
+    # Making, Patternモデルに合わせたパラメータの構築
+    return {
       margin_top: margin_top,
       margin_bottom: margin_bottom,
       margin_left: margin_left,
-      margin_right: margin_right
+      margin_right: margin_right,
+      normalized_rows_sequence: normalized_rows_sequence_array.join( ?, )
     }
-    return making_params, remove_vertical_offset_binary_numbers.map{ | binary_number |  binary_number >> margin_right }
-    # Makingオブジェクトへ上下左右のマージン情報（Hash）、
-    # MakingRowsオブジェクトへ数値の配列（Array）、
-    # の２つを返す
   end
 
   # パターンの上側マージンを計算
@@ -58,24 +57,25 @@ module MakingsHelper
       return idx if /[^0]/.match?( row )
     end
     # 全てのビット列が0の場合は配列がそのまま返る、エラー回避のため行数が返るようにする
-    rows.size
+    return rows.size
   end
 
   # パターンの右側マージンを計算
-  def get_minimum_place_base2( numbers )
-    # 全ての整数について因数分解した際の2の指数部に変換する
-    numbers.map! do | num |
-      # 奇数の可能性があるため、初め指数部は0と定義
+  def get_minimum_exponent_base2( positive_numbers )
+    # 各整数の2を基数とする指数に変換する
+    positive_numbers.inject( positive_numbers.first ) do | current_minimum_exponent, positive_number |
+      # 初期値はpositive_numbers.min以上の値であればなんでも良い
+      # 奇数が存在すれば強制終了 => 最小の基数は必ず0
+      break 0 if positive_number.odd?
+      # 指数の数え上げ処理
       exponent = 0
-      while( num.even? )
+      while( positive_number.even? )
         # 偶数であれば右へビットシフト
-        num >>= 1
+        positive_number >>= 1
         exponent += 1
       end
       # 決定した指数を返す
-      exponent
+      [ current_minimum_exponent, exponent ].min
     end
-    # 指数が最も小さいものを返す
-    numbers.min
   end
 end

@@ -136,7 +136,7 @@ function verificationMakingPattern() {
   // エラーが存在したか判定
   if ( ! errorMessages.length ) {
     // サクセスメッセージの表示（user/application.js）
-    callMessageWindow( "success", "保存可能なパターンです。" );
+    callMessageWindow( "info", "保存可能なパターンです。" );
     // 「変更を保存」ボタンの復活処理
     displayInterface( true );
     // 検証を通過したパターンの反映（lifegame/environments.js）

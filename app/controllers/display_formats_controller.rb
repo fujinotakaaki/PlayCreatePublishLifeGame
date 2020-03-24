@@ -25,9 +25,9 @@ class DisplayFormatsController < ApplicationController
     # jsonデータ送信用に形式変換
     display_format_as_json = {
       # cssの設定
-      cssOptions:   display_format.as_json( only: [ :font_color, :background_color, :line_height_rate ] ).transform_keys{ | key | key.camelize( :lower ) },
+      cssOptions:   display_format.as_json_css_options,
       # セルの表示定義設定
-      cellConditions: display_format.as_json( only: [ :alive, :dead ] ).transform_keys{ | key | key.camelize( :lower ) }
+      cellConditions: display_format.as_json_cell_conditions
     }
     # jsonデータを返す
     render json: display_format_as_json
@@ -61,7 +61,8 @@ class DisplayFormatsController < ApplicationController
 
   private
   def display_format_params
-    params.require( :display_format ).permit( :user_id, :name, :alive_and_dead, :font_color, :background_color )
+    params.require( :display_format ).permit( :user_id, :name,
+      :alive_and_dead, :font_color, :background_color, :line_height_rate )
   end
 
   def baria_user
