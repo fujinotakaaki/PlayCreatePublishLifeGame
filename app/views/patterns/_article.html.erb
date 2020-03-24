@@ -17,8 +17,13 @@
     </h3>
 
     <p>
+      <!--カテゴリ表示-->
+      <span class="patterns__article--submitUser">
+        カテゴリ：　<%= pattern.category.name %>
+      </span>
+      <br>
+
       <!--パターン紹介文-->
-      <span class="patterns__article--submitUser">カテゴリー：　<%= pattern.category.name %></span><br>
       <%= pattern.introduction.truncate( character_limit ) %><br>
 
       <!--投稿者情報（showページでは表示しない）-->

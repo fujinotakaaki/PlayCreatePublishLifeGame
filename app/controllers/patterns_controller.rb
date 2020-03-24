@@ -37,49 +37,62 @@ class PatternsController < ApplicationController
 
   def edit
     @pattern = Pattern.find( params[ :id ] )
+    # gonにデータを格納
+    send_to_gon( @pattern )
   end
 
   def show
     @pattern = Pattern.find( params[ :id ] )
-    display_format = @pattern.display_format
+    # gonにデータを格納
+    send_to_gon( @pattern )
     # このパターンに対していちばん最近投稿されたコメントをピックアップ
     @latest_comments = PostComment.order(created_at: :desc).where( pattern_id: params[ :id ] ).limit(5)
     # 最近投稿されたカテゴリが同じパターン2件をピックアップ（自分を除く）
     @sampling_patterns = Pattern.order(created_at: :desc).where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id ).limit(2)
-    # パターンデータを、jsで扱えるようにデータを格納
-    gon.push(
-      # パターンを１次元配列に変換したものを格納
-      pattern: build_up_bit_strings_from( @pattern ),
-      # cssの設定
-      cssOptions: display_format.as_json_css_options,
-      # セルの表示定義設定
-      cellConditions: display_format.as_json_cell_conditions( @pattern.is_torus )
-    )
   end
 
   def update
     @pattern = Pattern.find( params[ :id ] )
+    @pattern.update( update_pattern_params )
   end
 
   def destroy
-    @pattern = Pattern.find( params[ :id ] )
+    pattern = Pattern.find( params[ :id ] )
+    pattern.destroy
+    redirect_to member_path( current_user )
   end
 
   private
-  def create_pattern_params
-    params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id, :margin_top,
-      :margin_bottom, :margin_left, :margin_right, :is_torus, :normalized_rows_sequence )
-  end
-
-  def update_pattern_params
-    params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id, :is_torus, :is_secret )
-  end
-
   def baria_user
     # ログインユーザと製作者が一致しているか判定
     unless Pattern.find( params[ :id ] ).user_id  == current_user.id then
       # 不一致 => 一覧ページへ
       redirect_to current_user
     end
+  end
+
+  # gonにデータを格納するメソッド
+  def  send_to_gon( pattern )
+    # 表示情報データの呼び出し
+    display_format = pattern.display_format
+    # gonにデータを格納するメソッド
+    gon.push(
+      # パターンを１次元配列に変換したものを格納
+      pattern: build_up_bit_strings_from( pattern ),
+      # cssの設定
+      cssOptions: display_format.as_json_css_options,
+      # セルの表示定義設定
+      cellConditions: display_format.as_json_cell_conditions( pattern.is_torus )
+    )
+  end
+
+  def create_pattern_params
+    params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id,
+      :margin_top, :margin_bottom, :margin_left, :margin_right, :is_torus, :normalized_rows_sequence )
+  end
+
+  def update_pattern_params
+    params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id,
+      :margin_top, :margin_bottom, :margin_left, :margin_right, :is_torus, :is_secret )
   end
 end # class

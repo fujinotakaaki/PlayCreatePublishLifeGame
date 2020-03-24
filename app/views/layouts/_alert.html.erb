@@ -1,7 +1,5 @@
 <!--オリジナルアラート表示用部分テンプレート-->
 
-<!--パターン作成関連ページorパターンの新規投稿ページでのみ表示-->
-<% if /makings/.match?( controller_name ) || /new/.match( action_name ) && /patterns/.match?( controller_name ) then %>
 <!--サクセス系メッセージ-->
 <div class="alert alert-success application__alert--common application__alert--success" role="alert">
   <button type="button" class="close application__alert--closeButton" onclick="callMessageWindow();">
@@ -81,4 +79,3 @@
     <li>重要系メッセージ</li>
   </ul>
 </div>
-<% end %>

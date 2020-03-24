@@ -4,6 +4,13 @@
 <div class="patterns__show">
   <!--パターン詳細情報-->
   <%= render 'patterns/property', pattern: @pattern %>
+  <!--パターン編集ページ遷移アクション-->
+  <% if current_user&.id == @pattern.user_id then %>
+  <%= link_to edit_pattern_path( @pattern ), class: "btn btn-default" do %>
+  <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+  編集する
+  <% end %>
+  <% end %>
   <%= render 'patterns/article', pattern: @pattern, character_limit: 1000 %>
   <!--ライフゲームエミュレート画面-->
   <%= render 'patterns/emulation' %>
@@ -64,3 +71,7 @@
     <% end %>
   </div>
 </div>
+
+
+<!--リアルタイムでライフゲームの書式を変更できるようにするためのJS-->
+<%= render 'patterns/form_preview_script' %>

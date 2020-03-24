@@ -1,10 +1,15 @@
 module ApplicationHelper
+  # アラートが必要なページにのみアラートウィンドウを用意するメソッド
+  def include_alert?( fullpath )
+    %r{\A/(making|members|patterns/new|users)}.match?( fullpath ) || %r{\A/patterns/\d+/edit\z}.match?( fullpath )
+  end
+
   # Patterns#indexで検索タイトルを取得するメソッド
-  def get_index_title( path )
+  def get_index_title( fullpath )
     # 絞り込みキーワード抽出（ $1 = 検索項目, $2 = id ）
-    %r{/patterns\?(\w+)_id=(\d+)}.match( path )
+    %r{\A/patterns\?(\w+)_id=(\d+)}.match( fullpath )
     # タイトルの選定
-    if /category/.match?( $1 ) then
+    if  $1 == 'category' then
       # カテゴリー検索だった場合(match?メソッドなので$1, $2は更新されない)
       %(カテゴリー：「#{Category.find($2).name}」)
     else

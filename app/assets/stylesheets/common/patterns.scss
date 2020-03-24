@@ -13,6 +13,28 @@
       max-width: 150px;
     }
   }
+  &__edit {
+    &--enterButton {}
+    &--table {
+      th, td {
+        width: 6em;
+        background-color: white;
+        padding: 10px;
+        border-top: thin solid black;
+        border-bottom: thin solid black;
+        text-align: center;
+        vertical-align: center;
+        &:last-child {
+          border: none;
+          background-color: inherit;
+        }
+        input {
+          padding-right: 5px;
+          text-align: right;
+        }
+      }
+    }
+  }
   &__show {
     width: 100%;
     &--bottom {

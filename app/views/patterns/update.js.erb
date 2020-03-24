@@ -18,5 +18,5 @@ $("#pattern_<%= column %>").addClass("application__errors--textField");
 // 作成中パターンのデータ更新成功の通知
 callMessageWindow( "success", "投稿に成功しました。" );
 // 「投稿」ボタンを「マイページ遷移」ボタンに置換する
-$('<%= link_to "マイページへ", member_path( current_user ), class: "btn btn-success" %>').replaceAll(".patterns__new--submit");
+$('<%= link_to "戻る", pattern_path( @pattern ), class: "btn btn-success" %>').replaceAll(".patterns__edit--submit");
 <% end %>

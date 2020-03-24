@@ -15,11 +15,13 @@
     <%= render 'layouts/headerMenue' %>
   </header>
 
-  <!--アラートセクション-->
   <div class="container">
+    <% if include_alert?( request.fullpath ) then %>
+    <!--アラートセクション-->
     <div class="row">
       <%= render 'layouts/alert' %>
     </div>
+    <% end %>
 
     <!--メインセクション-->
     <div class="row">
@@ -36,7 +38,6 @@
   </div>
 
   <!--フッターセクション-->
-  <footer>
-  </footer>
+  <footer></footer>
 </body>
 </html>

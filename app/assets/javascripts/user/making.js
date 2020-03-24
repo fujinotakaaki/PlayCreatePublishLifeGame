@@ -151,7 +151,7 @@ function verificationMakingPattern() {
 
 
 // 新規投稿画面遷移前の処理メソッド
-function movePatternsNew( url ) {
+function jumpPatternsNew( url ) {
   // バリデーションチェック
   if ( verificationMakingPattern() ) {
     // 合格なら新規投稿画面へ遷移

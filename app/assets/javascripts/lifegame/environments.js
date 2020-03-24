@@ -98,7 +98,7 @@ function stopProcess() {
 // ボタン押下可否の切り替え
 function buttonsFreezeOrRelease( bool = true ) {
   // 画面上の全てのボタンの押下状態の変更
-  $("[type = button]").prop("disabled", bool );
+  $("[type = button]").prop( "disabled", bool );
   // 「一時停止」ボタンのみ、状態を逆転
-  $(".patterns__show--lifeGameStop").prop("disabled", ! bool );
+  $(".patterns__show--lifeGameStop").prop( "disabled", ! bool );
 }
