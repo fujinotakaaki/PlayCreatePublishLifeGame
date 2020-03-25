@@ -1,0 +1,43 @@
+.pagenate {
+  &__button {
+    &--common {
+      color: limegreen;
+      background-color: black;
+      width: 9%;
+      border: 3px solid black;
+      text-align: center;
+    }
+    &--active {
+      @extend .pagenate__button--common;
+      font-weight: 900;
+      border-color: limegreen;
+    }
+  }
+}
+
+
+nav {
+  width: 100%;
+  .pagination {
+    width: 100%;
+    li, .disabled {
+      a {
+        @extend .pagenate__button--common;
+        &:hover {
+          @extend .pagenate__button--common;
+          background-color: #555;
+          border-color: #555
+        }
+      }
+    }
+    .active {
+      a {
+        @extend .pagenate__button--active;
+        &:hover {
+          @extend .pagenate__button--active;
+          background-color: #555;
+        }
+      }
+    }
+  }
+}
