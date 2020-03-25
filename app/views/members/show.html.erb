@@ -6,7 +6,7 @@
   <div class="members__show--divLeft">
     <%= attachment_image_tag @user, :profile_image, fallback: "no_image.jpg", class: "members__show--img" %>
   </div>
-  <!--名前・自己紹介文-->
+  <!--ユーザ紹介テンプレート-->
   <div class="members__show--divRight">
     <%= render 'members/detail', user: @user %>
   </div>

@@ -1,6 +1,6 @@
 <!--リアルタイムでライフゲームの書式を変更できるようにするためのJS部分テンプレート-->
 
-<script>
+<script type="text/javascript">
   $( function() {
     // 画像アップロード時にサムネイルを表示するメソッド
     $("#pattern_image").change( function() {
@@ -25,6 +25,7 @@
       reader.readAsDataURL( upLoadFile );
     });
 
+
     // 表示形式のプルダウンリストの値が変化した際に発動するメソッド
     $("#pattern_display_format_id").change( function( info ) {
       // 選択されたDisplayFormatのIDを取得
@@ -48,5 +49,16 @@
       });
       return false;
     });
+  });
+
+
+  // トーラス面フラグ変更時に発火するメソッド
+  $("#pattern_is_torus_true").change( function() {
+    // 有効にチェックが入った場合は有効にする
+    patternData.changeTorusFlag( true );
+  });
+  $("#pattern_is_torus_false").change( function() {
+    // 無効にチェックが入った場合は無効にする
+    patternData.changeTorusFlag( false );
   });
 </script>

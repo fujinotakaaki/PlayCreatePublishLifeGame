@@ -10,13 +10,12 @@ class PatternsController < ApplicationController
   def new
     # テキスト化されているパターンデータを配列にする
     bit_string_array = params[:making_pattern].split( ?, )
+    # トーラス面設定の取得
+    bool = /true/.match?( params[:is_torus] )
     # パターン形成に関する必要項目をあらかじめ入力
-    @pattern = current_user.patterns.new( build_up_pattern_params_from( bit_string_array ) )
-    # 配列化したパターンをgonに格納
-    gon.push(
-      # パターンを１次元配列に変換したものを格納
-      pattern: bit_string_array
-    )
+    @pattern = Pattern.new( build_up_pattern_params_from( bit_string_array ).merge( { is_torus: bool } ) )
+    # gonにデータを格納
+    send_to_gon( @pattern )
   end
 
   def create

@@ -152,10 +152,34 @@ function verificationMakingPattern() {
 
 // 新規投稿画面遷移前の処理メソッド
 function jumpPatternsNew( url ) {
+  // トーラス面設定切り替えボタンのクラス名取得
+  let targetTagClass = $(".makings__edit--torusReverse").attr("class");
+  // 現在のトーラス面設定の取得
+  let bool = ! /true/i.test( targetTagClass );
   // バリデーションチェック
   if ( verificationMakingPattern() ) {
     // 合格なら新規投稿画面へ遷移
-    location.href = url + '?making_pattern=' + $(".makings__edit--textarea").val().replace( /\n/g, "," );
+    location.href = url
+    + '?making_pattern=' + $(".makings__edit--textarea").val().replace( /\n/g, "," )
+    + '&is_torus=' + ( bool ).toString();
   }
   return false;
+}
+
+// 作成中のパターンのトーラス面設定切り替えメソッド
+function changeLifeGameTorusFlag() {
+  // トーラス面設定切り替えボタンの取得
+  let targetTag = $(".makings__edit--torusReverse");
+  // ライフゲームのトーラス面設定を切り替える => 返り値は反転結果を受け取る
+  let bool = patternData.changeTorusFlag();
+  // ボタンのフォーマットの切り替え
+  if ( bool ) {
+    // 表示している文字を切り替える
+    targetTag.find("span").text("無効");
+    // cssの設定を切り替える
+    targetTag.addClass("makings__edit--torusIsFalse").removeClass("makings__edit--torusIsTrue");
+  }else {
+    targetTag.find("span").text("有効");
+    targetTag.addClass("makings__edit--torusIsTrue").removeClass("makings__edit--torusIsFalse");
+  }
 }

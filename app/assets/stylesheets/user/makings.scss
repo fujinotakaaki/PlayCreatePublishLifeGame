@@ -21,5 +21,29 @@
     &--body {
       word-wrap: break-word;
     }
+    &--torusIsTrue {
+      color: white;
+      background-color: limegreen;
+      &:hover {
+        color: white !important;
+        background-color: forestgreen;
+      }
+      &:active {
+        color: white !important;
+        background-color: forestgreen;
+      }
+    }
+    &--torusIsFalse {
+      color: white;
+      background-color: slateblue;
+      &:hover {
+        color: white !important;
+        background-color: darkslateblue;
+      }
+      &:active {
+        color: white !important;
+        background-color: darkslateblue;
+      }
+    }
   }
 }

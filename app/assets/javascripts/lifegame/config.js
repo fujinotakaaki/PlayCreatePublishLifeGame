@@ -4,12 +4,13 @@ class LifeGame {
   // 世代交代後の盤面
   newPattern = new Array;
 
+
   // 盤面情報と表示形式情報の設定
   constructor( pattern = [ "0000", "0111", "1110", "0000" ], options = { alive: '■', dead: '□', isTorus: false } ) {
     // 初期盤面の取得（要素がビット列の１次元配列）
     this.pattern = pattern;
     // リフレッシュメソッド用初期盤面の格納変数（浅いコピーだが、実装上不具合は見られない2020.03.21）
-    this.initialPattern = pattern;
+    this.patternInitial = pattern;
     // 盤面の定義域取得
     [ this.height, this.width ] = [ pattern.length, pattern[0].length ];
     // セルの表示を定義
@@ -18,24 +19,6 @@ class LifeGame {
     this.isTorus = options.isTorus;
   }
 
-  // 盤面のHTMLテキストへの出力メソッド
-  get getPatternText() {
-    // ビット列を表示形式に変換して返す（ 不具合①：this.alive = '0'だと正しく変換できない）
-    return this.pattern.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
-  }
-
-  // セルの表示定義変更メソッド
-  changeCellConditions( options = { alive: '■', dead: '□' }  ) {
-    [ this.alive, this.dead ] = [ options.alive, options.dead ];
-    return false;
-  }
-
-  // 世代更新を行っていない初期状態に戻すメソッド
-  get patternRefresh() {
-    // 初期世代の配置に置き換える（浅いコピーだが、実装上不具合は見られない2020.03.21）
-    this.pattern = this.initialPattern;
-    return false;
-  }
 
   // 世代交代の処理メソッド
   get generationChange() {
@@ -56,6 +39,35 @@ class LifeGame {
     // 次世代パターン（配列）の初期化
     this.newPattern = new Array;
     return false;
+  }
+
+
+  // 盤面のHTMLテキストへの出力メソッド
+  get getPatternText() {
+    // ビット列を表示形式に変換して返す（ 不具合①：this.alive = '0'だと正しく変換できない）
+    return this.pattern.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
+  }
+
+
+  // 世代更新を行っていない初期状態に戻すメソッド
+  get patternRefresh() {
+    // 初期世代の配置に置き換える（浅いコピーだが、実装上不具合は見られない2020.03.21）
+    this.pattern = this.patternInitial;
+    return false;
+  }
+
+
+  // セルの表示定義変更メソッド
+  changeCellConditions( options = { alive: '■', dead: '□' }  ) {
+    [ this.alive, this.dead ] = [ options.alive, options.dead ];
+    return false;
+  }
+
+
+  // トーラス設定の反転
+  changeTorusFlag( bool = 0 ) {
+    this.isTorus = ( Number.isInteger( bool ) ? ! this.isTorus : !! bool )
+    return this.isTorus;
   }
 
 

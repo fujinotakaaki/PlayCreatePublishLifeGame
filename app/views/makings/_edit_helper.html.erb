@@ -1,7 +1,7 @@
 <!--作成中パターンの操作用インターフェース-->
 
 <!--提出前・動作チェック前パターンの適性チェック用アクション-->
-<button type="button" name="verification" class="btn btn-primary makings__edit--verification" onclick="verificationMakingPattern();">
+<button type="button" class="btn btn-primary makings__edit--verification" onclick="verificationMakingPattern();">
 	検証
 </button>
 
@@ -16,7 +16,7 @@
 	<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 		<span class="caret"></span>
 	</button>
-	
+
 	<!--ドロップダウンリスト-->
 	<ul class="dropdown-menu" role="menu">
 		<!--(1)ビット列の短い行に対する、「右側」への"0"の補完処理-->
@@ -25,3 +25,8 @@
 		<li role="presentation"><a role="menuitem" tabindex="-1" href="#" onclick="autoComplement( 'left' ); return false;">自動補完（左側）</a></li>
 	</ul>
 </div>
+
+<!--トーラス面設定-->
+<button type="button" onclick="changeLifeGameTorusFlag();" class="btn makings__edit--torusReverse makings__edit--torusIsTrue">
+	トーラス面を<span>有効</span>にする
+</button>
