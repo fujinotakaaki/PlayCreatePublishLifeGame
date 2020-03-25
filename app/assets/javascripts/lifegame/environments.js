@@ -7,7 +7,10 @@ var patternData;
 var intervalProcessingID;
 
 
-// ライフゲーム変数の初期化メソッド（patterns/emulation.html.erb呼出時orリフレッシュボタンで発火）
+// ライフゲーム変数の初期化メソッド
+// 第１引数・・・変数中のパターンをpatternDataに適用する（gonよりも優先される）
+// 第２引数・・・定義されているpatternDataを初期状態に戻す（第１引数及びgonに影響されない）
+// 第３引数・・・定義されているpatternDataの表示形式を変更する（第２引数と併用可能）
 function initializeLifeGame( makingPatternArray = false, refreshPattern = false, changeDisplayFormat = false ) {
   // 繰り返し処理実行中の場合は強制終了させる
   if ( !! intervalProcessingID ) { stopProcess(); }
@@ -52,7 +55,7 @@ function applyCssOptions( cssOptions = { fontColor: "limegreen", backgroundColor
     // 背景色の変更
     'background-color': `${ cssOptions.backgroundColor }`,
     // 垂直方向の文字間隔の変更
-    'line-height':            `${ Number( cssOptions.lineHeightRate ) / 100 }`
+    'line-height':            `${ cssOptions.lineHeightRate / 100 }`
   });
 }
 

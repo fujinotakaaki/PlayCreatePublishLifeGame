@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2020_03_23_110715) do
 
   create_table "makings", force: :cascade do |t|
     t.integer "user_id", null: false
+    t.boolean "is_torus", default: false, null: false
     t.integer "margin_top", default: 0
     t.integer "margin_bottom", default: 0
     t.integer "margin_left", default: 0

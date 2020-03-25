@@ -1,9 +1,9 @@
 class PatternsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :baria_user,                  only: [ :edit, :update, :destroy ]
-  # build_up_pattern_params_fromメソッドをインクルード（ビット列 => dbデータへ）
+  # build_up_pattern_params_fromメソッドをインクルード（ビット列 => dbデータへ変換）
   include MakingsHelper
-  # build_up_bit_strings_fromメソッドをインクルード（dbデータ=> ビット列へ）
+  # build_up_bit_strings_from, set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
   include PatternsHelper
 
 
@@ -15,7 +15,7 @@ class PatternsController < ApplicationController
     # パターン形成に関する必要項目をあらかじめ入力
     @pattern = Pattern.new( build_up_pattern_params_from( bit_string_array ).merge( { is_torus: bool } ) )
     # gonにデータを格納
-    send_to_gon( @pattern )
+    set_to_gon( @pattern )
   end
 
   def create
@@ -37,13 +37,13 @@ class PatternsController < ApplicationController
   def edit
     @pattern = Pattern.find( params[ :id ] )
     # gonにデータを格納
-    send_to_gon( @pattern )
+    set_to_gon( @pattern )
   end
 
   def show
     @pattern = Pattern.find( params[ :id ] )
     # gonにデータを格納
-    send_to_gon( @pattern )
+    set_to_gon( @pattern )
     # このパターンに対していちばん最近投稿されたコメントをピックアップ
     @latest_comments = PostComment.order(created_at: :desc).where( pattern_id: params[ :id ] ).limit(5)
     # 最近投稿されたカテゴリが同じパターン2件をピックアップ（自分を除く）
@@ -60,6 +60,7 @@ class PatternsController < ApplicationController
     pattern.destroy
     redirect_to member_path( current_user )
   end
+  
 
   private
   def baria_user
@@ -68,21 +69,6 @@ class PatternsController < ApplicationController
       # 不一致 => 一覧ページへ
       redirect_to current_user
     end
-  end
-
-  # gonにデータを格納するメソッド
-  def  send_to_gon( pattern )
-    # 表示情報データの呼び出し
-    display_format = pattern.display_format
-    # gonにデータを格納するメソッド
-    gon.push(
-      # パターンを１次元配列に変換したものを格納
-      pattern: build_up_bit_strings_from( pattern ),
-      # cssの設定
-      cssOptions: display_format.as_json_css_options,
-      # セルの表示定義設定
-      cellConditions: display_format.as_json_cell_conditions( pattern.is_torus )
-    )
   end
 
   def create_pattern_params

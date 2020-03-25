@@ -1,13 +1,28 @@
 module PatternsHelper
+  # gonにデータを格納するメソッド
+  def  set_to_gon( pattern )
+    # 表示情報データの呼び出し（MakingモデルであればDefault 1のデータをピックアップ）
+    display_format = pattern.try( :display_format ) || DisplayFormat.first
+    # gonにデータを格納するメソッド
+    gon.push(
+      # パターンを１次元配列に変換したものを格納
+      pattern: build_up_bit_strings_from( pattern ),
+      # cssの設定
+      cssOptions: display_format.as_json_css_options,
+      # セルの表示定義設定
+      cellConditions: display_format.as_json_cell_conditions( pattern.is_torus )
+    )
+  end
+
   # dbのパターン情報をJSのライフゲーム用のデータに変換するメソッド
   def build_up_bit_strings_from( pattern )
     # 行データがない場合は生きたセル１個の配列とする（なんでもいい）
     # パターンを初めて作る（行データがないため）場合に発生する
-     if pattern.normalized_rows_sequence.nil? then
-       return [ 'ようこそ！' ]
-     else
-       pattern_rows = pattern.normalized_rows_sequence.split( ?, ).map(&:hex)
-     end
+    if pattern.normalized_rows_sequence.nil? then
+      return [ 'ようこそ！' ]
+    else
+      pattern_rows = pattern.normalized_rows_sequence.split( ?, ).map(&:hex)
+    end
     # 最も大きい自然数のビット列数を算出
     largest_number_bit_length = pattern_rows.max.bit_length
     # 左右の余白を含めたマップ幅を計算

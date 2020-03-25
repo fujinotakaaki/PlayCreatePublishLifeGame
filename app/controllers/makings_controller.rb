@@ -3,19 +3,17 @@ class MakingsController < ApplicationController
   before_action :baria_user, except: [ :edit ]
   # build_up_pattern_params_fromメソッドをインクルード（ビット列 => dbデータへ変換）
   include MakingsHelper
-  # build_up_bit_strings_fromメソッドをインクルード（dbデータ=> ビット列へ変換）
+  # build_up_bit_strings_from, set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
   include PatternsHelper
+
 
   def edit
     # 作成中のパターン取得or新規盤面の作成
     @making = Making.find_or_create_by( user_id: current_user.id )
-    # パターンデータを、jsで扱えるようにデータを格納
-    @making_bit_strings_array = build_up_bit_strings_from( @making )
-    # パターンデータを、jsで扱えるようにデータを格納
-    gon.push(
-      # パターンを１次元配列に変換したものを格納（メソッドはApplicationHelper参照）
-      pattern: @making_bit_strings_array
-    )
+    puts '@making.inspect='
+    puts @making.inspect
+    # gonにデータを格納
+    set_to_gon( @making )
   end
 
   def update
@@ -38,6 +36,7 @@ class MakingsController < ApplicationController
 
   def destroy
   end
+
 
   private
   def baria_user

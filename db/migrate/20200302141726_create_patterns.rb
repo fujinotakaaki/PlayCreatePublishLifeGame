@@ -14,7 +14,7 @@ class CreatePatterns < ActiveRecord::Migration[5.2]
       t.text        :introduction
       # パターン代表イメージ
       t.string     :image_id
-      # 上下左右を循環させるか(非トーラス状)
+      # 上下左右を循環させるか(非トーラス面)
       t.boolean :is_torus,                 null: false,  default: false
       #上側余白
       t.integer   :margin_top
