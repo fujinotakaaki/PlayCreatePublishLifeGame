@@ -13,7 +13,7 @@
   <!--パターン編集ページ遷移アクション-->
   <p class="patterns__edit--alignRight">
     <%= link_to edit_pattern_path( @pattern ), class: "btn btn-default" do %>
-    <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+    <%= content_tag :span, '', class: "glyphicon glyphicon-wrench", aria: { hidden: true } %>
     編集する
     <% end %>
     <% end %>

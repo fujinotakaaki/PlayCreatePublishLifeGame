@@ -4,20 +4,19 @@ module MakingsHelper
     no_alive_cells: '「生」状態のセルがありません。'
   }
 
-  # bit_string_arrayから、
+  # concated_bit_stringsから、
   # 上下左右のマージンとパターンの核となる部分について、
   # 各行を指数表記した文字列の配列を、カンマ区切りの文字列として生成
-  def build_up_pattern_params_from( bit_string_array )
-    rows = bit_string_array
+  def build_up_pattern_params_from( concated_bit_strings )
+    # セパレータを基に配列に分割
+    rows = concated_bit_strings.split( /[^01]/ )
     # パターンの幅が揃っているか検証
     unless rows.map(&:length).uniq.one? then
-      # 列数が一致しないため処理を中断
+      # 列数が一致しないため処理を中断（01とセパレータ以外の文字が含まれる場合もこのエラーとなる）
       return CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE[ :length ]
     end
     # パターンの幅を取得
     pattern_width = rows.first.length
-    # 0と1以外の文字が存在する場合は全て1に変換
-    rows.map!{ | row | row.gsub( /[^01]/, ?1 ) }
     # ここからは各方向のマージン（空白）を計算
     # 上部
     margin_top = get_top_margin( rows )

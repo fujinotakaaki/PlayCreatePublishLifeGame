@@ -20,8 +20,20 @@
 	<!--ドロップダウンリスト-->
 	<ul class="dropdown-menu" role="menu">
 		<!--(1)ビット列の短い行に対する、「右側」への"0"の補完処理-->
-		<li role="presentation"><a role="menuitem" tabindex="-1" href="#" onclick="autoComplement( 'right' ); return false;">自動補完（右側）</a></li>
+		<li role="presentation">
+			<a role="menuitem" tabindex="-1" href="#" onclick="autoComplement( 'right' ); return false;">
+				自動補完（右側）
+			</a>
+		</li>
 		<!--(2)ビット列の短い行に対する、「左側」への"0"の補完処理-->
-		<li role="presentation"><a role="menuitem" tabindex="-1" href="#" onclick="autoComplement( 'left' ); return false;">自動補完（左側）</a></li>
+		<li role="presentation">
+			<a role="menuitem" tabindex="-1" href="#" onclick="autoComplement( 'left' ); return false;">
+				自動補完（左側）
+			</a>
+		</li>
+		<!--(3)作成中のパターンを初期化-->
+		<li role="presentation" class="makings__edit--destroy" id="unko">
+			<%= link_to "パターンを初期化", making_path, method: :delete, role: "menuitem", tabindex:"-1", "data-confirm" => "作成中のパターンを初期化しますか？" %>
+		</li>
 	</ul>
 </div>

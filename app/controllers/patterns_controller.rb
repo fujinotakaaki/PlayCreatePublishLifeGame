@@ -9,11 +9,11 @@ class PatternsController < ApplicationController
 
   def new
     # テキスト化されているパターンデータを配列にする
-    bit_string_array = params[:making_pattern].split( ?, )
+    concated_bit_strings = params[:making_pattern]
     # トーラス面設定の取得
     bool = /true/.match?( params[:is_torus] )
     # パターン形成に関する必要項目をあらかじめ入力
-    @pattern = Pattern.new( build_up_pattern_params_from( bit_string_array ).merge( { is_torus: bool } ) )
+    @pattern = Pattern.new( build_up_pattern_params_from( concated_bit_strings ).merge( { is_torus: bool } ) )
     # gonにデータを格納
     set_to_gon( @pattern )
   end
@@ -60,7 +60,7 @@ class PatternsController < ApplicationController
     pattern.destroy
     redirect_to member_path( current_user )
   end
-  
+
 
   private
   def baria_user

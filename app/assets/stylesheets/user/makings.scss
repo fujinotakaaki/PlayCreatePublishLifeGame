@@ -49,5 +49,14 @@
         background-color: darkslateblue;
       }
     }
+    &--destroy {
+      a{
+        background-color: rgba( 255, 0, 0, 0.5);
+        &:hover {
+          font-weight: bold;
+          background-color: red !important;
+        }
+      }
+    }
   }
 }

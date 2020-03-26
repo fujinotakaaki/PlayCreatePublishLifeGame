@@ -1,5 +1,5 @@
 class DisplayFormatsController < ApplicationController
-  before_action :authenticate_user!, except: [ :index, :sow ]
+  before_action :authenticate_user!, except: [ :index ]
   before_action :baria_user,                  only: [ :edit, :update, :destroy ]
 
   def new

@@ -1,6 +1,5 @@
 class MakingsController < ApplicationController
   before_action :authenticate_user!
-  before_action :baria_user, except: [ :edit ]
   # build_up_pattern_params_fromメソッドをインクルード（ビット列 => dbデータへ変換）
   include MakingsHelper
   # build_up_bit_strings_from, set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
@@ -10,40 +9,48 @@ class MakingsController < ApplicationController
   def edit
     # 作成中のパターン取得or新規盤面の作成
     @making = Making.find_or_create_by( user_id: current_user.id )
-    puts '@making.inspect='
-    puts @making.inspect
     # gonにデータを格納
     set_to_gon( @making )
   end
 
   def update
-    # （エラーが発生した時はエラーメッセージが格納される）
-    making_params = build_up_pattern_params_from( params[ :making_text ].split )
-
-    # テキストデータが正常に変換されたかチェック
-    if String === making_params then
+    # ストロングパラメータ取得（エラーがあればエラーメッセージを取得）
+    making_params = update_params
+    # エラーメッセージかチェック
+    unless ActionController::Parameters === making_params then
       # エラーメッセージを格納
       @convertion_error_message = making_params
       # 処理を強制終了
       return
     end
-
     # データ更新を実施するデータをピックアップ
-    @making = Making.find( params[:id] )
+    @making = Making.find_by( user_id: current_user.id )
     # 更新実行
     @making.update( making_params )
   end
 
   def destroy
+    # 初期化するデータをピックアップ
+    making = Making.find_by( user_id: current_user.id )
+    # データを削除
+    making.destroy
+    # 編集ページへ戻る
+    redirect_to edit_making_path
   end
 
 
   private
-  def baria_user
-    # ログインユーザと製作者が一致しているか判定
-    unless Making.find( params[:id] ).user_id  == current_user.id then
-      # 不一致 => ユーザ詳細ページへ
-      redirect_to member_path( current_user )
-    end
+  def update_params
+    # 送信されてきたデータから必要なパラメータを抽出
+    raw_params = params.require( :making ).permit( :is_torus, :making_text )
+    # :making_textデータを余白とパターンの行データ数列に変換する。
+    normalized_params = build_up_pattern_params_from( raw_params[ :making_text ] )
+    # エラーメッセージが格納されていれば強制終了
+    return normalized_params unless Hash === normalized_params
+    # :making_textカラムが残るとエラーになるため除去する
+    raw_params.delete( :making_text )
+    # :is_torus, :margin_top, :margin_bottom, :margin_left, :margin_right, :normalized_rows_sequence
+    # のデータを返す
+    return raw_params.merge( normalized_params )
   end
 end

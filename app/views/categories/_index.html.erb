@@ -1,14 +1,14 @@
 <!--patterns/_emulationが呼ばれる場合はテンプレート内jsメソッドにより除去されます-->
 <div class="categories__index">
   <h4 class='categories__index--headline'>
-    <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+    <%= content_tag :span, '', class: "glyphicon glyphicon-th-large",aria: { hidden: true } %>
     カテゴリー
-    <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+    <%= content_tag :span, '', class: "glyphicon glyphicon-th-large",aria: { hidden: true } %>
   </h4>
   <% Category.all.pluck( :id, :name ).each do | category | %>
   <ul>
     <li class="categories__index--li">
-      <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+      <%= content_tag :span, '', class: "glyphicon glyphicon-tag",aria: { hidden: true } %>
       <%= link_to category.second, patterns_path( category_id: category.first ) %>
     </li>
   </ul>

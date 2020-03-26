@@ -9,9 +9,9 @@
 <!--ユーザ名-->
 <%= f.text_field :name, value: user.name, class: "members__edit--name" %><br>
 <!--自己紹介文-->
-<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+<%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %>
 自己紹介文
-<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><br>
+<%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %>
 
 <%= f.text_area :introduction, value: user.introduction, class: "members__edit--introduction" %><br>
 <!--提出ボタン-->
@@ -22,17 +22,17 @@
 <!--通常表示用テンプレート-->
 <!--ユーザ名表示-->
 <h4 class="members__show--headline">
-<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+<%= content_tag :span, '', class: "glyphicon glyphicon-user", aria: { hidden: true } %>
 <%= user.name %><br>
 </h4>
 <!--自己紹介文表示-->
-<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+<%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %>
 自己紹介文
-<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><br>
+<%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %><br>
 <%= user.introduction.blank? ? '本文がありません' : user.introduction %><br>
 <!--編集開始ボタンの表示設定-->
 <% if user.id == current_user&.id then %>
-<input type="button" value="編集" onclick="editUserInfo(this);" class="<%= "btn btn-default members__show--#{ current_user&.id || 0 }" %>">
+<%= content_tag :input, '',value: "編集", type: "button", class: "btn btn-default members__show--#{ current_user&.id || 0 }", onclick: "editUserInfo(this);" %>
 <% end %>
 
 <% end %>

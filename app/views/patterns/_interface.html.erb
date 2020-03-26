@@ -1,32 +1,32 @@
 <!--ライフゲーム操作用インターフェース-->
 
 <h4 class="patterns__show--interFaceHeadline">
-  <i class="fas fa-gamepad"></i>
+  <%= content_tag :i, '', class: "fas fa-gamepad" %>
   ライフゲーム操作用インターフェース
 </h4>
 
 <p>
   <!--リセットアクション-->
   <button type="button" name="refresh" class="btn btn-default patterns__show--lifeGameRefresh" onclick="initializeLifeGame( false, true );">
-    <i class="fas fa-history"></i>
+    <%= content_tag :i, '', class: "fas fa-history" %>
     リセット
   </button>
 
   <!--開始アクション-->
   <button type="button" name="start" class="btn btn-default patterns__show--lifeGameStart" onclick="startProcess();">
-    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+    <%= content_tag :span, '', class: "glyphicon glyphicon-play", aria: { hidden: true } %>
     開始( per 0.3s )
   </button>
 
   <!--一時停止アクション-->
   <button type="button" name="stop" class="btn btn-default patterns__show--lifeGameStop" onclick="stopProcess();">
-    <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+    <%= content_tag :span, '', class: "glyphicon glyphicon-pause", aria: { hidden: true } %>
     一時停止
   </button>
 
   <!--早送りアクション-->
   <button type="button" name="stop" class="btn btn-default patterns__show--lifeGameStart" onclick="startProcess( 100 );">
-    <i class="fas fa-forward"></i>
+    <%= content_tag :i, '', class: "fas fa-forward" %>
     早送り( per 0.1s )
   </button>
 </p>
@@ -34,14 +34,14 @@
 <p>
   <!--手動更新アクション-->
   <button type="button" name="stop" class="btn btn-default patterns__show--lifeGameGenerationChange" onclick="upDate();">
-    <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+    <%= content_tag :span, '', class: "glyphicon glyphicon-repeat", aria: { hidden: true } %>
     １世代更新
   </button>
 
   <!--超早送りアクション-->
   <button type="button" name="stop" class="btn btn-default patterns__show--lifeGameStart" onclick="startProcess(0);">
-    <i class="fas fa-skull-crossbones"></i>
+    <%= content_tag :i, '', class: "fas fa-skull-crossbones" %>
     超早送り
-    <i class="fas fa-skull-crossbones"></i>
+    <%= content_tag :i, '', class: "fas fa-skull-crossbones" %>
   </button>
 </p>

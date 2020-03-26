@@ -12,15 +12,15 @@
   <div class="patterns__article--divRight">
     <!--パターン名-->
     <h3>
-      <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+      <%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %>
       <%= pattern.name %>
     </h3>
 
     <p>
       <!--カテゴリ表示-->
-      <span class="patterns__article--submitUser">
-        カテゴリ：　<%= pattern.category.name %>
-      </span>
+      <%= content_tag :span, "カテゴリ：#{ pattern.category.name }", class: "glyphicon glyphicon-tag patterns__article--submitUser", aria: { hidden: true } %>
+      <!--トーラス面設定-->
+      <%= content_tag :span, "トーラス面設定：#{ pattern.is_torus ? '有効' : '無効' }", class: "fas fa-globe-asia patterns__article--submitUser" %>
       <br>
 
       <!--パターン紹介文-->

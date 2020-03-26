@@ -3,20 +3,59 @@ class LifeGame {
   MOORE_NEIGHBORHOOD = [ [1,1], [1,0], [1,-1], [0,1], [0,-1], [-1,1], [-1,0], [-1,-1] ]
   // 世代交代後の盤面
   newPattern = new Array;
+  // セルの表示設定
+  alive = '■';
+  dead = '□';
 
 
   // 盤面情報と表示形式情報の設定
-  constructor( pattern = [ "0000", "0111", "1110", "0000" ], options = { alive: '■', dead: '□', isTorus: false } ) {
+  constructor( pattern = [ "0000", "0111", "1110", "0000" ], options = { isTorus: false } ) {
+    // 世代更新回数
+    this.generation_count = 0;
     // 初期盤面の取得（要素がビット列の１次元配列）
     this.pattern = pattern;
     // リフレッシュメソッド用初期盤面の格納変数（浅いコピーだが、実装上不具合は見られない2020.03.21）
     this.patternInitial = pattern;
     // 盤面の定義域取得
     [ this.height, this.width ] = [ pattern.length, pattern[0].length ];
-    // セルの表示を定義
+    // 平坦トーラス面フラグ（オプションが設定されている場合は反映）
+    this.isTorus = !! options.isTorus;
+  }
+
+
+  // 盤面の世代更新回数を出力するメソッド
+  get getGenerationCount() {
+    return this.generation_count;
+  }
+
+
+  // 盤面のHTMLテキストへの出力するメソッド
+  get getPatternText() {
+    // ビット列を表示形式に変換して返す（ 不具合①：this.alive = '0'だと正しく変換できない）
+    return this.pattern.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
+  }
+
+
+  // 世代更新を行っていない初期状態に戻すメソッド
+  get patternRefresh() {
+    // 初期世代の配置に置き換える（浅いコピーだが、実装上不具合は見られない2020.03.21）
+    this.pattern = this.patternInitial;
+    // 世代更新回数のリセット
+    this.generation_count = 0;
+  }
+
+
+  // セルの表示定義変更メソッド
+  changeCellConditions( options = { alive: '■', dead: '□' }  ) {
     [ this.alive, this.dead ] = [ options.alive, options.dead ];
-    // 平坦トーラス面として扱うかのフラグ設定
-    this.isTorus = options.isTorus;
+  }
+
+
+  // トーラス設定の切り替えメソッド（変更結果を出力できる）
+  changeTorusFlag( bool = 0 ) {
+    this.isTorus = ( Number.isInteger( bool ) ? ! this.isTorus : !! bool )
+    // 変更結果を返す
+    return this.isTorus;
   }
 
 
@@ -38,36 +77,8 @@ class LifeGame {
     this.pattern = this.newPattern;
     // 次世代パターン（配列）の初期化
     this.newPattern = new Array;
-    return false;
-  }
-
-
-  // 盤面のHTMLテキストへの出力メソッド
-  get getPatternText() {
-    // ビット列を表示形式に変換して返す（ 不具合①：this.alive = '0'だと正しく変換できない）
-    return this.pattern.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
-  }
-
-
-  // 世代更新を行っていない初期状態に戻すメソッド
-  get patternRefresh() {
-    // 初期世代の配置に置き換える（浅いコピーだが、実装上不具合は見られない2020.03.21）
-    this.pattern = this.patternInitial;
-    return false;
-  }
-
-
-  // セルの表示定義変更メソッド
-  changeCellConditions( options = { alive: '■', dead: '□' }  ) {
-    [ this.alive, this.dead ] = [ options.alive, options.dead ];
-    return false;
-  }
-
-
-  // トーラス設定の反転
-  changeTorusFlag( bool = 0 ) {
-    this.isTorus = ( Number.isInteger( bool ) ? ! this.isTorus : !! bool )
-    return this.isTorus;
+    // 世代更新回数のカウントアップ
+    this.generation_count++;
   }
 
 

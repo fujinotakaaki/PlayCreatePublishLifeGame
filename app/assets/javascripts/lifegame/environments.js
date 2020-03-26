@@ -1,6 +1,4 @@
 // グローバル変数の定義
-// 世代数カウント
-var generationCount;
 // ライフゲームを定義する変数
 var patternData;
 // 繰り返し処理の変数
@@ -11,36 +9,45 @@ var intervalProcessingID;
 // 第１引数・・・変数中のパターンをpatternDataに適用する（gonよりも優先される）
 // 第２引数・・・定義されているpatternDataを初期状態に戻す（第１引数及びgonに影響されない）
 // 第３引数・・・定義されているpatternDataの表示形式を変更する（第２引数と併用可能）
-function initializeLifeGame( makingPatternArray = false, refreshPattern = false, changeDisplayFormat = false ) {
-  // 繰り返し処理実行中の場合は強制終了させる
-  if ( !! intervalProcessingID ) { stopProcess(); }
-  // 世代数カウント初期化
-  generationCount = 0;
+function initializeLifeGame( applyMakingPattern = false, refreshLifeGame = false, changeDisplayFormat = false ) {
+  // 実行中のライフゲームを強制終了させる
+  if ( !! intervalProcessingID ) {
+    // 繰り返し処理の停止
+    stopProcess();
+  }
 
-  // セルの表示状態変更処理
-  if ( !! changeDisplayFormat ) {
-    // cssの設定情報を画面に適用
-    applyCssOptions( changeDisplayFormat.cssOptions );
-    // セルの表示定義の変更処理
-    patternData.changeCellConditions( changeDisplayFormat.cellConditions );
-    // パターンを初期状態に戻すか判定
-    if ( ! refreshPattern ) {
-      // 現在の状態反映
-      showCurrentGeneration();
-      return false;
-    }
+  // ライフゲームの初期設定（引数が設定されている場合は実行されない）
+  if ( ! applyMakingPattern && ! refreshLifeGame && ! changeDisplayFormat ) {
+    // 新規盤面の設定（第２引数はトーラス面フラグ(isTorus)のみ設定が反映可能）
+    patternData = new LifeGame( gon.pattern, gon.cellConditions );
+    // セルの表示定義（alive, dead）の変更処理
+    patternData.changeCellConditions( gon.cellConditions );
+    // cssの設定情報（ fontColor, backgroundColor, lineHeightRate）を画面に適用
+    applyCssOptions( gon.cssOptions );
+  }
+
+  // 作成中のパターンの反映のみ実行
+  if ( !! applyMakingPattern ) {
+    // 定義済みのライフゲーム変数から破壊的にトーラスフラグを取得
+    let currentIsTorusCondition = ! patternData.changeTorusFlag();
+    // ライフゲーム変数の再定義
+    patternData = new LifeGame( applyMakingPattern, { isTorus: currentIsTorusCondition } );
   }
 
   // ライフゲームの初期化処理
-  if ( refreshPattern ) {
+  if ( !! refreshLifeGame ) {
     // 定義済み盤面の初期化
     patternData.patternRefresh;
-  }else {
-    // 新規盤面の設定
-    patternData = new LifeGame( makingPatternArray || gon.pattern, gon.cellConditions );
-    // cssの設定情報を画面に適用
-    applyCssOptions( gon.cssOptions );
   }
+
+  // セルの表示状態変更処理
+  if ( !! changeDisplayFormat ) {
+    // セルの表示定義の変更処理
+    patternData.changeCellConditions( changeDisplayFormat.cellConditions );
+    // cssの設定情報を画面に適用
+    applyCssOptions( changeDisplayFormat.cssOptions );
+  }
+
   // 現在の状態反映
   showCurrentGeneration();
 }
@@ -63,7 +70,7 @@ function applyCssOptions( cssOptions = { fontColor: "limegreen", backgroundColor
 // 画面表示の更新処理
 function showCurrentGeneration() {
   // 表示中のメッセージ更新
-  $('.patterns__show--lifeGameInfo').text( '第' + generationCount + '世代' );
+  $('.patterns__show--lifeGameInfo').text( '第' + patternData.getGenerationCount + '世代' );
   // 表示中のパターン更新
   $('.patterns__show--lifeGameDisplay').html( patternData.getPatternText );
 }
@@ -82,8 +89,6 @@ function startProcess( intervalTime = 300 ) {
 function upDate() {
   // 画面表示を更新
   showCurrentGeneration()
-  // 世代数のカウントアップ
-  generationCount++;
   // パターンの世代交代実行
   patternData.generationChange;
 }

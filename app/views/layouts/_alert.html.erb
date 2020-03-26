@@ -4,14 +4,11 @@
 <div class="alert alert-success application__alert--common application__alert--success" role="alert">
   <button type="button" class="close application__alert--closeButton" onclick="callMessageWindow();">
     <!--メッセージ非表示アクション-->
-    <span aria-hidden="true">
-      ×
-    </span>
+    <%= content_tag :span, '×', aria: { hidden: true } %>
   </button>
   <!--タイトル-->
   <h3 class="alert-heading application__alert--headline">
-    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-    Success
+    <%= content_tag :span, ' Success', class:"glyphicon glyphicon-ok-sign", aria: { hidden: true } %>
   </h3>
   <hr>
   <!--一覧-->
@@ -24,14 +21,11 @@
 <div class="alert alert-info application__alert--common application__alert--info" role="alert">
   <button type="button" class="close application__alert--closeButton" onclick="callMessageWindow();">
     <!--メッセージ非表示アクション-->
-    <span aria-hidden="true">
-      ×
-    </span>
+    <%= content_tag :span, '×', aria: { hidden: true } %>
   </button>
   <!--タイトル-->
   <h3 class="alert-heading application__alert--headline">
-    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-    information
+    <%= content_tag :span, ' Information', class:"glyphicon glyphicon-info-sign", aria: { hidden: true } %>
   </h3>
   <hr>
   <!--一覧-->
@@ -44,14 +38,11 @@
 <div class="alert alert-warning application__alert--common application__alert--warning" role="alert">
   <button type="button" class="close application__alert--closeButton" onclick="callMessageWindow();">
     <!--メッセージ非表示アクション-->
-    <span aria-hidden="true">
-      ×
-    </span>
+    <%= content_tag :span, '×', aria: { hidden: true } %>
   </button>
   <!--タイトル-->
   <h3 class="alert-heading application__alert--headline">
-    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-    Warning
+    <%= content_tag :span, ' Warning', class:"glyphicon glyphicon-exclamation-sign", aria: { hidden: true } %>
   </h3>
   <hr>
   <!--一覧-->
@@ -64,14 +55,11 @@
 <div class="alert alert-danger application__alert--common application__alert--danger" role="alert">
   <button type="button" class="close application__alert--closeButton" onclick="callMessageWindow();">
     <!--メッセージ非表示アクション-->
-    <span aria-hidden="true">
-      ×
-    </span>
+    <%= content_tag :span, '×', aria: { hidden: true } %>
   </button>
   <!--タイトル-->
   <h3 class="alert-heading application__alert--headline">
-    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-    Danger
+    <%= content_tag :span, ' Danger', class:"glyphicon glyphicon-remove-sign", aria: { hidden: true } %>
   </h3>
   <hr>
   <!--一覧-->

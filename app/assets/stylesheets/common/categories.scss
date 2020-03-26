@@ -34,4 +34,16 @@
       }
     }
   }
+  &__show {
+    &--headline {
+      text-decoration: underline;
+    }
+    &--body {
+      padding: 20px 0;
+    }
+    &--main {
+      background-color: white;
+      padding: 20px 30px 0;
+    }
+  }
 }
