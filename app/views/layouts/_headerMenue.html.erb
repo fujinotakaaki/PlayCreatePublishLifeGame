@@ -1,7 +1,18 @@
 <!--ヘッダー用部分テンプレート-->
+
 <nav>
   <!--各リンク-->
-  <ul>
+  <ul class="application__header--searchForm">
+    <%= form_with url: patterns_path, local: true, method: :get do | f | %>
+    <li>
+      <%= f.text_field "search[keyword]", placeholder: "サイト内検索", class: "form-control application__search--form" %>
+    </li>
+    <li>
+      <%= f.submit '検索', class: 'btn btn-default' %>
+    </li>
+    <% end %>
+  </ul>
+  <ul class="application__header--interface">
     <li><%= link_to "トップ", root_path %></li>
     <li><%= link_to "PCPLGとは？", about_path %></li>
     <li><%= link_to "投稿一覧", patterns_path %></li>

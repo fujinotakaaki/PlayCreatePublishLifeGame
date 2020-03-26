@@ -12,6 +12,30 @@
  }
 
  .application {
+   &__header {
+     &--searchForm {
+       text-align: right;
+       li {
+         margin: 0 10px;
+         display: inline-block;
+         list-style: none;
+         vertical-align: middle;
+       }
+     }
+     &--interface {
+       text-align: right;
+       li {
+         margin: 0 10px;
+         display: inline-block;
+         list-style: none;
+         vertical-align: middle;
+         &:hover {
+           color: yellow;
+           font-weight: bold;
+         }
+       }
+     }
+   }
    &__layouts {
      &--leftSection {
      }
@@ -40,6 +64,11 @@
        height: 1.5em;
      }
    }
+   &__search {
+     &--form {
+
+     }
+   }
    &__errors {
      &--textField {
        border: thin solid red !important;
@@ -53,10 +82,16 @@
  header {
    color: white;
    background-color: black;
+   min-height: 10em;
    padding: 10px 30px;
    margin-bottom: 40px;
    h1 {
      color: limegreen;
+   }
+   nav {
+     position: absolute;
+     top: 2em;
+     right: 1em;
    }
    img {
      border: thin solid dimgray;
@@ -68,21 +103,6 @@
      &:hover {
        color: yellow;
        text-decoration: none;
-     }
-   }
-   nav {
-     ul {
-       text-align: right;
-       li {
-         margin: 0 10px;
-         display: inline-block;
-         list-style: none;
-         vertical-align: middle;
-         &:hover {
-           color: yellow;
-           font-weight: bold;
-         }
-       }
      }
    }
  }

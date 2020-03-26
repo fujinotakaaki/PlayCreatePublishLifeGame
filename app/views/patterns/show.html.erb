@@ -36,7 +36,7 @@
       </p>
       <% else %>
       <!--最新のコメント5件まで表示-->
-      <% @latest_comments.reverse_each do | comment | %>
+      <% @latest_comments.each do | comment | %>
       <%= render 'post_comments/article', comment: comment %>
       <% end %>
       <% end %>
@@ -68,7 +68,7 @@
     </p>
     <% else %>
     <!--同カテゴリの最新パターン2件まで表示-->
-    <% @sampling_patterns.reverse_each do | pattern | %>
+    <% @sampling_patterns.each do | pattern | %>
     <%= render 'patterns/article', pattern: pattern, character_limit: 20 %>
     <% end %>
     <%= link_to '関連するパターンを見に行く', patterns_path( category_id: @pattern.category_id) %>
