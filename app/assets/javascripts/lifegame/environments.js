@@ -87,10 +87,10 @@ function startProcess( intervalTime = 300 ) {
 
 // 繰り返し処理
 function upDate() {
-  // 画面表示を更新
-  showCurrentGeneration()
   // パターンの世代交代実行
   patternData.generationChange;
+  // 画面表示を更新
+  showCurrentGeneration()
 }
 
 

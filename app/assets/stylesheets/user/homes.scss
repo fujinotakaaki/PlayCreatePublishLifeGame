@@ -1,0 +1,27 @@
+
+.homes {
+  &__about{
+    &--headline {
+      font-weight: bold;
+      margin-top: 1.4em;
+    }
+    &--subTitle {
+      font-weight: bold;
+    }
+    &--body {
+      text-indent: 1em;
+      word-wrap: break-word;
+    padding: 0 3em;
+    }
+    &--ruleSample {
+      margin: 20px;
+    }
+    &--img {
+      margin: 5px 20px;
+      max-height: 100px;
+    }
+    &--span {
+      color: #999;
+    }
+  }
+}

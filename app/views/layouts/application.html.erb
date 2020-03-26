@@ -28,11 +28,13 @@
     <!--メインセクション-->
     <div class="row">
       <!--メインセクション（左側：カテゴリ一覧）-->
+      <% if display_category_index?( request.fullpath ) then %>
       <div class="col-md-2 application__layouts--leftSection">
         <%= render 'categories/index' %>
       </div>
+      <% end %>
 
-      <!--メインセクション（右側）-->
+      <!--メインセクション（右側：各ページ）-->
       <div class="col-md-10 application__layouts--rightSection">
         <%= yield %>
       </div>

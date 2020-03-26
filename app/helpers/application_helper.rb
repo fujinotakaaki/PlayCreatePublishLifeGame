@@ -4,6 +4,11 @@ module ApplicationHelper
     %r{\A/(making|members|patterns/new|users)}.match?( fullpath ) || %r{\A/patterns/\d+/edit\z}.match?( fullpath )
   end
 
+  def display_category_index?( fullpath )
+    # users/*とHomes#aboutはカテゴリ表示しない
+    ! /\A\/users/.match?( fullpath )
+  end
+
   # Patterns#indexで検索タイトルを取得するメソッド
   def get_index_title( fullpath )
     # 絞り込みキーワード抽出（ $1 = 検索項目, $2 = id ）

@@ -1,2 +1,56 @@
-<h1>Homes#about</h1>
-<p>Find me in app/views/homes/about.html.erb</p>
+
+<h3 class="homes__about--headline">
+  <%= content_tag :i, '', class:"fas fa-question"%>
+  ライフゲームとは
+  <%= content_tag :i, '', class:"fas fa-question"%>
+</h3>
+<p class="homes__about--body">
+  ライフゲームとは、生命の誕生や死について簡易的なルールを設定した場合に、その繁栄と衰退の様子をシミュレーションしてみるゲームです。<br>
+  ライフゲームは1970年にイギリスの数学者ジョン・ホートン・コンウェイ (John Horton Conway) によって考案されました。<br><br>
+  本コンテンツは「ゲーム」と言いつつ、基本的には眺めることが趣旨になります が、生命の配置次第で不可思議な変化を楽しむことができます。<br>
+［参考：<a href="https://ja.wikipedia.org/wiki/%E3%83%A9%E3%82%A4%E3%83%95%E3%82%B2%E3%83%BC%E3%83%A0">ライフゲーム（Wikipedia）</a>］
+</p>
+
+<h3 class="homes__about--headline">
+  <%= content_tag :i, '', class:"fas fa-book"%>
+  ライフゲームのルール
+</h3>
+<p class="homes__about--body">
+  ライフゲームは将棋や囲碁のように、マスで構成された盤面が舞台となります。 <br>
+  各マスには生命（以下「セル」と呼称）が「生」or「死」のどちらかになっています。<br>
+  <span class="homes__about--span">（電光掲示板でいう「光ってる電球」と「消えてる電球」みたいなもの？）</span><br>
+  マス上のセルは１単位時間ごとに以下のルールに従って、「生」と「死」の状態が変化します。<br>
+  あとはこの単位時間が進むに従ってマス上のセルの「生」と「死」の分布の変化を楽しむことが目的となります。
+</p>
+
+<div class="homes__about--ruleSample">
+  <h4 class="homes__about--subTitle">誕生</h4>
+  <p class="homes__about--body">
+    死んでいるセルに隣接する生きたセルがちょうど3つあれば、次の世代が誕生する。（ここでいう隣接は、上下左右と斜めの位置の意）
+  </p>
+  <%= image_tag 'birth.jpg', alt: 'サンプル画像：誕生', class: "homes__about--img" %>
+</div>
+
+<div class="homes__about--ruleSample">
+  <h4 class="homes__about--subTitle">生存</h4>
+  <p class="homes__about--body">
+    生きているセルに隣接する生きたセルが2つか3つならば、次の世代でも生存する。
+  </p>
+  <%= image_tag 'alive.jpg', alt: 'サンプル画像：生存', class: "homes__about--img" %>
+</div>
+
+<div class="homes__about--ruleSample">
+  <h4 class="homes__about--subTitle">過疎</h4>
+  <p class="homes__about--body">
+    生きているセルに隣接する生きたセルが1つ以下ならば、過疎により死滅する。
+  </p>
+  <%= image_tag 'depopulation.jpg', alt: 'サンプル画像：過疎', class: "homes__about--img" %>
+</div>
+
+<div class="homes__about--ruleSample">
+  <h4 class="homes__about--subTitle">過密</h4>
+  <p class="homes__about--body">
+    生きているセルに隣接する生きたセルが4つ以上ならば、過密により死滅する。
+  </p>
+  <%= image_tag 'overcrowding.jpg', alt: 'サンプル画像：過密', class: "homes__about--img" %>
+</div>

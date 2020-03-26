@@ -1,10 +1,11 @@
-
 // ヘッダー直下のアラートを操作するメソッド
 function callMessageWindow( kind = "", messages = false ) {
-  // ページトップへ遷移
-  movePageTop();
   // 表示されている全てのアラートを非表示にする（元々の設定に戻す）
   $(".application__alert--common").css({ "display": "" });
+  // メッセージを表示しないのであれば終了
+  if ( ! kind ) { return false; }
+  // ページトップへ遷移
+  movePageTop();
   // 第１引数にアラートの種類が指定されていればその種類のアラートを表示する
   let selectDivAlert = $(`.application__alert--${ kind }`).css({ "display": "block" });
   // さらに、メッセージがあれば置換する
@@ -19,6 +20,7 @@ function callMessageWindow( kind = "", messages = false ) {
     selectDivAlert.children("ul").html( `<li>${ messages .join( "</li><li>" )}</li>` );
     break;
   }
+  return false;
 }
 
 // ページトップにアニメーション移動するメソッド

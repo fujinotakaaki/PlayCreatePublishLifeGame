@@ -28,12 +28,14 @@ $(document).on( 'keypress', '.makings__edit--textarea', function(e) {
 
 // ボタン除去とプレビュー表示への切替メソッド（パターンに変更があった場合の処理）
 function changePreviewMode() {
+  // アラート表示を全部消す（user/application.js）
+  callMessageWindow();
   // 「変更を保存」ボタンを非表示にする（元々の設定に戻す）
   displayInterface( false );
   // 世代情報を「プレビューを表示中」に切替え
   $(".patterns__show--lifeGameInfo").text( "プレビューを表示中" );
-  // アラート表示を全部消す（user/application.js）
-  callMessageWindow();
+  // 繰り返し処理の停止
+  stopProcess();
 }
 
 
