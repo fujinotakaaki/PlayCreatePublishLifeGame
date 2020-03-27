@@ -15,7 +15,10 @@ class DisplayFormatsController < ApplicationController
       redirect_to display_formats_path
     else
       # 失敗 => 作成ページへ
-      rebder :new
+      puts '/ここみる'
+      puts @display_format.inspect
+      puts @display_format.errors.full_messages.inspect
+      render :new
     end
   end
 

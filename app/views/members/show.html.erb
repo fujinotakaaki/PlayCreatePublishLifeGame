@@ -1,15 +1,8 @@
 <!--ユーザ詳細ページ-->
 
 <!--ユーザ情報-->
-<div class="clearfix">
-  <!--プロフィール画像-->
-  <div class="members__show--divLeft">
-    <%= attachment_image_tag @user, :profile_image, fallback: "no_image.jpg", class: "members__show--img" %>
-  </div>
-  <!--ユーザ紹介テンプレート-->
-  <div class="members__show--divRight">
-    <%= render 'members/detail', user: @user %>
-  </div>
+<div class="clearfix members__show--profile">
+  <%= render 'members/detail', user: @user %>
 </div>
 
 <!--投稿パターン一覧-->

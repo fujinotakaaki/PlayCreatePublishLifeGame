@@ -25,7 +25,7 @@
     <!--ドロップダウンリスト（トップ表記）-->
     <li id="menue-parent">
       こんにちは、<br>
-      <%= current_user.name %>さん▼
+      <%= current_user.name.truncate( 10 ) %>さん▼
       <!--ドロップダウンリスト-->
       <ul id="menue-child">
         <li>

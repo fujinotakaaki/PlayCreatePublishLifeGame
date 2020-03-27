@@ -1,7 +1,12 @@
 .display_formats {
   &__form {
     &--cellsConditions {
+      width: 40px;
       text-align: center;
+    }
+    &--cellsMargin {
+      width: 60px;
+      text-align: right;
     }
     &--submit {
       text-align: right;

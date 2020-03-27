@@ -29,7 +29,7 @@
       <!--投稿者情報（showページでは表示しない）-->
       <% if action_name != 'show' then %>
       <span class="patterns__article--submitUser">
-        by <%= link_to pattern.user.name, member_path( pattern.user_id ) %>さん
+        by <%= link_to pattern.user.name.truncate( 10 ), member_path( pattern.user_id ) %>さん
       </span>
       <%= render 'patterns/property', pattern: pattern %>
       <% end %>

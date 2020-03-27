@@ -2,7 +2,7 @@
 
 <p class="comments__article">
   <!--投稿日時・投稿者情報-->
-  <%= content_tag :span, "#{ date_format( comment.created_at ) } / #{ comment.user.name }", class: "patterns__article--submitUser" %><br>
+  <%= content_tag :span, "#{ date_format( comment.created_at ) } / #{ comment.user.name.truncate( 10 ) }", class: "patterns__article--submitUser" %><br>
   <!--コメント本文-->
   <%= comment.body %>
 </p>

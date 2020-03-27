@@ -1,38 +1,59 @@
-<!--ユーザ詳細情報表示用部分テンプレート-->
+<!--ユーザ詳細情報用部分テンプレート-->
 
-<% if action_name == 'edit' then %>
-
+<% if action_name == "edit" then %>
 <!--編集時用テンプレート-->
-<%= form_with model: user, url: member_path( user ) do | f | %>
+
+<%= form_with model: user, url: member_path( user ), class: "members__edit" do | f | %>
 <!--ユーザID-->
-<%= f.hidden_field :id, value: current_user.id %>
+<%= f.hidden_field :id, value: current_user.id, readonly: true %>
+<!--プロフィール画像-->
+<div class="members__show--divLeft">
+  <%= attachment_image_tag user, :profile_image, fallback: "no_image.jpg", class: "members__show--img" %><br>
+  <%= f.attachment_field :profile_image %>
+</div>
+
+<!--ユーザ紹介テンプレート-->
+<div class="members__show--divRight">
 <!--ユーザ名-->
-<%= f.text_field :name, value: user.name, class: "members__edit--name" %><br>
+<%= content_tag :span, " ユーザ名", class: "glyphicon glyphicon-user", aria: { hidden: true } %>
+<%= f.text_field :name, value: user.name, class: "form-control members__edit--name" %><br>
 <!--自己紹介文-->
 <%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %>
 自己紹介文
 <%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %>
+<%= f.text_area :introduction, value: user.introduction, class: "form-control members__edit--introduction" %><br>
 
-<%= f.text_area :introduction, value: user.introduction, class: "members__edit--introduction" %><br>
 <!--提出ボタン-->
-<%= f.submit '完了' %>
+<p class="members__edit--submit">
+  <%= f.submit '完了', class: "btn btn-info" %>
+</p>
+</div>
 <% end %>
 
 <% else %>
 <!--通常表示用テンプレート-->
-<!--ユーザ名表示-->
-<h4 class="members__show--headline">
-<%= content_tag :span, '', class: "glyphicon glyphicon-user", aria: { hidden: true } %>
-<%= user.name %><br>
-</h4>
-<!--自己紹介文表示-->
-<%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %>
-自己紹介文
-<%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %><br>
-<%= user.introduction.blank? ? '本文がありません' : user.introduction %><br>
-<!--編集開始ボタンの表示設定-->
-<% if user.id == current_user&.id then %>
-<%= content_tag :input, '',value: "編集", type: "button", class: "btn btn-default members__show--#{ current_user&.id || 0 }", onclick: "editUserInfo(this);" %>
-<% end %>
+
+<!--プロフィール画像-->
+<div class="members__show--divLeft">
+  <%= attachment_image_tag @user, :profile_image, fallback: "no_image.jpg", class: "members__show--img" %><br>
+  <!--編集開始ボタンの表示設定-->
+  <% if @user.id == current_user&.id then %>
+  <%= content_tag :input, '',value: "編集", type: "button", class: "btn btn-default members__edit--callForm members__show--#{ current_user&.id || 0 }", onclick: "editUserInfo(this);" %>
+  <% end %>
+</div>
+
+<!--ユーザ紹介テンプレート-->
+<div class="members__show--divRight">
+  <!--ユーザ名表示-->
+  <h4 class="members__show--headline">
+    <%= content_tag :span, '', class: "glyphicon glyphicon-user", aria: { hidden: true } %>
+    <%= user.name %>
+  </h4>
+  <!--自己紹介文表示-->
+  <%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %>
+  自己紹介文
+  <%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %><br>
+  <%= user.introduction.blank? ? '本文がありません' : user.introduction %><br>
+</div>
 
 <% end %>

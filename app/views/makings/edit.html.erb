@@ -2,7 +2,7 @@
 
 <!--ページ上部-->
 <div class="makings__edit--top">
-  <%= form_with( model: @making, url: making_path, method: "patch" ) do | f | %>
+  <%= form_with model: @making, url: making_path, method: "patch", class: "form-horizontal" do | f | %>
   <!--ページ上部のタイトル-->
   <h3>
     パターン編集エリア
@@ -44,6 +44,7 @@
   このパターンを投稿する（パターン情報入力ページへ）
 </button>
 </div>
+
 
 <script type="text/javascript">
   // パターンアップデート前のバリデーションメソッド

@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 2020_03_23_110715) do
     t.string "name"
     t.string "alive"
     t.string "dead"
-    t.string "font_color", default: "#90EE90"
-    t.string "background_color", default: "#000"
+    t.string "font_color", default: "#32CD32"
+    t.string "background_color", default: "#000000"
     t.string "line_height_rate", default: "100"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -11,9 +11,9 @@ class CreateDisplayFormats < ActiveRecord::Migration[5.2]
       # 死セルの表示形式
       t.string   :dead
       # セルの色(lightgreen)
-      t.string :font_color,                             default: '#90EE90'
+      t.string :font_color,                             default: '#32CD32'
       # 背景色(black)
-      t.string :background_color,                default: '#000'
+      t.string :background_color,                default: '#000000'
       # cssの"line-height"の値（単位: %）
       t.string :line_height_rate,                   default: 100
 

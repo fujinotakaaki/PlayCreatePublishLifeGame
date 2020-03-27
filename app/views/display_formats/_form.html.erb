@@ -1,4 +1,4 @@
-<%= form_with model: display_format, local: true do | f | %>
+<%= form_with model: display_format, local: true, class: "form-horizontal" do | f | %>
 
 <!--ヘッダ-->
 <div class="form-group">
@@ -8,9 +8,20 @@
   </div>
 </div>
 
+<!--名称の設定-->
+<div class="form-group">
+  <%= f.label :name, ' 表示形式名称', class: "fas fa-filesignature col-sm-2 control-label" %>
+  <div class="col-sm-10">
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+</div>
+
 <!--セルの表示定義-->
 <div class="form-group">
-  <label class="col-sm-2 control-label">セルの表示</label>
+  <label class="col-sm-2 control-label">
+    <%= content_tag :span, '', class: "glyphicon glyphicon-th-large",aria: { hidden: true } %>
+    セルの表示
+  </label>
   <div class="col-sm-10">
     <%= f.label :alive, '「生」：' %>
     <%= f.text_field :alive, maxlength: 1, size: 8, placeholder: "1文字", class: "display_formats__form--cellsConditions" %>
@@ -20,8 +31,35 @@
   </div>
 </div>
 
+<!--文字色の設定-->
+<div class="form-group">
+  <%= f.label :font_color, ' セルの色', class: "fas fa-palette col-sm-2 control-label" %>
+  <div class="col-sm-10">
+    <%= f.color_field :font_color, class: "form-control" %>
+  </div>
+</div>
 
+<!--背景色の設定-->
+<div class="form-group">
+  <%= f.label :background_color, ' 背景色', class: "fas fa-fill-drip col-sm-2 control-label" %>
+  <div class="col-sm-10">
+    <%= f.color_field :background_color, class: "form-control" %>
+  </div>
+</div>
+
+<!--セル間隔-->
+<div class="form-group">
+  <label class="fas fa-arrows-alt col-sm-2 control-label">セルの間隔</label>
+  <div class="col-sm-10">
+    <%= f.label :line_height_rate, ' 縦：'%>
+    <%= f.number_field :line_height_rate, class: "display_formats__form--cellsMargin" %>
+    ％
+  </div>
+</div>
+
+<!--送信ボタン-->
 <p class="display_formats__form--submit">
+  <%= display_format.inspect %><br>
   <%= f.submit ( /new/.match?( action_name ) ? "作成" : "編集完了" ), class: "btn btn-default" %>
 </p>
 <% end %>

@@ -1,92 +1,9 @@
 <!--投稿済パターンの編集ページ-->
 
+<!--ページタイトル-->
+<h3>パターン編集</h3>
 <div class="patterns__edit">
-  <!--ページタイトル-->
-  <h3>投稿前パターン情報入力</h3>
-
-  <%= form_with model: @pattern, class: "form-horizontal" do | f | %>
-
-  <!--パターン名（入力必須）-->
-  <div class="form-group">
-    <%= f.label :name, ' パターンの名前', class: "fas fa-pencil-alt col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.text_field :name, class: "form-control" %>
-    </div>
-  </div>
-
-  <!--カテゴリ選択（デフォルト：未分類）-->
-  <div class="form-group">
-    <%= f.label :category_id, ' カテゴリ', class: "fas fa-folder-open col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.select :category_id, Category.pluck( :name, :id ).to_h %>
-    </div>
-  </div>
-
-  <!--表示形式選択（デフォルト：Default 1）-->
-  <div class="form-group">
-    <%= f.label :display_format_id, ' セルの表示形式', class: "fas fa-th-large col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.select :display_format_id, DisplayFormat.pluck( :name, :id ).to_h %>
-    </div>
-  </div>
-
-  <!--このパターン紹介文（入力必須）-->
-  <div class="form-group">
-    <%= f.label :introduction, ' このパターン紹介文', class: "fas fa-pencil-alt col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.text_area :introduction, rows: 3, class: "form-control" %>
-    </div>
-  </div>
-
-  <!--パターンのイメージ-->
-  <div class="form-group">
-    <%= f.label :image_id, " イメージ画像", class: "col-sm-2 control-label fas fa-image" %>
-    <div class="col-sm-10">
-      <%= f.attachment_field :image %>
-    </div>
-  </div>
-
-
-  <!--トーラス面設定-->
-  <div class="form-group">
-    <%= f.label :is_torus, " トーラス面設定", class: "fas fa-globe-asia col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.radio_button :is_torus, true %>
-      <%= f.label :is_torus, '有効' %>
-      <%= f.radio_button :is_torus, false %>
-      <%= f.label :is_torus, '無効' %>
-    </div>
-  </div>
-
-  <!--四方向のマージン-->
-  <div class="form-group">
-    <%= f.label :margin, ' 余白設定', class: "col-sm-2 control-label fas fa-arrows-alt" %>
-    <div class="col-sm-10">
-      <table class="patterns__edit--table">
-        <tr>
-          <th>方向</th>
-          <th>上側</th>
-          <th>左側</th>
-          <th>右側</th>
-          <th>下側</th>
-          <th></th>
-        </tr>
-        <tr>
-          <td>余白</td>
-          <td><%= f.number_field :margin_top,       min: 0, class: "form-control" %></td>
-          <td><%= f.number_field :margin_left,       min: 0, class: "form-control" %></td>
-          <td><%= f.number_field :margin_right,     min: 0, class: "form-control" %></td>
-          <td><%= f.number_field :margin_bottom, min: 0, class: "form-control" %></td>
-          <td>
-            <!--投稿ボタン-->
-            <%= f.submit "編集完了", class: "btn btn-primary patterns__edit--submit"%>
-          </td>
-        </tr>
-      </table>
-      ※余白の変更は画面に反映されません
-    </div>
-  </div>
-  <% end %>
+  <%= render 'patterns/form', pattern: @pattern %>
 </div>
 
 <!--登校前パターンのプレビュー（エミュレート）画面-->
@@ -98,6 +15,3 @@
   このパターンを削除する
   <% end %>
 </p>
-
-<!--リアルタイムでライフゲームの書式を変更できるようにするためのJS-->
-<%= render 'patterns/form_preview_script' %>

@@ -1,7 +1,3 @@
-// Place all the styles related to the Members controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
 .members {
   &__show {
     width: 100%;
@@ -13,20 +9,24 @@
     }
     &--divLeft {
       float: left;
-      max-width: 30%;
+      width: 30%;
+      text-align: center;
     }
     &--divRight {
-      margin-left: 30px;
       float: left;
-      max-width: 70%;
+      width: 70%;
       vertical-align: bottom;
     }
     &--img {
       max-height: 150px;
-      margin: 10px;
+      display: inline-block;
+      padding: 5px;
+      border: thin solid dimgray;
+      margin-bottom: 1em;
     }
   }
   &__edit {
+    width: 100%;
     &--name {
       height: 2em;
       width: 100%;
@@ -34,6 +34,12 @@
     &--introduction {
       height: 3.5em;
       width: 100%;
+    }
+    &--submit {
+      text-align: right;
+    }
+    &--callForm {
+      width: 50%;
     }
   }
 }
