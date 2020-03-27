@@ -8,7 +8,7 @@ class DisplayFormatsController < ApplicationController
 
   def create
     # 新規データ取得
-    @display_format = current_user.display_formats.new( display_format_params )
+    @display_format = current_user.display_formats.build( display_format_params )
     # 新規データ保存
     if @display_format.save then
       # 成功 => 一覧ページへ
@@ -61,8 +61,8 @@ class DisplayFormatsController < ApplicationController
 
   private
   def display_format_params
-    params.require( :display_format ).permit( :user_id, :name,
-      :alive_and_dead, :font_color, :background_color, :line_height_rate )
+    params.require( :display_format ).permit( :name, :alive, :dead, :font_color,
+      :background_color, :line_height_rate )
   end
 
   def baria_user

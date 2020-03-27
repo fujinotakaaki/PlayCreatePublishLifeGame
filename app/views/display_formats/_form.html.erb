@@ -1,0 +1,27 @@
+<%= form_with model: display_format, local: true do | f | %>
+
+<!--ヘッダ-->
+<div class="form-group">
+  <%= content_tag :label, "入力項目", class: "col-sm-2 control-label" %>
+  <div class="col-sm-10">
+    <%= content_tag :label, "入力内容", class: "control-label" %>
+  </div>
+</div>
+
+<!--セルの表示定義-->
+<div class="form-group">
+  <label class="col-sm-2 control-label">セルの表示</label>
+  <div class="col-sm-10">
+    <%= f.label :alive, '「生」：' %>
+    <%= f.text_field :alive, maxlength: 1, size: 8, placeholder: "1文字", class: "display_formats__form--cellsConditions" %>
+    ／
+    <%= f.label :dead, '「死」：' %>
+    <%= f.text_field :dead, maxlength: 1, size: 8, placeholder: "1文字", class: "display_formats__form--cellsConditions" %>
+  </div>
+</div>
+
+
+<p class="display_formats__form--submit">
+  <%= f.submit ( /new/.match?( action_name ) ? "作成" : "編集完了" ), class: "btn btn-default" %>
+</p>
+<% end %>

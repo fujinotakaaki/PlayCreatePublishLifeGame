@@ -1,6 +1,6 @@
 <!--投稿済パターンの編集ページ-->
 
-<div class="patterns__new">
+<div class="patterns__edit">
   <!--ページタイトル-->
   <h3>投稿前パターン情報入力</h3>
 
@@ -16,7 +16,7 @@
 
   <!--カテゴリ選択（デフォルト：未分類）-->
   <div class="form-group">
-    <%= f.label :category_id, ' カテゴリ', class: "far fa-folder-open col-sm-2 control-label" %>
+    <%= f.label :category_id, ' カテゴリ', class: "fas fa-folder-open col-sm-2 control-label" %>
     <div class="col-sm-10">
       <%= f.select :category_id, Category.pluck( :name, :id ).to_h %>
     </div>
@@ -40,7 +40,6 @@
 
   <!--パターンのイメージ-->
   <div class="form-group">
-    <%= content_tag :i, '', class: "fas fa-image" %>
     <%= f.label :image_id, " イメージ画像", class: "col-sm-2 control-label fas fa-image" %>
     <div class="col-sm-10">
       <%= f.attachment_field :image %>
@@ -88,10 +87,10 @@
     </div>
   </div>
   <% end %>
-
-  <!--登校前パターンのプレビュー（エミュレート）画面-->
-  <%= render 'patterns/emulation' %>
 </div>
+
+<!--登校前パターンのプレビュー（エミュレート）画面-->
+<%= render 'patterns/emulation' %>
 
 <p class="patterns__edit--alignRight">
   <%= link_to pattern_path( @pattern ), method: :delete, "data-confirm" => "本当に削除してもよろしいですか？", class: "btn btn-danger" do %>

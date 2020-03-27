@@ -16,7 +16,7 @@
 
   <!--カテゴリ選択（デフォルト：未分類）-->
   <div class="form-group">
-    <%= f.label :category_id, ' カテゴリ', class: "far fa-folder-open col-sm-2 control-label" %>
+    <%= f.label :category_id, ' カテゴリ', class: "fas fa-folder-open col-sm-2 control-label" %>
     <div class="col-sm-10">
       <%= f.select :category_id, Category.pluck( :name, :id ).to_h %>
     </div>
@@ -67,12 +67,14 @@
   <%= f.hidden_field :normalized_rows_sequence, readonly: true %>
 
   <!--投稿ボタン-->
-  <%= f.submit "これで投稿する", class: "btn btn-primary patterns__new--submit" %>
+  <p class="patterns__new--submit">
+    <%= f.submit "これで投稿する", class: "btn btn-primary patterns__new--submit" %>
+  </p>
   <% end %>
-
-  <!--登校前パターンのプレビュー（エミュレート）画面-->
-  <%= render 'patterns/emulation' %>
 </div>
+
+<!--登校前パターンのプレビュー（エミュレート）画面-->
+<%= render 'patterns/emulation' %>
 
 <!--リアルタイムでライフゲームの書式を変更できるようにするためのJS-->
 <%= render 'patterns/form_preview_script' %>

@@ -8,12 +8,17 @@
 
 .patterns {
   &__new {
+    margin-bottom: 50px;
     &--img {
       max-height: 150px;
       max-width: 150px;
     }
+    &--submit {
+      text-align: right;
+    }
   }
   &__edit {
+    margin-bottom: 50px;
     &--enterButton {}
     &--table {
       th, td {

@@ -1,7 +1,7 @@
 module ApplicationHelper
   # アラートが必要なページにのみアラートウィンドウを用意するメソッド
   def include_alert?( fullpath )
-    %r{\A/(making|members|patterns/new|users)}.match?( fullpath ) || %r{\A/patterns/\d+/edit\z}.match?( fullpath )
+    %r{\A/(making|members|patterns/new|users|display_format)}.match?( fullpath ) || %r{\A/patterns/\d+/edit\z}.match?( fullpath )
   end
 
   def display_category_index?( fullpath )

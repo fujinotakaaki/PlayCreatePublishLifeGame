@@ -1,3 +1,10 @@
-// Place all the styles related to the DisplayFormats controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.display_formats {
+  &__form {
+    &--cellsConditions {
+      text-align: center;
+    }
+    &--submit {
+      text-align: right;
+    }
+  }
+}
