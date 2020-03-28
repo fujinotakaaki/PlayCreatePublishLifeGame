@@ -27,21 +27,27 @@ class PatternsController < ApplicationController
     # 一覧画面に表示する項目の条件の取得
     key, value = search_params
     # 一覧画面に表示する項目の取得
-    @patterns = begin
-      # 検索条件で分岐
+    @patterns, *@title = begin
       case key
-      when search_category? then
+        # 検索条件で分岐
+      when 'category' then
+        category = Category.find(value)
         # カテゴリー検索の場合
-        Pattern.where( category_id: value ).page( params[ :page ] ).includes(:user, :category, :favorites, :post_comments).reverse_order
+        [ category.patterns.page( params[ :page ] ).includes( :user, :favorites, :post_comments ).reverse_order,
+        "カテゴリ：「#{category.name}」",
+        "「#{category.explanation}」"]
       when search_keyword?( value ) then
         # キーワード検索の場合
-        Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] ).includes(:user, :category, :favorites, :post_comments).reverse_order
+        [ Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order,
+        "「#{value}」の検索結果" ]
       else
         # 全投稿表示の場合
-        Pattern.page( params[ :page ] ).includes(:user, :category, :favorites, :post_comments).reverse_order
+        [ Pattern.page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order,
+        "全投稿" ]
       end
     end
   end
+
 
   def edit
     @pattern = Pattern.find( params[ :id ] )
@@ -83,29 +89,24 @@ class PatternsController < ApplicationController
   def create_pattern_params
     params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id,
       :margin_top, :margin_bottom, :margin_left, :margin_right, :is_torus, :normalized_rows_sequence )
+  end
+
+  def update_pattern_params
+    params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id,
+      :margin_top, :margin_bottom, :margin_left, :margin_right, :is_torus, :is_secret )
+  end
+
+  # 一覧表示の項目検索条件取得メソッド
+  def search_params
+    begin
+      params.require( :search ).permit( :category, :keyword ).to_hash.flatten
+    rescue => e
+      # puts e
     end
+  end
 
-    def update_pattern_params
-      params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id,
-        :margin_top, :margin_bottom, :margin_left, :margin_right, :is_torus, :is_secret )
-      end
-
-      # 一覧表示の項目検索条件取得メソッド
-      def search_params
-        begin
-          params.require( :search ).permit( :category, :keyword ).to_hash.flatten
-        rescue => e
-          # puts e
-        end
-      end
-
-      # カテゴリ検索か判定
-      def search_category?
-        -> key { key&.match?( 'category' ) }
-      end
-
-      # キーワード検索か判定（空文字の場合はfalse）
-      def search_keyword?( value )
-        -> key { ! value.blank? && key&.match?( 'keyword' ) }
-      end
-    end # class
+  # キーワード検索か判定（空文字の場合はfalse）
+  def search_keyword?( value )
+    -> key { ! value.blank? && key&.match?( 'keyword' ) }
+  end
+end # class

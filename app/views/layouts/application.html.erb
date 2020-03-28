@@ -13,7 +13,7 @@
   <!--ヘッダーセクション-->
   <header>
     <h1>Play!Create!Publish! LifeGame</h1>
-    <%= render 'layouts/headerMenue' %>
+    <%= render 'layouts/header_menue' %>
   </header>
 
   <div class="container">
@@ -28,7 +28,7 @@
     <!--メインセクション-->
     <div class="row">
       <!--メインセクション（左側：カテゴリ一覧）-->
-      <% if display_category_index?( request.fullpath ) then %>
+      <% if include_category_index?( request.fullpath ) then %>
       <div class="col-md-2 application__layouts--leftSection">
         <%= render 'categories/index' %>
       </div>

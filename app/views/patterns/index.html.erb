@@ -2,21 +2,22 @@
 
 <!--一覧のタイトル-->
 <h2 class="patterns__index">
-  <%= get_index_title( request.fullpath ) %>一覧
+  <%= @title.first %>一覧
 </h2>
 
 <!--カテゴリ検索が行われた場合の処理-->
-<% if search_category?( request.fullpath ) then %>
+<% unless @title.one? then %>
 <div class="categories__show--main">
+
   <!--カテゴリ説明文タイトル-->
   <h4 class="categories__show--headline">
     このカテゴリについて
   </h4>
-
+  
   <!--カテゴリ説明文-->
   <p class="categories__show--body">
     <%= content_tag :span, '', class: "glyphicon glyphicon-tag", aria: { hidden: true } %>
-    <%= get_category_explanation( request.fullpath ) %>
+    <%= @title.second %>
   </p>
 </div>
 <% end %>
