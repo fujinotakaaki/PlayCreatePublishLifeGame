@@ -1,6 +1,6 @@
 class LifeGame {
   // 中央座標から見て前後左右斜めの相対位置の組み合わせ（ムーア近傍）
-  MOORE_NEIGHBORHOOD = [ [1,1], [1,0], [1,-1], [0,1], [0,-1], [-1,1], [-1,0], [-1,-1] ]
+  mooreNeighborhood = [ [1,1], [1,0], [1,-1], [0,1], [0,-1], [-1,1], [-1,0], [-1,-1] ];
   // 世代交代後の盤面
   newPattern = new Array;
   // セルの表示設定
@@ -86,7 +86,7 @@ class LifeGame {
   deadOrAlive( y, x ) {
     let aliveCellsCount = 0;
     // (1) 周辺の生きているセルのカウントアップ（マップ外は「死」扱い）
-    for ( let [ t, s ] of this.MOORE_NEIGHBORHOOD ) {
+    for ( let [ t, s ] of this.mooreNeighborhood ) {
       // セルの状態は文字列のため、数値に変換必須
       aliveCellsCount +=  Number( this.pattern?.[ y+t ]?.[ x+s ]
         || ( this.isTorus ? this.pattern[ ( y + t + this.height ) % this.height ][ ( x + s + this.width ) % this.width ] : 0 ) );
