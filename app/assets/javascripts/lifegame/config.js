@@ -1,11 +1,4 @@
 class LifeGame {
-  // 中央座標から見て前後左右斜めの相対位置の組み合わせ（ムーア近傍）
-  mooreNeighborhood = [ [1,1], [1,0], [1,-1], [0,1], [0,-1], [-1,1], [-1,0], [-1,-1] ];
-  // 世代交代後の盤面
-  newPattern = new Array;
-  // セルの表示設定
-  alive = '■';
-  dead = '□';
 
 
   // 盤面情報と表示形式情報の設定
@@ -14,12 +7,19 @@ class LifeGame {
     this.generation_count = 0;
     // 初期盤面の取得（要素がビット列の１次元配列）
     this.pattern = pattern;
-    // リフレッシュメソッド用初期盤面の格納変数（浅いコピーだが、実装上不具合は見られない2020.03.21）
-    this.patternInitial = pattern;
     // 盤面の定義域取得
     [ this.height, this.width ] = [ pattern.length, pattern[0].length ];
+    // セルの表示設定
+    [ this.alive, this.dead ] = [ "■", "□" ];
     // 平坦トーラス面フラグ（オプションが設定されている場合は反映）
     this.isTorus = !! options.isTorus;
+
+    // リフレッシュメソッド用初期盤面の格納変数（浅いコピーだが、実装上不具合は見られない2020.03.21）
+    this.patternInitial = pattern;
+    // 世代交代後の盤面
+    this.newPattern = new Array;
+    // 中央座標から見て前後左右斜めの相対位置の組み合わせ（ムーア近傍）
+    this.mooreNeighborhood = [ [1,1], [1,0], [1,-1], [0,1], [0,-1], [-1,1], [-1,0], [-1,-1] ];
   }
 
 
@@ -84,24 +84,32 @@ class LifeGame {
 
   // セルの誕生、生存、過疎、過密処理
   deadOrAlive( y, x ) {
-    let aliveCellsCount = 0;
     // (1) 周辺の生きているセルのカウントアップ（マップ外は「死」扱い）
+    let aliveCellsCount = 0;
+    // ムーア近傍を調べる（８箇所）
     for ( let [ t, s ] of this.mooreNeighborhood ) {
-      // セルの状態は文字列のため、数値に変換必須
-      aliveCellsCount +=  Number( this.pattern?.[ y+t ]?.[ x+s ]
-        || ( this.isTorus ? this.pattern[ ( y + t + this.height ) % this.height ][ ( x + s + this.width ) % this.width ] : 0 ) );
-        // ※平坦トーラス面の場合は循環先のセルの状態を考慮する
+      // 各座標の算出
+      let [ b, a ] = [ y + t, x + s];
+      // 盤面内判定（ 0 <= y < this.height, 0 <= x < this.width ）
+      if ( b + 1 && b - this.height && a + 1 && a - this.width ) {
+        // 盤面内の場合
+        aliveCellsCount += Number( this.pattern[b][a] );
+      }else {
+        // 盤面外の場合（※平坦トーラス面の場合は循環先のセルの状態を考慮する）
+        aliveCellsCount += Number( this.isTorus ? this.pattern[ ( b + this.height ) % this.height ][ ( a + this.width ) % this.width ] : 0 );
+      }
     }
+    // aliveCellsCount +=  Number( this.pattern?.[ y + t ]?.[ x + s ] || ( this.isTorus ? this.pattern[ ( y + t + this.height ) % this.height ][ ( x + s + this.width ) % this.width ] : 0 ) );
 
     // (2) 世代更新後の中心座標のセルの生死状態判定
     // ひとまず次世代では「死」と仮定
     let nextCondition = 0;
     // 次世代で「生」になる可能性があるか判定
     if ( /0/.test( this.pattern[y][x] ) ) {
-      // 元々死の状態だった場合 => 誕生するか判定
+      // 元々「死」の状態だった場合 => 誕生するか判定
       if ( /3/.test( aliveCellsCount ) ) { nextCondition = 1; }
     } else {
-      // 元々生の状態だった場合 => 生存するか判定
+      // 元々「生」の状態だった場合 => 生存するか判定
       if ( /2|3/.test( aliveCellsCount ) ) { nextCondition = 1; }
     }
     // 次世代での状態を返す => "0" or "1"
