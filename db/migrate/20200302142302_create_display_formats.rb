@@ -15,7 +15,7 @@ class CreateDisplayFormats < ActiveRecord::Migration[5.2]
       # 背景色(black)
       t.string :background_color,                default: '#000000'
       # cssの"line-height"の値（単位: %）
-      t.string :line_height_rate,                   default: 100
+      t.integer :line_height_rate,                   default: 100
 
       t.timestamps
     end

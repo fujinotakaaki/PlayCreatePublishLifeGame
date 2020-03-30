@@ -17,7 +17,7 @@ class DisplayFormatsController < ApplicationController
   end
 
   def show
-    # 詳細データの取得
+    # 詳細データの取得（Patterns#new, #edirで使用）
     display_format = DisplayFormat.find( params[ :id ] )
     # jsonデータ送信用に形式変換
     display_format_as_json = {
@@ -54,7 +54,7 @@ class DisplayFormatsController < ApplicationController
   private
   def display_format_params
     params.require( :display_format ).permit( :name, :alive, :dead,
-      :font_color, :background_color, :line_height_rate )
+      :font_color, :background_color, :line_height_rate, :letter_spacing, :font_size )
   end
 
   def baria_user

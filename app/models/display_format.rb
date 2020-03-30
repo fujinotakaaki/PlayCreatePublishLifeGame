@@ -7,7 +7,7 @@ class DisplayFormat < ApplicationRecord
 
   # 表示形式名は定義する
   validates :name, presence: true
-  # cssのline-height負の値ではいけない
+  # cssのline-height負の値ではいけない（css上は問題ないはず）
   validates :line_height_rate, :numericality => { greater_than_or_equal_to: 0 }
 
   # セル状態に関するバリデーション
@@ -34,11 +34,15 @@ class DisplayFormat < ApplicationRecord
 
   # cssの設定情報を抽出し、json形式に変換するメソッド
   def as_json_css_options
-    self.as_json( only: [ :font_color, :background_color, :line_height_rate ] ).transform_keys{ | key | key.to_s.camelize( :lower ).to_sym }
+    self.as_json(
+      only: [ :font_color, :background_color, :line_height_rate, :letter_spacing, :font_size ]
+    ).transform_keys{ | key | key.to_s.camelize( :lower ).to_sym }
   end
 
   # セルの表示定義の設定情報を抽出し、json形式に変換するメソッド
   def as_json_cell_conditions( is_torus = false )
-    self.as_json( only: [ :alive, :dead ] ).merge( { is_torus: is_torus } ).transform_keys{ | key | key.to_s.camelize( :lower ).to_sym }
+    self.as_json(
+      only: [ :alive, :dead ]
+    ).merge( { is_torus: is_torus } ).transform_keys{ | key | key.to_s.camelize( :lower ).to_sym }
   end
 end

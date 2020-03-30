@@ -54,12 +54,15 @@
 <div class="form-group">
   <label class="fas fa-arrows-alt col-sm-2 control-label">セルの間隔</label>
   <div class="col-sm-10">
+    <%= f.label :font_size, ' セルサイズ：'%>
+    <%= f.number_field :font_size, min: 0, class: "display_formats__form--cellsMargin" %>
+    px&emsp;
     <%= f.label :line_height_rate, ' 縦：'%>
-    <%= f.number_field :line_height_rate, class: "display_formats__form--cellsMargin" %>
-    ％　
+    <%= f.number_field :line_height_rate, min: 0, class: "display_formats__form--cellsMargin" %>
+    ％&emsp;
     <%= f.label :letter_spacing, ' 横：'%>
     <%= f.number_field :letter_spacing, class: "display_formats__form--cellsMargin" %>
-    px
+    px&emsp;
   </div>
 </div>
 
