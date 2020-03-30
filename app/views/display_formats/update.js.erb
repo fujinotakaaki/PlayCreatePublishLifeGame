@@ -14,7 +14,7 @@ $("#display_format_<%= column %>").addClass("application__errors--textField");
 
 <% else %>
 // 作成中パターンのデータ更新成功の通知
-callMessageWindow( "success", "投稿に成功しました。" );
+callMessageWindow( "success", "更新に成功しました。" );
 // 「投稿」ボタンを「マイページ遷移」ボタンに置換する
 $(".display_formats__form--submit").html('<%= link_to "マイページへ", member_path( current_user ), class: "btn btn-success" %>');
 <% end %>
