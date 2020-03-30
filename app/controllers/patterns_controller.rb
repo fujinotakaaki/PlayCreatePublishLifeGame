@@ -60,9 +60,9 @@ class PatternsController < ApplicationController
     # gonにデータを格納
     set_to_gon( @pattern )
     # このパターンに対し最近投稿されたコメント5件をピックアップ
-    @latest_comments = PostComment.where( pattern_id: params[ :id ] ).reverse_order.limit(5)
+    @latest_comments = PostComment.where( pattern_id: params[ :id ] ).includes( :user ).reverse_order.limit(5)
     # 最近投稿されたカテゴリが同じパターン2件をピックアップ（自分を除く）
-    @sampling_patterns = Pattern.where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id ).includes(:category).reverse_order.limit(2)
+    @sampling_patterns = Pattern.where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id ).includes( :category ).reverse_order.limit(2)
   end
 
   def update

@@ -27,6 +27,11 @@ class DisplayFormat < ApplicationRecord
   belongs_to :user
   has_many  :patterns
 
+  # 特定のフォーマットを使用した投稿があるか判定
+  def used?
+    self.patterns.exists?
+  end
+
   # cssの設定情報を抽出し、json形式に変換するメソッド
   def as_json_css_options
     self.as_json( only: [ :font_color, :background_color, :line_height_rate ] ).transform_keys{ | key | key.to_s.camelize( :lower ).to_sym }

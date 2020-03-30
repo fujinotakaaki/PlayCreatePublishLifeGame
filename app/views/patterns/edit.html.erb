@@ -10,7 +10,7 @@
 <%= render 'patterns/emulation' %>
 
 <p class="patterns__edit--alignRight">
-  <%= link_to pattern_path( @pattern ), method: :delete, "data-confirm" => "本当に削除してもよろしいですか？", class: "btn btn-danger" do %>
+  <%= link_to pattern_path( @pattern ), method: :delete, data: { confirm: "本当に削除してもよろしいですか？" }, class: "btn btn-danger" do %>
   <%= content_tag :span, '', class: "glyphicon glyphicon-trash", aria: { hidden: true } %>
   このパターンを削除する
   <% end %>

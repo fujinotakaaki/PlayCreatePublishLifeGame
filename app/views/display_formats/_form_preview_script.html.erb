@@ -1,0 +1,29 @@
+<!--リアルタイムでライフゲームの書式を変更できるようにするためのJS部分テンプレート-->
+<!--DisplayFormats#new, #editで使用-->
+
+<script type="text/javascript">
+  // リアルタイムでライフゲーム画面のCSS及びセルの表示定義を反映する
+  $( function() {
+    // 入力項目のいずれかが変更された場合に発火
+    $("input").change( function() {
+      // 変更に必要な変数の格納
+      let changeDisplayFormat = {
+        // cssの設定
+        cellConditions : {
+          alive: $("#display_format_alive").val(),
+          dead: $("#display_format_dead").val()
+        },
+        // セルの表示定義
+        cssOptions : {
+          fontColor: $("#display_format_font_color").val(),
+          backgroundColor: $("#display_format_background_color").val(),
+          lineHeightRate: $("#display_format_line_height_rate").val(),
+          letterSpacing: $("#display_format_letter_spacing").val()
+        }
+      }
+      console.log(changeDisplayFormat);
+      // ライフゲーム画面への変更を反映（lifegame/environments.js参照）
+      initializeLifeGame( false, false, changeDisplayFormat )
+    });
+  });
+</script>

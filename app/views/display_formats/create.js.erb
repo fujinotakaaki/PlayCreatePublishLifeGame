@@ -1,0 +1,20 @@
+// データ作成後の処理
+
+// 表示中のバリデーションエラー用のclassを除去する
+$("input").removeClass("application__errors--textField");
+
+// エラー有無による分岐処理
+<% if @display_format.errors.any? then %>
+// バリデーションエラーメッセージの表示
+callMessageWindow( "warning", "<%= @display_format.errors.full_messages.join( ?, ) %>".split(',') );
+// エラー項目にエラー用のclassを追加する
+<% @display_format.errors.each do | column, message | %>
+$("#display_format_<%= column %>").addClass("application__errors--textField");
+<% end %>
+
+<% else %>
+// 作成中パターンのデータ更新成功の通知
+callMessageWindow( "success", "投稿に成功しました。" );
+// 「投稿」ボタンを「マイページ遷移」ボタンに置換する
+$(".display_formats__form--submit").html('<%= link_to "マイページへ", member_path( current_user ), class: "btn btn-success" %>');
+<% end %>

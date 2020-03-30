@@ -54,7 +54,7 @@ function initializeLifeGame( applyMakingPattern = false, refreshLifeGame = false
 
 
 // ライフゲーム画面のCSS設定を変更するメソッド
-function applyCssOptions( cssOptions = { fontColor: "limegreen", backgroundColor: "black", lineHeightRate: 60 } ) {
+function applyCssOptions( cssOptions = { fontColor: "limegreen", backgroundColor: "black", lineHeightRate: 60, letterSpacing: 0 } ) {
   // jQueryによって適用
   $('.patterns__show--lifeGameDisplay').css({
     // 文字色の変更
@@ -62,7 +62,9 @@ function applyCssOptions( cssOptions = { fontColor: "limegreen", backgroundColor
     // 背景色の変更
     'background-color': `${ cssOptions.backgroundColor }`,
     // 垂直方向の文字間隔の変更
-    'line-height':            `${ cssOptions.lineHeightRate / 100 }`
+    'line-height':            `${ cssOptions.lineHeightRate / 100 }`,
+    // 横方向の文字間隔の変更
+    'letter-spacing':       `${ cssOptions.letterSpacing }px`
   });
 }
 

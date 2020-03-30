@@ -1,25 +1,19 @@
 class DisplayFormatsController < ApplicationController
   before_action :authenticate_user!, except: [ :index ]
   before_action :baria_user,                  only: [ :edit, :update, :destroy ]
+  # send_to_gonメソッドのインクルード
+  include PatternsHelper
 
   def new
     @display_format = DisplayFormat.new
+    set_to_gon( Pattern.take )
   end
 
   def create
     # 新規データ取得
     @display_format = current_user.display_formats.build( display_format_params )
     # 新規データ保存
-    if @display_format.save then
-      # 成功 => 一覧ページへ
-      redirect_to display_formats_path
-    else
-      # 失敗 => 作成ページへ
-      puts '/ここみる'
-      puts @display_format.inspect
-      puts @display_format.errors.full_messages.inspect
-      render :new
-    end
+    @display_format.save
   end
 
   def show
@@ -39,19 +33,14 @@ class DisplayFormatsController < ApplicationController
   def edit
     # 編集データ取得
     @display_format = DisplayFormat.find( params[ :id ] )
+    set_to_gon( @display_format.patterns.take || Pattern.take )
   end
 
   def update
     # 編集データ取得
     @display_format = DisplayFormat.find( params[ :id ] )
     # 編集データ更新
-    if @display_format.update( display_format_params ) then
-      # 成功 => 一覧ページへ
-      redirect_to display_formats_path
-    else
-      # 失敗 => 編集ページへ
-      render :edit
-    end
+    @display_format.update( display_format_params )
   end
 
   def destroy
@@ -64,8 +53,8 @@ class DisplayFormatsController < ApplicationController
 
   private
   def display_format_params
-    params.require( :display_format ).permit( :name, :alive, :dead, :font_color,
-      :background_color, :line_height_rate )
+    params.require( :display_format ).permit( :name, :alive, :dead,
+      :font_color, :background_color, :line_height_rate )
   end
 
   def baria_user

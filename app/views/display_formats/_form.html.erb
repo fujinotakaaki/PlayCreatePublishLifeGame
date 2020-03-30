@@ -1,4 +1,6 @@
-<%= form_with model: display_format, local: true, class: "form-horizontal" do | f | %>
+<div class="test"></div>
+
+<%= form_with model: display_format, class: "form-horizontal" do | f | %>
 
 <!--ヘッダ-->
 <div class="form-group">
@@ -28,6 +30,7 @@
     ／
     <%= f.label :dead, '「死」：' %>
     <%= f.text_field :dead, maxlength: 1, size: 8, placeholder: "1文字", class: "display_formats__form--cellsConditions" %>
+    （注意：文字の組み合わせによっては、表示にズレが発生しますのでご注意ください。）
   </div>
 </div>
 
@@ -53,13 +56,21 @@
   <div class="col-sm-10">
     <%= f.label :line_height_rate, ' 縦：'%>
     <%= f.number_field :line_height_rate, class: "display_formats__form--cellsMargin" %>
+    ％　
+    <%= f.label :letter_spacing, ' 横：'%>
+    <%= f.number_field :letter_spacing, class: "display_formats__form--cellsMargin" %>
     ％
   </div>
 </div>
 
 <!--送信ボタン-->
 <p class="display_formats__form--submit">
-  <%= display_format.inspect %><br>
-  <%= f.submit ( /new/.match?( action_name ) ? "作成" : "編集完了" ), class: "btn btn-default" %>
+  <%= f.submit ( /new/.match?( action_name ) ? "作成" : "編集完了" ), class: "btn btn-default", data: { confirm: "保存しますか？" } %>
+  <!--このフォーマットが使用されていない場合に限り削除可能とする-->
+  <% if  action_name == 'edit' && ! display_format.used? then %>
+  <%= link_to "このフォーマットを削除", display_format_path( display_format ), method: :delete, data: { confirm: "本当に削除してもよろしいですか？" }, class: "btn btn-danger" %>
+  <% end %>
 </p>
 <% end %>
+
+<%= render 'display_formats/form_preview_script' %>
