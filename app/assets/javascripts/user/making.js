@@ -64,7 +64,9 @@ function normalizationMakingPattern( makingPatternArray = false ) {
   // テキストエリアに反映
   $(".makings__edit--textarea").val( makingPatternArray.join("\n") );
   // セルの状態表示に変換
-  let convertMakingPatternArray = makingPatternArray.map( currentbitString => currentbitString.replace( /0/g, "□" ).replace( /1/g, "■" ) );
+  let convertMakingPatternArray = makingPatternArray.map( currentbitString =>
+    currentbitString.replace( /0/g, "□" ).replace( /1/g, "■" )
+  );
   // プレビュー画面へ反映
   $(".patterns__show--lifeGameDisplay").html( convertMakingPatternArray.join("<br>") );
 }
@@ -76,10 +78,14 @@ function getMakingPatternTextareaInfo( normalization = true ) {
   let makingPatternArray = $(".makings__edit--textarea").val().split("\n");
   if ( normalization ) {
     // 全ビット列に対して"0"と"1"以外の文字を除去する処理
-    makingPatternArray = makingPatternArray.map( currentbitString => currentbitString.replace( /[^01]/g, "" ) );
+    makingPatternArray = makingPatternArray.map( currentbitString =>
+      currentbitString.replace( /[^01]/g, "" )
+    );
   }
   // 最長の文字列の文字数を取得
-  let maxBitLength = makingPatternArray.reduce( ( max, currentBitString ) => ( max < currentBitString.length ? currentBitString.length : max ), 0 );
+  let maxBitLength = makingPatternArray.reduce( ( max, currentBitString ) =>
+  ( max < currentBitString.length ? currentBitString.length : max ),
+  0 );
   // 第1引数…各ビット列の配列
   // 第2引数…最長のビット列の長さ
   // normalization = falseの場合は"0"と"1"以外の文字も含めて処理される
@@ -94,7 +100,7 @@ function autoComplement( side ) {
   // 作成中パターンの「各ビット列の配列」と「最長のビット列の長さ」を取得
   let [ makingPatternArray, maxBitLength ] = getMakingPatternTextareaInfo( true );
   // 横方向に対するビットの補完処理（0で補完）
-  let autoComplementMakingPatternArray = makingPatternArray.map( function ( currentBitString ) {
+  let autoComplementMakingPatternArray = makingPatternArray.map( function( currentBitString ) {
     if ( autoCompleteToRightSide ) {
       // 右側に補完する場合の処理
       return currentBitString.concat( "0".repeat( maxBitLength - currentBitString.length ) );
@@ -118,19 +124,23 @@ function verificationMakingPattern() {
   // ===バリデーション処理===================================
   let errorMessages = new Array;
   // (1) 最長のビット列の長さが1以上か
-  if ( ! maxBitLength ) {
+  let test1 = ! maxBitLength;
+  if ( test1 ) {
     errorMessages.push("セルがありません。");
   }
   // (2) 各ビット列の長さが等しいか
-  if ( ! makingPatternArray.every( currentBitString => currentBitString.length == maxBitLength ) ) {
+  let test2 = ! makingPatternArray.every( currentBitString => currentBitString.length == maxBitLength )
+  if ( test2 ) {
     errorMessages.push("パターンが不揃いです。");
   }
   // (3) "0"または"1"以外の文字が含まれていないか
-  if ( ! makingPatternArray.every( currentBitString => ! /[^01]/.test( currentBitString ) ) ) {
+  let test3 = ! makingPatternArray.every( currentBitString => ! /[^01]/.test( currentBitString ) )
+  if ( test3 ) {
     errorMessages.push("不適切な文字が混入してます。");
   }
   // (4) 「生」セルは存在するか（最初のテストが不通過なら実行しない）
-  if ( !! maxBitLength && makingPatternArray.every( currentBitString => ! /1/.test( currentBitString ) ) ) {
+  let test4 = ! test1 && makingPatternArray.every( currentBitString => ! /1/.test( currentBitString ) )
+  if ( test4 ) {
     errorMessages.push("「生」セルがありません。");
   }
   // =====================================================

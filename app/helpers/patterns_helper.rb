@@ -31,9 +31,13 @@ module PatternsHelper
     pattern_js = Array.new
     # 上側マージン挿入（不具合予防のため深いコピーで作成）
     pattern_js += Array.new( pattern.margin_top ){ ?0 * pattern_bit_length }
-    # パターンを配列に格納していく
+    # パターン情報を配列に格納
     pattern_rows.each do | decimal_number |
-      pattern_js.push( ?0 * pattern.margin_left + ( "%0#{ largest_number_bit_length }b" % decimal_number ) + ?0 * pattern.margin_right )
+      pattern_js.push(
+        ?0 * pattern.margin_left +
+        ( "%0#{ largest_number_bit_length }b" % decimal_number ) +
+        ?0 * pattern.margin_right
+      )
     end
     # 下側マージンの挿入（不具合予防のため深いコピーで作成）
     pattern_js += Array.new( pattern.margin_bottom ){ ?0 * pattern_bit_length }

@@ -31,19 +31,25 @@ class PatternsController < ApplicationController
       case key
         # 検索条件で分岐
       when 'category' then
-        category = Category.find(value)
         # カテゴリー検索の場合
-        [ category.patterns.page( params[ :page ] ).includes( :user, :favorites, :post_comments ).reverse_order,
-        "カテゴリ：「#{category.name}」",
-        "「#{category.explanation}」"]
+        category = Category.find(value)
+        [
+          category.patterns.page( params[ :page ] ).includes( :user, :favorites, :post_comments ).reverse_order,
+          "カテゴリ：「#{category.name}」",
+          "「#{category.explanation}」"
+        ]
       when search_keyword?( value ) then
         # キーワード検索の場合
-        [ Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order,
-        "「#{value}」の検索結果" ]
+        [
+          Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order,
+          "「#{value}」の検索結果"
+        ]
       else
         # 全投稿表示の場合
-        [ Pattern.page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order,
-        "全投稿" ]
+        [
+          Pattern.page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order,
+          "全投稿"
+        ]
       end
     end
   end
@@ -73,6 +79,7 @@ class PatternsController < ApplicationController
   def destroy
     pattern = Pattern.find( params[ :id ] )
     pattern.destroy
+    # マイページへ遷移
     redirect_to member_path( current_user )
   end
 
@@ -81,7 +88,7 @@ class PatternsController < ApplicationController
   def baria_user
     # ログインユーザと製作者が一致しているか判定
     unless Pattern.find( params[ :id ] ).user_id  == current_user.id then
-      # 不一致 => 一覧ページへ
+      # 不一致 => マイページへ
       redirect_to current_user
     end
   end

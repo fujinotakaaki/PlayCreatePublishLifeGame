@@ -1,7 +1,7 @@
 class DisplayFormatsController < ApplicationController
   before_action :authenticate_user!
   before_action :baria_user,                  only: [ :edit, :update, :destroy ]
-  # send_to_gonメソッドのインクルード
+  # set_to_gonメソッドのインクルード
   include PatternsHelper
 
   def new
@@ -63,8 +63,8 @@ class DisplayFormatsController < ApplicationController
   def baria_user
     # ログインユーザと製作者が一致しているか判定
     unless DisplayFormat.find( params[ :id ] ).user_id  == current_user.id then
-      # 不一致 => 一覧ページへ
-      redirect_to display_formats_path
+      # 不一致 => rootへ
+      redirect_to root_path
     end
   end
 end
