@@ -6,10 +6,11 @@ class Users::PasswordsController < Devise::PasswordsController
   #   super
   # end
 
-  # POST /resource/password
-  # def create
-  #   super
-  # end
+  # POST /users/password
+  def create
+    puts 'Users::PasswordsController#createが起動しました、'
+    super
+  end
 
   # GET /resource/password/edit?reset_password_token=abcdef
   # def edit

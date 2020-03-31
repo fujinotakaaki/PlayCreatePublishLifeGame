@@ -1,0 +1,10 @@
+.registrations {
+  &__new {
+    &--form {
+      border: thin solid #888;
+    }
+    &--submitForm {
+      text-align: right;
+    }
+  }
+}
