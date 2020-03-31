@@ -6,7 +6,7 @@ module MakingsHelper
 
   # concated_bit_stringsから、
   # 上下左右のマージンとパターンの核となる部分について、
-  # 各行を指数表記した文字列の配列を、カンマ区切りの文字列として生成
+  # 各行を16進数に変換した配列を、カンマ区切りの文字列として生成
   def build_up_pattern_params_from( concated_bit_strings )
     # セパレータを基に配列に分割
     rows = concated_bit_strings.split( /[^01]/ )
@@ -62,19 +62,19 @@ module MakingsHelper
   # パターンの右側マージンを計算
   def get_minimum_exponent_base2( positive_numbers )
     # 各整数の2を基数とする指数に変換する
-    positive_numbers.inject( positive_numbers.first ) do | current_minimum_exponent, positive_number |
+    positive_numbers.inject( positive_numbers.first ) do | minimum_exponent, positive_number |
       # 初期値はpositive_numbers.min以上の値であればなんでも良い
       # 奇数が存在すれば強制終了 => 最小の基数は必ず0
       break 0 if positive_number.odd?
       # 指数の数え上げ処理
-      exponent = 0
+      current_exponent = 0
       while( positive_number.even? )
         # 偶数であれば右へビットシフト
         positive_number >>= 1
-        exponent += 1
+        current_exponent += 1
       end
       # 決定した指数を返す
-      [ current_minimum_exponent, exponent ].min
+      [ minimum_exponent, current_exponent ].min
     end
   end
 end

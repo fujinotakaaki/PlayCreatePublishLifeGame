@@ -17,9 +17,9 @@
   </header>
 
   <div class="container">
+    <!--アラートセクション-->
     <!--ページURLからアラートセクションが必要か判定-->
     <% if include_alert?( request.fullpath ) then %>
-    <!--アラートセクション-->
     <div class="row">
       <%= render 'layouts/alert' %>
     </div>
@@ -28,7 +28,7 @@
     <!--メインセクション-->
     <div class="row">
       <!--メインセクション（左側：カテゴリ一覧）-->
-      <% if include_category_index?( request.fullpath ) then %>
+      <% if include_category_index?( request.fullpath, controller_name ) then %>
       <div class="col-md-2 application__layouts--leftSection">
         <%= render 'categories/index' %>
       </div>

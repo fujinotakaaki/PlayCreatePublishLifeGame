@@ -1,3 +1,27 @@
-<h1>Homes#top</h1>
-<p>Find me in app/views/homes/top.html.erb</p>
-<p><%= link_to 'DisplayFormat#index', display_formats_path %></p>
+<%= link_to "めーるみる", '/letter_opener' if Rails.env.development? %>
+
+<!--ライフゲームエミュレート画面-->
+<%= render 'patterns/emulation' %>
+
+<script type="text/javascript">
+  $(function(){
+    <!-- トップページのレイアウト調整 -->
+    $("body").css({
+      'background-color': 'black',
+      'color': 'black'
+    });
+
+    console.log("9秒後にライフゲーム が動きます。");
+    <!--ウェルカムメッセイジライフゲーム の始動メソッド -->
+    setTimeout( startTopLifeGame, 9000);
+  })
+
+  <!--「ウェルカムメッセージ」パターンのライフゲーム 始動メソッド -->
+  function startTopLifeGame() {
+    console.log("スタート！！");
+    // 始動のお知らせ
+    $(".patterns__show--lifeGameDisplay").after("<p style='color: white;'>スタート</p>")
+    // ライフゲーム実行メソッド
+    startProcess( 180 );
+  }
+</script>

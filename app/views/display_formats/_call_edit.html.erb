@@ -1,0 +1,26 @@
+<!--作成済みパターン遷移ボタン-->
+<div class="btn-group display_formats__form--callEdit">
+  <!--ドロップダウンボタンの表示-->
+  <button type="button" class="btn btn-default">
+    作成済みの定義を編集
+  </button>
+
+  <!--ドロップダウン表示アクション-->
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+    <span class="caret"></span>
+  </button>
+
+  <!--ドロップダウンリスト-->
+  <ul class="dropdown-menu" role="menu">
+    <% if display_formats.any? then %>
+    <!--本人が作成したセルの表示形式一覧-->
+    <% display_formats.each do | display_format | %>
+    <li role="presentation">
+      <%= link_to display_format.name, edit_display_format_path( display_format ), tabindex: -1, role: "menuitem" %>
+    </li>
+    <% end %>
+    <% else %>
+    <li role="presentation">現在、作成済みのセルの表示定義はありません</li>
+    <% end %>
+  </ul>
+</div>

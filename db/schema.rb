@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_23_110715) do
+ActiveRecord::Schema.define(version: 2020_03_31_091024) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -38,9 +38,11 @@ ActiveRecord::Schema.define(version: 2020_03_23_110715) do
     t.string "dead"
     t.string "font_color", default: "#32CD32"
     t.string "background_color", default: "#000000"
-    t.string "line_height_rate", default: "100"
+    t.integer "line_height_rate", default: 100
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "letter_spacing", default: 0
+    t.integer "font_size", default: 30
   end
 
   create_table "favorites", force: :cascade do |t|

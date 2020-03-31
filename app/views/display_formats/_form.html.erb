@@ -1,6 +1,4 @@
-<div class="test"></div>
-
-<%= form_with model: display_format, class: "form-horizontal" do | f | %>
+<%= form_with model: display_format, class: "form-horizontal display_formats__form" do | f | %>
 
 <!--ヘッダ-->
 <div class="form-group">
@@ -29,7 +27,7 @@
     <%= f.text_field :alive, maxlength: 1, size: 8, placeholder: "1文字", class: "display_formats__form--cellsConditions" %>
     ／
     <%= f.label :dead, '「死」：' %>
-    <%= f.text_field :dead, maxlength: 1, size: 8, placeholder: "1文字", class: "display_formats__form--cellsConditions" %>
+    <%= f.text_field :dead, maxlength: 1, size: 8, placeholder: "1文字", class: "display_formats__form--cellsConditions" %><br>
     （注意：文字の組み合わせによっては、表示にズレが発生しますのでご注意ください。）
   </div>
 </div>
@@ -54,18 +52,21 @@
 <div class="form-group">
   <label class="fas fa-arrows-alt col-sm-2 control-label">セルの間隔</label>
   <div class="col-sm-10">
+    <%= f.label :font_size, ' セルサイズ：'%>
+    <%= f.number_field :font_size, min: 0, class: "display_formats__form--cellsMargin" %>
+    px&emsp;
     <%= f.label :line_height_rate, ' 縦：'%>
-    <%= f.number_field :line_height_rate, class: "display_formats__form--cellsMargin" %>
-    ％　
+    <%= f.number_field :line_height_rate, min: 0, class: "display_formats__form--cellsMargin" %>
+    ％&emsp;
     <%= f.label :letter_spacing, ' 横：'%>
     <%= f.number_field :letter_spacing, class: "display_formats__form--cellsMargin" %>
-    px
+    px&emsp;
   </div>
 </div>
 
 <!--送信ボタン-->
 <p class="display_formats__form--submit">
-  <%= f.submit ( /new/.match?( action_name ) ? "作成" : "編集完了" ), class: "btn btn-default", data: { confirm: "保存しますか？" } %>
+  <%= f.submit ( /new/.match?( action_name ) ? "投稿" : "編集完了" ), class: "btn btn-default", data: { confirm: "保存しますか？" } %>
   <!--このフォーマットが使用されていない場合に限り削除可能とする-->
   <% if  action_name == 'edit' && ! display_format.used? then %>
   <%= link_to "このフォーマットを削除", display_format_path( display_format ), method: :delete, data: { confirm: "本当に削除してもよろしいですか？" }, class: "btn btn-danger" %>

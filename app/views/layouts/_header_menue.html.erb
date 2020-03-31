@@ -14,7 +14,7 @@
   </ul>
   <ul class="application__header--interface">
     <li><%= link_to "トップ", root_path %></li>
-    <li><%= link_to "PCPLGとは？", about_path %></li>
+    <li><%= link_to "ライフゲームとは？", about_path %></li>
     <li><%= link_to "投稿一覧", patterns_path %></li>
 
     <% if user_signed_in? then %>
@@ -34,19 +34,24 @@
           　メニュー
         </li>
         <li>
-          <!--パターン新規作成ページへのリンク-->
-          <%= content_tag :span, '', class: "glyphicon glyphicon-plus", aria: { hidden: true } %>
-          <%= link_to "　パターン作成", edit_making_path %>
-        </li>
-        <li>
           <!--ログインユーザ中のページへのリンク-->
           <%= content_tag :span, '', class: "glyphicon glyphicon-user", aria: { hidden: true } %>
           <%= link_to "　マイページ", member_path( current_user ) %>
         </li>
         <li>
+          <!--パターン新規作成ページへのリンク-->
+          <%= content_tag :span, '', class: "glyphicon glyphicon-plus", aria: { hidden: true } %>
+          <%= link_to "　パターン作成", edit_making_path %>
+        </li>
+        <li>
+          <!--セルの表示形式編集用リンク-->
+          <%= content_tag :i, "", class: "fas fa-th-large" %>
+          <%= link_to "　セルの表示編集", new_display_format_path %>
+        </li>
+        <li>
           <!--ログアウト用リンク-->
           <%= content_tag :span, '', class: "glyphicon glyphicon-share", aria: { hidden: true } %>
-          <%= link_to "　ログアウト", destroy_user_session_path, method: :delete %>
+          <%= link_to "　ログアウト", destroy_user_session_path, method: :delete, data: { confirm: "ログアウトしてよろしいですか？" } %>
         </li>
       </ul>
     </li>
