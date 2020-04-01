@@ -40,6 +40,7 @@ class MakingsController < ApplicationController
 
 
   private
+  
   def update_params
     # 送信されてきたデータから必要なパラメータを抽出
     raw_params = params.require( :making ).permit( :is_torus, :making_text )

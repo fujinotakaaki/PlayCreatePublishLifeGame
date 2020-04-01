@@ -54,7 +54,9 @@ class DisplayFormatsController < ApplicationController
     redirect_to member_path( current_user )
   end
 
+
   private
+
   def display_format_params
     params.require( :display_format ).permit( :name, :alive, :dead,
       :font_color, :background_color, :line_height_rate, :letter_spacing, :font_size )

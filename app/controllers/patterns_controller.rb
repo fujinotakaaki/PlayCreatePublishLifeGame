@@ -1,6 +1,6 @@
 class PatternsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
-  before_action :baria_user,                  only: [ :edit, :update, :destroy ]
+  before_action :baria_user, only: [ :edit, :update, :destroy ]
   # build_up_pattern_params_fromメソッドをインクルード（ビット列 => dbデータへ変換）
   include MakingsHelper
   # build_up_bit_strings_from, set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
@@ -8,12 +8,12 @@ class PatternsController < ApplicationController
 
 
   def new
-    # テキスト化されているパターンデータを配列にする
-    concated_bit_strings = params[:making_pattern]
-    # トーラス面設定の取得
-    bool = /true/.match?( params[:is_torus] )
-    # パターン形成に関する必要項目をあらかじめ入力
-    @pattern = Pattern.new( build_up_pattern_params_from( concated_bit_strings ).merge( { is_torus: bool } ) )
+    # パラメータの構築
+    precreate_params = build_up_pattern_params_from( params[:making_pattern] )
+    # 新規パターンの作成とパラメータの代入
+    @pattern = Pattern.new( precreate_params )
+    # トーラス面設定の取得・代入
+    @pattern.is_torus = /true/.match?( params[:is_torus] )
     # gonにデータを格納
     set_to_gon( @pattern )
   end
@@ -30,20 +30,17 @@ class PatternsController < ApplicationController
     @patterns, *@title = begin
       case key
         # 検索条件で分岐
-      when 'category' then
+      when 'category'
         # カテゴリー検索の場合
         category = Category.find(value)
         [
-          category.patterns.page( params[ :page ] )
-            .includes( :user, :favorites, :post_comments ).reverse_order,
-          "カテゴリ：「#{category.name}」",
-          "「#{category.explanation}」"
+          category.patterns.page( params[ :page ] ).includes( :user, :favorites, :post_comments ).reverse_order,
+          "カテゴリ：「#{category.name}」", "「#{category.explanation}」"
         ]
-      when search_keyword?( value ) then
+      when search_keyword?( value )
         # キーワード検索の場合
         [
-          Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] )
-            .includes( :user, :category, :favorites, :post_comments ).reverse_order,
+          Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order,
           "「#{value}」の検索結果"
         ]
       else
@@ -55,7 +52,6 @@ class PatternsController < ApplicationController
       end
     end
   end
-
 
   def edit
     @pattern = Pattern.find( params[ :id ] )
@@ -70,8 +66,7 @@ class PatternsController < ApplicationController
     # このパターンに対し最近投稿されたコメント5件をピックアップ
     @latest_comments = PostComment.where( pattern_id: params[ :id ] ).includes( :user ).reverse_order.limit(5)
     # 最近投稿されたカテゴリが同じパターン2件をピックアップ（自分を除く）
-    @sampling_patterns = Pattern.where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id )
-      .includes( :category ).reverse_order.limit(2)
+    @sampling_patterns = Pattern.where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id ).includes( :category ).reverse_order.limit(2)
   end
 
   def update
@@ -88,6 +83,7 @@ class PatternsController < ApplicationController
 
 
   private
+
   def baria_user
     # ログインユーザと製作者が一致しているか判定
     unless Pattern.find( params[ :id ] ).user_id  == current_user.id then
@@ -109,9 +105,11 @@ class PatternsController < ApplicationController
   # 一覧表示の項目検索条件取得メソッド
   def search_params
     begin
+      # カテゴリorキーワード検索の場合
       params.require( :search ).permit( :category, :keyword ).to_hash.flatten
     rescue => e
-      # puts e
+      # 全投稿検索の場合
+      # logger.debug e
     end
   end
 

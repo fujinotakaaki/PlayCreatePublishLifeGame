@@ -10,7 +10,7 @@ module PatternsHelper
       # cssの設定
       cssOptions: display_format.as_json_css_options,
       # セルの表示定義設定
-      cellConditions: display_format.as_json_cell_conditions( pattern.is_torus )
+      cellConditions: display_format.as_json_cell_conditions( { is_torus: pattern.is_torus } )
     )
   end
 
@@ -19,7 +19,7 @@ module PatternsHelper
     # 行データがない場合は生きたセル１個の配列とする（なんでもいい）
     # パターンを初めて作る（行データがないため）場合に発生する
     if pattern.normalized_rows_sequence.nil? then
-      return [ 'ようこそ！' ]
+      return [ "ようこそ！！" ]
     else
       pattern_rows = pattern.normalized_rows_sequence.split( ?, ).map(&:hex)
     end

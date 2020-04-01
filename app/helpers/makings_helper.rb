@@ -1,7 +1,7 @@
 module MakingsHelper
   CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE = {
     length: 'パターンの幅が不揃いです。',
-    no_alive_cells: '「生」状態のセルがありません。'
+    no_alive_cells: '「生」状態のセルがありません。',
   }
 
   # concated_bit_stringsから、
@@ -27,24 +27,28 @@ module MakingsHelper
       # 全部の行が0のため処理中断
       return CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE[ :no_alive_cells ]
     end
+    # セルが存在する位置の最初〜最後の範囲オブジェクトの作成
+    remove_vertical_zero_rows_range = ( margin_top ... ( rows.size - margin_bottom ) )
     # 上下の余白を除去し、各要素を数値化
-    remove_vertical_zero_rows = rows[ margin_top ... ( rows.size - margin_bottom ) ].map{ | bit_string | bit_string.to_i(2) }
+    each_row_number = rows[ remove_vertical_zero_rows_range ].map{ | bit_string | bit_string.to_i(2) }
     # 左側マージンの計算（0でない最大値について、パターンの幅から最大値の桁数との差をとる）
-    margin_left = pattern_width - remove_vertical_zero_rows.max.bit_length
+    margin_left = pattern_width - each_row_number.max.bit_length
     # 右側マージンの計算（基数を2としたとき、指数が最小値のものを取得）
-    margin_right = get_minimum_exponent_base2( remove_vertical_zero_rows.select(&:positive?) )
+    margin_right = get_minimum_exponent_base2( each_row_number.select(&:positive?) )
     # 各整数を右側マージンだけ右にビットシフトし、16進数に変換
-    normalized_rows_sequence_array = remove_vertical_zero_rows.map do | decimal_number |
+    normalized_rows_sequence_array = each_row_number.map do | decimal_number |
       decimal_number.zero? ? 0 : ( decimal_number >> margin_right ).to_s(16)
     end
     # Making, Patternモデルに合わせたパラメータの構築
-    return {
+    making_params = {
       margin_top: margin_top,
       margin_bottom: margin_bottom,
       margin_left: margin_left,
       margin_right: margin_right,
-      normalized_rows_sequence: normalized_rows_sequence_array.join( ?, )
+      normalized_rows_sequence: normalized_rows_sequence_array.join( ?, ),
     }
+    # パラメータを返す
+    return making_params
   end
 
   # パターンの上側マージンを計算
@@ -68,7 +72,7 @@ module MakingsHelper
       break 0 if positive_number.odd?
       # 指数の数え上げ処理
       current_exponent = 0
-      while( positive_number.even? )
+      while positive_number.even? do
         # 偶数であれば右へビットシフト
         positive_number >>= 1
         current_exponent += 1

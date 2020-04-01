@@ -1,8 +1,8 @@
 class DisplayFormat < ApplicationRecord
   DISPLAY_FORMAT_ERROR_MESSAGES = {
-    length: 'セル状態は1文字で定義してください.' ,
-    display_format: '「生」と「死」のセル状態は同じ文字にできません.',
-    color: 'セルの色と背景色は同じにできません.'
+    length: "セル表示は1文字で定義してください",
+    display_format: "「生」と「死」のセル状態は同じ文字にできません",
+    color: "セルの色と背景色は同じにできません",
   }
 
   # 表示形式名は定義する
@@ -25,24 +25,24 @@ class DisplayFormat < ApplicationRecord
   end
 
   belongs_to :user
-  has_many  :patterns
+  has_many :patterns
 
   # 特定のフォーマットを使用した投稿があるか判定
   def used?
-    self.patterns.exists?
+    patterns.exists?
   end
 
   # cssの設定情報を抽出し、json形式に変換するメソッド
   def as_json_css_options
-    self.as_json(
+    as_json(
       only: [ :font_color, :background_color, :line_height_rate, :letter_spacing, :font_size ]
     ).transform_keys{ | key | key.to_s.camelize( :lower ).to_sym }
   end
 
   # セルの表示定義の設定情報を抽出し、json形式に変換するメソッド
-  def as_json_cell_conditions( is_torus = false )
-    self.as_json(
+  def as_json_cell_conditions( option = { is_torus: false } )
+    as_json(
       only: [ :alive, :dead ]
-    ).merge( { is_torus: is_torus } ).transform_keys{ | key | key.to_s.camelize( :lower ).to_sym }
+    ).merge( option ).transform_keys{ | key | key.to_s.camelize( :lower ).to_sym }
   end
 end

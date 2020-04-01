@@ -5,10 +5,10 @@ class ApplicationController < ActionController::Base
   # ログイン直後の遷移先指定
   def after_sign_in_path_for( resource )
     case resource
-    when User then
+    when User
       # 一般ユーザの場合
       member_path( resource )
-    when Admin then
+    when Admin
       # 管理者の場合
       admin_root_path
     end
@@ -19,7 +19,9 @@ class ApplicationController < ActionController::Base
     root_path
   end
 
+
   protected
+
   def configure_permitted_parameters
     # サインアップ時に必要なパラメータの設定
     devise_parameter_sanitizer.permit( :sign_up, keys: [ :email, :name ] )

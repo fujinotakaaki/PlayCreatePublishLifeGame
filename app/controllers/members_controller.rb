@@ -1,6 +1,6 @@
 class MembersController < ApplicationController
   before_action :authenticate_user!, except: [ :show ]
-  before_action :baria_user,                 only: [ :update, :destroy ]
+  before_action :baria_user, only: [ :update, :destroy ]
 
   def show
     # ユーザ情報取得
@@ -19,11 +19,12 @@ class MembersController < ApplicationController
     @user.update!( user_params )
   end
 
+
   private
+
   def user_params
     params.require( :user ).permit( :id, :name, :introduction, :profile_image )
   end
-
 
   def baria_user
     # ログインユーザと製作者が一致しているか判定

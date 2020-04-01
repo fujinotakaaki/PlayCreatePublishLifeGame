@@ -10,11 +10,11 @@ class Pattern < ApplicationRecord
   belongs_to :category
   belongs_to :display_format
   has_many  :post_comments, dependent: :destroy
-  has_many  :favorites,             dependent: :destroy
+  has_many  :favorites, dependent: :destroy
 
 
   # お気に入り登録されていればtrueを返す
   def favoreted?( user )
-    !! Favorite.find_by( user_id: user.id, pattern_id: self.id )
+    !! Favorite.find_by( user_id: user.id, pattern_id: id )
   end
 end

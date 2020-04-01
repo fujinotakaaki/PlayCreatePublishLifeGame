@@ -48,9 +48,9 @@ class HomesController < ApplicationController
       # □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
       # □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
       # □□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□
-      })
-      set_to_gon( top_pattern )
-    end
+    })
+    set_to_gon( top_pattern )
+  end
 
   def about
   end

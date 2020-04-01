@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :patterns do
     # コメント投稿のルーティング
     resource :post_comment, only: [ :create ]
-    #お気に入りのルーティング
+    # お気に入りのルーティング
     resource :favorite, only: [ :create, :destroy ]
   end
   # 表示形式のルーティング
@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     devise_for :users, controllers: {
       sessions: 'users/sessions',
       registrations: 'users/registrations',
-      passwords: 'users/passwords'
+      passwords: 'users/passwords',
     }
   end
 
@@ -33,11 +33,11 @@ Rails.application.routes.draw do
     # ジャンルのルーティング
     resources :categories
   end
-  #管理者アカウント管理への設定
+  # 管理者アカウント管理への設定
   devise_for :admins, skip: :all
   devise_scope :admin do
-    get      'admin/sign_in'   => 'admin/users/sessions#new', as: 'new_admin_session'
-    post    'admin/sign_in'   => 'admin/users/sessions#create', as: 'admin_session'
+    get 'admin/sign_in' => 'admin/users/sessions#new', as: 'new_admin_session'
+    post 'admin/sign_in' => 'admin/users/sessions#create', as: 'admin_session'
     delete 'admin/sign_out' => 'admin/users/sessions#destroy', as: 'destroy_admin_session'
   end
 

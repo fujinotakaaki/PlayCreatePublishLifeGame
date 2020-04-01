@@ -6,7 +6,9 @@ class PostCommentsController < ApplicationController
     @comment.save
   end
 
+
   private
+  
   def post_comment_params
     { user_id: current_user.id, pattern_id: params[ :pattern_id ], body: params[ :body ] }
   end
