@@ -27,10 +27,10 @@ module MakingsHelper
       # 全部の行が0のため処理中断
       return CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE[ :no_alive_cells ]
     end
-    # セルが存在する位置の最初〜最後の範囲オブジェクトの作成
-    remove_vertical_zero_rows_range = ( margin_top ... ( rows.size - margin_bottom ) )
+    # セルが存在する要素について、最初〜最後の位置を表す範囲オブジェクトの作成
+    present_alive_cells_range = ( margin_top .. ( -1 - margin_bottom ) )
     # 上下の余白を除去し、各要素を数値化
-    each_row_number = rows[ remove_vertical_zero_rows_range ].map{ | bit_string | bit_string.to_i(2) }
+    each_row_number = rows[ present_alive_cells_range ].map{ | bit_string | bit_string.to_i(2) }
     # 左側マージンの計算（0でない最大値について、パターンの幅から最大値の桁数との差をとる）
     margin_left = pattern_width - each_row_number.max.bit_length
     # 右側マージンの計算（基数を2としたとき、指数が最小値のものを取得）
@@ -40,15 +40,13 @@ module MakingsHelper
       decimal_number.zero? ? 0 : ( decimal_number >> margin_right ).to_s(16)
     end
     # Making, Patternモデルに合わせたパラメータの構築
-    making_params = {
+    {
       margin_top: margin_top,
       margin_bottom: margin_bottom,
       margin_left: margin_left,
       margin_right: margin_right,
       normalized_rows_sequence: normalized_rows_sequence_array.join( ?, ),
     }
-    # パラメータを返す
-    return making_params
   end
 
   # パターンの上側マージンを計算
@@ -56,11 +54,11 @@ module MakingsHelper
     # 取得したパターンの上部のビット列から探索
     rows.each_with_index do | row, idx |
       # 0じゃないビット列が見つかれば終了
-      # index番号がmarginに対応する
+      # index番号がmargin_top(bottom)に対応する
       return idx if /[^0]/.match?( row )
     end
     # 全てのビット列が0の場合は配列がそのまま返る、エラー回避のため行数が返るようにする
-    return rows.size
+    rows.size
   end
 
   # パターンの右側マージンを計算

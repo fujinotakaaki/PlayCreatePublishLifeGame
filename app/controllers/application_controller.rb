@@ -2,7 +2,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  # ログイン直後の遷移先指定
+  # サイトアクセス時のみカテゴリ一覧取得（一般ユーザが編集する機能がないため）
+  CATEGORY_INDEX = Category.all.pluck( :id, :name )
+
+  # ログイン成功後の遷移先指定
   def after_sign_in_path_for( resource )
     case resource
     when User

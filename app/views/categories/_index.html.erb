@@ -5,7 +5,7 @@
     カテゴリー
     <%= content_tag :span, '', class: "glyphicon glyphicon-th-large",aria: { hidden: true } %>
   </h4>
-  <% Category.all.pluck( :id, :name ).each do | category | %>
+  <% ApplicationController::CATEGORY_INDEX.each do | category | %>
   <ul>
     <li class="categories__index--li">
       <%= content_tag :span, '', class: "glyphicon glyphicon-tag",aria: { hidden: true } %>
