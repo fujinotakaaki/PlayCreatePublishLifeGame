@@ -1,6 +1,6 @@
 class DisplayFormatsController < ApplicationController
   before_action :authenticate_user!
-  before_action :baria_user,                  only: [ :edit, :update, :destroy ]
+  before_action :baria_user, only: [ :edit, :update, :destroy ]
   # set_to_gonメソッドのインクルード
   include PatternsHelper
 
@@ -19,7 +19,7 @@ class DisplayFormatsController < ApplicationController
   end
 
   def show
-    # 詳細データの取得（Patterns#new, #edirで使用）
+    # 詳細データの取得（Patterns#new, #editで使用）
     display_format = DisplayFormat.find( params[ :id ] )
     # jsonデータ送信用に形式変換
     display_format_as_json = {

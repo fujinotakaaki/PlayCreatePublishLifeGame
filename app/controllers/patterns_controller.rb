@@ -34,14 +34,16 @@ class PatternsController < ApplicationController
         # カテゴリー検索の場合
         category = Category.find(value)
         [
-          category.patterns.page( params[ :page ] ).includes( :user, :favorites, :post_comments ).reverse_order,
+          category.patterns.page( params[ :page ] )
+            .includes( :user, :favorites, :post_comments ).reverse_order,
           "カテゴリ：「#{category.name}」",
           "「#{category.explanation}」"
         ]
       when search_keyword?( value ) then
         # キーワード検索の場合
         [
-          Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order,
+          Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] )
+            .includes( :user, :category, :favorites, :post_comments ).reverse_order,
           "「#{value}」の検索結果"
         ]
       else
@@ -68,7 +70,8 @@ class PatternsController < ApplicationController
     # このパターンに対し最近投稿されたコメント5件をピックアップ
     @latest_comments = PostComment.where( pattern_id: params[ :id ] ).includes( :user ).reverse_order.limit(5)
     # 最近投稿されたカテゴリが同じパターン2件をピックアップ（自分を除く）
-    @sampling_patterns = Pattern.where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id ).includes( :category ).reverse_order.limit(2)
+    @sampling_patterns = Pattern.where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id )
+      .includes( :category ).reverse_order.limit(2)
   end
 
   def update

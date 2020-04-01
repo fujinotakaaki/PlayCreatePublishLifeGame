@@ -1,4 +1,9 @@
 <!--パターン一覧表示用部分テンプレート-->
+<% if patterns.empty? then %>
+<p class="patterns__index--emptyBody">
+  関連する投稿がありませんでした。
+</p>
+<% end %>
 
 <!--パターン一覧-->
 <% patterns.each do | pattern | %>

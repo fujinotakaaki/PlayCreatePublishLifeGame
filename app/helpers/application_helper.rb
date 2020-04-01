@@ -1,7 +1,9 @@
 module ApplicationHelper
   # アラートが必要なページか判定するメソッド(layouts/application.html.erb)
   def include_alert?( fullpath )
-    %r{\A/(making|members|patterns/new|users|display_format)}.match?( fullpath ) || %r{\A/patterns/\d+/edit}.match?( fullpath )
+    # データの作成や更新に関わるページにのみインポートする
+    %r{\A/(making|members|patterns/new|users|display_format)}.match?( fullpath ) ||
+    %r{\A/patterns/\d+/edit}.match?( fullpath )
   end
 
   # カテゴリ一覧の表示判定メソッド(layouts/application.html.erb)

@@ -13,6 +13,11 @@
       text-align: right;
     }
   }
+  &__index {
+    &--emptyBody {
+        padding: 20px;
+    }
+  }
   &__edit {
     margin-bottom: 50px;
     &--enterButton {}

@@ -17,7 +17,7 @@ class MakingsController < ApplicationController
     # ストロングパラメータ取得（エラーがあればエラーメッセージを取得）
     making_params = update_params
     # エラーメッセージかチェック
-    unless ActionController::Parameters === making_params then
+    unless making_params.instance_of?( ActionController::Parameters ) then
       # エラーメッセージを格納
       @convertion_error_message = making_params
       # 処理を強制終了
@@ -44,13 +44,15 @@ class MakingsController < ApplicationController
     # 送信されてきたデータから必要なパラメータを抽出
     raw_params = params.require( :making ).permit( :is_torus, :making_text )
     # :making_textデータを余白とパターンの行データ数列に変換する。
-    normalized_params = build_up_pattern_params_from( raw_params[ :making_text ] )
-    # エラーメッセージが格納されていれば強制終了
-    return normalized_params unless Hash === normalized_params
-    # :making_textカラムが残るとエラーになるため除去する
-    raw_params.delete( :making_text )
-    # :is_torus, :margin_top, :margin_bottom, :margin_left, :margin_right, :normalized_rows_sequence
-    # のデータを返す
-    return raw_params.merge( normalized_params )
+    convert_params = build_up_pattern_params_from( raw_params.delete( :making_text ) )
+    # パラメータ（Hash）orエラーメッセージ(String)を受け取る
+    # パラメータへの変換結果によって返す値を決定する
+    if convert_params.instance_of?( Hash ) then
+      # 正常に変換が完了した場合 => トーラス面フラグと供にパラメータを返す
+      raw_params.merge( convert_params )
+    else
+      # 問題があった場合 => エラーメッセージを返す
+      convert_params
+    end
   end
 end
