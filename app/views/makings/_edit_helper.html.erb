@@ -32,8 +32,16 @@
 	</div>
 
 	<div class="tab-pane makings__edit--tabCommon" id="sampleContentC">
-		<!--回転アクション-->
-		<button type="button" class="btn btn-originGreen" onclick="patternRotation();">
+		<!--(1)上下反転アクション-->
+		<button type="button" class="btn btn-originGreen" onclick="makingPatternTouchingUp(1);">
+			<%= content_tag :i, ' 上下反転', class: "fas fa-arrows-alt-v" %>
+		</button>
+		<!--(2)左右反転アクション-->
+		<button type="button" class="btn btn-originGreen" onclick="makingPatternTouchingUp(2);">
+			<%= content_tag :i, ' 左右反転', class: "fas fa-arrows-alt-h" %>
+		</button>
+		<!--(3)回転アクション-->
+		<button type="button" class="btn btn-originGreen" onclick="makingPatternTouchingUp(3);">
 			<%= content_tag :i, ' 反時計回りに回転', class: "fas fa-undo" %>
 		</button>
 	</div>

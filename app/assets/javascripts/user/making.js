@@ -179,9 +179,26 @@ function jumpPatternsNew( url ) {
 }
 
 // ===== パターンの回転実行メソッド ==============================
-function patternRotation() {
-  // 反時計回りに４５度回転
-  patternData.rotateCounterClockwise(1);
+function makingPatternTouchingUp( n = 0) {
+  switch (n) {
+    // 上下反転
+    case 1:
+    patternData.flipVertical;
+    break;
+
+    // 左右反転
+    case 2:
+    patternData.flipHorizontal;
+    break;
+
+    // 反時計回りに４５度回転
+    case 3:
+    patternData.rotateCounterClockwise;
+    break;
+
+    default:
+    return false;
+  }
   // テキストエリアの整形とパターン表示への反映
   applyMakingPattern( patternData.patternInitial );
   // リフレッシュ処理

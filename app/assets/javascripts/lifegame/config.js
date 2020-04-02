@@ -81,7 +81,7 @@ class LifeGame {
   }
 
 
-  // ===== 各セルの世代更新後の状態（誕生、生存、過疎、過密）決定処理 ==============================
+  // ===== 各セルの世代更新後の状態（誕生、生存、過疎、過密）決定処理 ==========
   deadOrAlive( y, x ) {
     // (1) 周辺の生きているセルのカウントアップ（マップ外は「死」扱い）
     let aliveCellsCount = 0;
@@ -117,18 +117,22 @@ class LifeGame {
   }
 
   // ##### 追加機能 #########################
-  // ===== パターンの回転メソッド ==============================
-  rotateCounterClockwise( n = 0 ) {
-    // 回転は最大２７０度まで
-    n %= 4
-    // 回転処理
-    for ( let i = 0; i < n; i++ ) {
-      this.rotation90degree()
-    }
+  // ===== 上下反転メソッド ==============================
+  get flipVertical() {
+    this.patternInitial = this.patternInitial.reverse()
   }
 
-  // ===== 反時計回りに90°回転処理 ==============================
-  rotation90degree() {
+  // ===== 左右反転メソッド ==============================
+  get flipHorizontal() {
+    // 各行のビット列に対して処理実行
+    this.patternInitial = this.patternInitial.map( bit_string =>
+      // ビット列 => 配列 => （反転） => 文字列化
+      bit_string.split('').reverse().join('')
+    )
+  }
+
+  // ===== パターンの回転メソッド（反時計回りに90°回転） =====================
+  get rotateCounterClockwise() {
     // 回転処理後のパターン記憶変数
     let newPattern = new Array;
     // 列後方からの処理
