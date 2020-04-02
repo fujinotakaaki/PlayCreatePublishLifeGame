@@ -2,13 +2,11 @@
 
 <!--ページ上部-->
 <div class="makings__edit--top">
-  <%= form_with model: @making, url: making_path, method: "patch", class: "form-horizontal" do | f | %>
+  <%= form_with( model: @making, url: making_path, method: "patch", class: "form-horizontal" ) do | f | %>
   <!--ページ上部のタイトル-->
   <h3>
     パターン編集エリア
-    <%= render 'makings/edit_helper' %>
-    <!--「変更を保存」ボタンはdisplay: none;がデフォルト設定-->
-    <%= f.submit '変更を保存', id: "makings__edit--update", class: "btn btn-success" %>
+    <%= render 'makings/edit_helper', f: f %>
   </h3>
 
   <!--トーラス面設定-->

@@ -2,7 +2,7 @@
 <%= render 'patterns/emulation' %>
 
 <script type="text/javascript">
-  $(function(){
+  $( function() {
     // トップページのレイアウト調整
     $("body").css({
       'background-color': 'black',
@@ -10,10 +10,14 @@
     });
     // 「ウェルカムメッセージ」ライフゲーム の始動メソッド（9秒後開始）
     setTimeout( function(){
-      // turbolinksによる２回目の発動を無効にするため
-      initializeLifeGame();
-      // ライフゲーム実行メソッド
-      startProcess( 180 );
+      // トップページから離れていなければ実行
+      if ( location.pathname == "/" ) {
+        // turbolinksによる２回目の発動を無効にするため
+        initializeLifeGame();
+        // ライフゲーム実行メソッド
+        startProcess( 180 );
+      }
+      return false;
     }, 9000 );
   })
 </script>

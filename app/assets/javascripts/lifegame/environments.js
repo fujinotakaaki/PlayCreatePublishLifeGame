@@ -74,7 +74,7 @@ function applyCssOptions( cssOptions = { fontColor: "limegreen", backgroundColor
 // 画面表示の更新処理
 function showCurrentGeneration() {
   // 表示中のメッセージ更新
-  $('.patterns__show--lifeGameInfo').text( '第' + patternData.getGenerationCount + '世代' );
+  $('.patterns__show--lifeGameInfo').text( '第' + patternData.generationCount + '世代' );
   // 表示中のパターン更新
   $('.patterns__show--lifeGameDisplay').html( patternData.getPatternText );
 }

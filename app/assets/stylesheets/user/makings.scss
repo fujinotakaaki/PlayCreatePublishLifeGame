@@ -49,14 +49,39 @@
         background-color: darkslateblue;
       }
     }
-    &--destroy {
-      a{
-        background-color: rgba( 255, 0, 0, 0.5);
+    &--destroyTab {
+      background-color: rgba( 255, 0, 0, 0.5);
+      padding: 20px;
+      text-align: center;
+      &:hover {
+        font-weight: bold;
+        background-color: red;
+      }
+      a {
+        color: #222;
+        text-shadow: yellow 1px 1px 0px, yellow -1px 1px 0px, yellow 1px -1px 0px, yellow -1px -1px 0px;
         &:hover {
-          font-weight: bold;
-          background-color: red !important;
+          color: black;
         }
       }
+    }
+    &--tabNav {
+      margin: 20px 0;
+    }
+    &--tabLi {
+      font-size: 15px;
+      a {
+        color: black;
+        &:hover {
+          color: black;
+          font-weight: bold;
+        }
+      }
+    }
+    &--tabCommon {
+      background-color: white;
+      padding: 20px;
+      border-bottom: 1px solid #ddd;
     }
   }
 }

@@ -22,7 +22,7 @@ $(document).on( 'keypress', '.makings__edit--textarea', function(e) {
   // エミュレーション画面をプレビュー画面へ切替
   changePreviewMode();
   // テキストエリアの整形とパターン表示への反映
-  normalizationMakingPattern();
+  applyMakingPattern();
 });
 
 
@@ -58,8 +58,8 @@ function displayInterface( displaying = false, onlySubmitButtonsCange = false ) 
 
 
 // 「テキストエリアのテキスト置換」と「そのテキストのプレビュー画面への反映」メソッド
-function normalizationMakingPattern( makingPatternArray = false ) {
-  // 引数がundefinedの場合は、作成中パターンの「各ビット列の配列」を取得（"0"と"1"以外の文字は除去）
+function applyMakingPattern( makingPatternArray = false ) {
+  // 引数がundefinedの場合は、作成中パターンの各ビット列を配列として取得（"0"と"1"以外の文字は除去）
   makingPatternArray = makingPatternArray || getMakingPatternTextareaInfo( true )[0];
   // テキストエリアに反映
   $(".makings__edit--textarea").val( makingPatternArray.join("\n") );
@@ -112,7 +112,7 @@ function autoComplement( side ) {
   // エミュレーション画面をプレビュー画面へ切替
   changePreviewMode();
   // テキストエリアの整形とパターン表示への反映
-  normalizationMakingPattern( autoComplementMakingPatternArray );
+  applyMakingPattern( autoComplementMakingPatternArray );
 }
 
 
@@ -176,4 +176,14 @@ function jumpPatternsNew( url ) {
     + '&is_torus=' + ( bool ).toString();
   }
   return false;
+}
+
+// ===== パターンの回転実行メソッド ==============================
+function patternRotation() {
+  // 反時計回りに４５度回転
+  patternData.rotateCounterClockwise(1);
+  // テキストエリアの整形とパターン表示への反映
+  applyMakingPattern( patternData.patternInitial );
+  // リフレッシュ処理
+  initializeLifeGame( false, true )
 }
