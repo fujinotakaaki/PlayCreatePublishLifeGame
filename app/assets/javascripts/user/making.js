@@ -162,20 +162,6 @@ function verificationMakingPattern() {
 }
 
 
-// 新規投稿画面遷移前の処理メソッド
-function jumpPatternsNew( url ) {
-  // バリデーションチェック
-  if ( verificationMakingPattern() ) {
-    // 現在のトーラス面設定の取得
-    let bool = ! patternData.changeTorusFlag;
-    // 合格なら新規投稿画面へ遷移
-    location.href = url
-    + '?making_pattern=' + $(".makings__edit--textarea").val().replace( /\n/g, "," )
-    + '&is_torus=' + ( bool ).toString();
-  }
-  return false;
-}
-
 // ===== パターンの回転実行メソッド ==============================
 function makingPatternTouchingUp( n = 0) {
   switch (n) {

@@ -1,10 +1,8 @@
 // 作成中パターンの変更保存後の処理
-<% if @convertion_error_message.present? then %>
-// データ変換エラーメッセージの表示
-callMessageWindow( "danger", "<%= @convertion_error_message %>" );
-<% elsif @making.errors.any? then %>
+<% if @convertion_error_message.present? || @making.errors.any? then %>
+// データ変換エラーor
 // バリデーションエラーメッセージの表示
-callMessageWindow( "danger", "<%= @making.errors.full_messages.join( ?, ) %>".split(',') );
+callMessageWindow( "danger", "<%= @convertion_error_message || @making.errors.full_messages.join( ?, ) %>".split(',') );
 <% else %>
 // 作成中パターンのデータ更新成功の通知
 callMessageWindow( "success", "更新に成功しました。" );

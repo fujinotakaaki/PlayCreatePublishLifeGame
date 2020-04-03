@@ -35,12 +35,6 @@
   <h3>作成中のパターン</h3>
   <!--ライフゲームエミュレート画面-->
   <%= render 'patterns/emulation' %>
-
-<!--パターン新規作成画面への移動アクション-->
-<button type="button" name="movePatternsNew" id="patterns__new" class="btn btn-default" onclick="jumpPatternsNew('<%= new_pattern_path %>');">
-  <%= content_tag :span, '', class: "glyphicon glyphicon-pencil", aria: { hidden: true } %>
-  このパターンを投稿する（パターン情報入力ページへ）
-</button>
 </div>
 
 
@@ -58,7 +52,6 @@
         return verificationMakingPattern();
       }
     });
-
     // トーラス面フラグ変更適用メソッド
     $("#making_is_torus_true").change( function() {
       // 有効にチェックが入った場合は有効にする

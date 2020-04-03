@@ -21,7 +21,7 @@ class DisplayFormatsController < ApplicationController
   def show
     # 詳細データの取得（Patterns#new, #editで使用）
     display_format = DisplayFormat.find( params[ :id ] )
-    # jsonデータ送信用に形式変換
+    # 所定のデータ形式に変換
     display_format_as_json = {
       # cssの設定
       cssOptions:   display_format.as_json_css_options,
@@ -35,7 +35,7 @@ class DisplayFormatsController < ApplicationController
   def edit
     # 編集データ取得
     @display_format = DisplayFormat.find( params[ :id ] )
-    # 編集データが使われている表示形式を取得（なければ適当なパターンを使用）
+    # 編集データが使われているパターンを取得（なければ適当なパターンを使用）
     set_to_gon( @display_format.patterns.take || Pattern.take )
   end
 

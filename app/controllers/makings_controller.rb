@@ -14,19 +14,18 @@ class MakingsController < ApplicationController
   end
 
   def update
+    # データ更新を実施するデータをピックアップ
+    @making = Making.find_by( user_id: current_user.id )
     # ストロングパラメータ取得（エラーがあればエラーメッセージを取得）
     making_params = update_params
     # エラーメッセージかチェック
-    unless making_params.instance_of?( ActionController::Parameters ) then
+    if making_params.instance_of?( ActionController::Parameters ) then
+      # 更新実行
+      @making.update( making_params )
+    else
       # エラーメッセージを格納
       @convertion_error_message = making_params
-      # 処理を強制終了
-      return
     end
-    # データ更新を実施するデータをピックアップ
-    @making = Making.find_by( user_id: current_user.id )
-    # 更新実行
-    @making.update( making_params )
   end
 
   def destroy
@@ -40,7 +39,7 @@ class MakingsController < ApplicationController
 
 
   private
-  
+
   def update_params
     # 送信されてきたデータから必要なパラメータを抽出
     raw_params = params.require( :making ).permit( :is_torus, :making_text )
