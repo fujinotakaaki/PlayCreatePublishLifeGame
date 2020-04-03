@@ -1,8 +1,0 @@
-<h1>DisplayFormats#index</h1>
-<p>Find me in app/views/display_formats/index.html.erb</p>
-<p>
-  <%= link_to 'DisplayFormat#new', new_display_format_path %><br>
-  <% DisplayFormat.pluck(:id).each do | id |%>
-  <%= link_to "DisplayFormat#edit_#{id}", edit_display_format_path( id ) %><br>
-  <% end %>
-</p>

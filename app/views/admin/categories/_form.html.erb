@@ -1,0 +1,38 @@
+<!--入力フォーム用部分テンプレート-->
+<% if category.errors.any? then %>
+<nav>
+  <ul>
+    <% category.errors.full_messages.each do | message | %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</nav>
+<% end %>
+
+<h3 class="categories__index--headline">カテゴリ<%= category.id.nil? ? "追加" : "修正" %></h3>
+<%= form_with( model: category, url: ( category.id.nil? ? admin_categories_path : admin_category_path ), class: "form-horizontal" ) do | f | %>
+<!--カテゴリ名（入力必須）-->
+<div class="form-group">
+  <%= f.label :name, ' カテゴリ名', class: "fas fa-pencil-alt col-sm-2 control-label" %>
+  <div class="col-sm-8">
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+</div>
+
+<!--カテゴリ説明文（入力必須）-->
+<div class="form-group">
+  <%= f.label :explanation, ' カテゴリ説明文', class: "fas fa-pencil-alt col-sm-2 control-label" %>
+  <div class="col-sm-8">
+    <%= f.text_area :explanation, class: "form-control", style: "resize: vertical;" %>
+  </div>
+</div>
+
+<!---Submit項目-->
+<p class="col-sm-5 col-sm-offset-5 categories __form--submitField">
+  <!--登録済みカテゴリである場合は削除ボタン表示-->
+  <% unless category.id.nil? then %>
+  <%= link_to "このカテゴリを削除", admin_category_path( category ), method: :delete,  class: "btn btn-danger", remote: true, data: { confirm: "本当に削除しますか？" } %>
+  <% end %>
+  <%= f.submit ( category.id.nil? ? "追加" : "修正完了" ), class: "btn btn-primary" %>
+</p>
+<% end %>

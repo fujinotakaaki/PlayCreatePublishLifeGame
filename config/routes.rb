@@ -31,7 +31,9 @@ Rails.application.routes.draw do
     # ユーザのルーティング
     resources :members, except: [ :new, :create, :destroy ]
     # ジャンルのルーティング
-    resources :categories
+    resources :categories, except: [ :new, :show ]
+
+    resources :patterns, only: [ :index ]
   end
   # 管理者アカウント管理への設定
   devise_for :admins, skip: :all

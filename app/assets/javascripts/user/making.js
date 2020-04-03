@@ -164,12 +164,10 @@ function verificationMakingPattern() {
 
 // 新規投稿画面遷移前の処理メソッド
 function jumpPatternsNew( url ) {
-  // トーラス面設定切り替えボタンのクラス名取得
-  let targetTagClass = $(".makings__edit--torusReverse").attr("class");
-  // 現在のトーラス面設定の取得
-  let bool = ! /true/i.test( targetTagClass );
   // バリデーションチェック
   if ( verificationMakingPattern() ) {
+    // 現在のトーラス面設定の取得
+    let bool = ! patternData.changeTorusFlag;
     // 合格なら新規投稿画面へ遷移
     location.href = url
     + '?making_pattern=' + $(".makings__edit--textarea").val().replace( /\n/g, "," )

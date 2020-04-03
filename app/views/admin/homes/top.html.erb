@@ -1,1 +1,6 @@
-<%= link_to "めーるみる", '/letter_opener' if Rails.env.development? %>
+<div class="row">
+<div class="col-sm-12">
+  <%= link_to "めーるみる", '/letter_opener' if Rails.env.development? %>
+  <%= link_to "CSV出力", admin_patterns_path(format: :csv), class: "btn btn-primary" %>
+</div>
+</div>

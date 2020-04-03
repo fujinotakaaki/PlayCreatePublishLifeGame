@@ -9,7 +9,7 @@ $("#pattern_introduction").removeClass("application__errors--textField");
 <% if @pattern.errors.any? then %>
 // バリデーションエラーメッセージの表示
 callMessageWindow( "warning", "<%= @pattern.errors.full_messages.join( ?, ) %>".split(',') );
-// エラー項目にエラー用のclassを追加する
+// エラー項目にエラー項目通知用のclassを適用する
 <% @pattern.errors.each do | column, message | %>
 $("#pattern_<%= column %>").addClass("application__errors--textField");
 <% end %>

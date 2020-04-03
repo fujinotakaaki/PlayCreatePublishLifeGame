@@ -22,7 +22,7 @@ function initializeLifeGame( applyMakingPattern = false, refreshLifeGame = false
     patternData = new LifeGame( gon.pattern, gon.cellConditions );
     // セルの表示定義（alive, dead）の変更処理
     patternData.changeCellConditions( gon.cellConditions );
-    // cssの設定情報（ fontColor, backgroundColor, lineHeightRate）を画面に適用
+    // cssの設定情報を画面に適用
     applyCssOptions( gon.cssOptions );
   }
 

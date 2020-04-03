@@ -21,8 +21,11 @@
   </header>
 
   <body>
-    <%= yield %>
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
+
 
   <footer>
     <% if Rails.env.development? then %>

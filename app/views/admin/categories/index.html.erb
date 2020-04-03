@@ -1,1 +1,25 @@
-うんこ
+<!--カテゴリ管理ページ-->
+
+<!--新規投稿フォーム-->
+<div class="row">
+  <div class="categories___article--form">
+    <%= render 'admin/categories/form', category: @category %>
+  </div>
+</div>
+
+<!--カテゴリ一覧-->
+<div class="row">
+  <table class="table table-striped">
+    <tr>
+      <th class="col-sm-1">No.</th>
+      <th class="col-sm-2">カテゴリ名</th>
+      <th class="col-sm-7">説明文</th>
+      <th class="col-sm-2"></th>
+    </tr>
+    <% @categories.each do | category | %>
+    <tr class='categories__index--tableTr <%= "categories___article--#{category.id}" %>'>
+      <%= render 'admin/categories/article', category: category %>
+    </tr>
+    <% end %>
+  </table>
+</div>

@@ -49,7 +49,7 @@
 	<div class="tab-pane makings__edit--tabCommon" id="sampleContentD">
 		<!--作成中のパターンを初期化-->
 		<p class="makings__edit--destroyTab">
-			<%= link_to making_path, method: :delete, "data-confirm" => "作成中のパターンを初期化しますか？" do %>
+			<%= link_to making_path, method: :delete, data: { confirm: "作成中のパターンを初期化しますか？" } do %>
 			<%= content_tag :i, 'パターンを初期化', class:"fas fa-bomb"%>
 			<% end %>
 		</p>

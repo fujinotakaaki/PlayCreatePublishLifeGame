@@ -28,6 +28,6 @@ function movePageTop() {
   $('html, body').animate({
     // 移動する座標
     scrollTop: 0
-  }, 'fast') // 移動速度設定
+  }, 'fast' );
   return false;
 }
