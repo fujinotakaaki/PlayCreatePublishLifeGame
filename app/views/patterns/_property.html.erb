@@ -16,10 +16,10 @@
     <li>
       <%= content_tag :span, '', class: "glyphicon glyphicon-paperclip", aria: { hidden: true } %>
       <!--お気に入り項目-->
-      <% if /show/.match?( action_name ) && !! current_user then %>
+      <% if action_name == 'show' && !! current_user then %>
       <!--ログイン中のユーザの場合-->
       <!--お気に入り登録・削除の表示-->
-      <% if pattern.favoreted?( current_user ) then %>
+      <% if pattern.is_favorite_by?( current_user ) then %>
       <!--登録済の場合-->
       <%= render 'favorites/destroy', pattern_id: pattern.id %>
       <% else %>

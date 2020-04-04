@@ -66,7 +66,7 @@
 
 <!--送信ボタン-->
 <p class="display_formats__form--submit">
-  <%= f.submit ( /new/.match?( action_name ) ? "投稿" : "編集完了" ), class: "btn btn-default", data: { confirm: "保存しますか？" } %>
+  <%= f.submit ( action_name == 'new' ? "投稿" : "編集完了" ), class: "btn btn-default", data: { confirm: "保存しますか？" } %>
   <!--このフォーマットが使用されていない場合に限り削除可能とする-->
   <% if  action_name == 'edit' && ! display_format.used? then %>
   <%= link_to "このフォーマットを削除", display_format_path( display_format ), method: :delete, data: { confirm: "本当に削除してもよろしいですか？" }, class: "btn btn-danger" %>

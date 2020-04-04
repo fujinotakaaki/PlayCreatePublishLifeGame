@@ -46,9 +46,9 @@
 <div class="form-group">
   <%= f.label :is_torus, " トーラス面設定", class: "fas fa-globe-asia col-sm-2 control-label" %>
   <div class="col-sm-10">
-    <%= f.radio_button :is_torus, true %>
+    <%= f.radio_button :is_torus, true, disabled: ( action_name == 'new' ) %>
     <%= f.label :is_torus, '有効' %>
-    <%= f.radio_button :is_torus, false %>
+    <%= f.radio_button :is_torus, false, disabled:( action_name == 'new' )%>
     <%= f.label :is_torus, '無効' %>
   </div>
 </div>

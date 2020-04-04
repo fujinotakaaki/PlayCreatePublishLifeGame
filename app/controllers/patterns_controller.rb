@@ -8,13 +8,11 @@ class PatternsController < ApplicationController
 
 
   def new
-    # パラメータの構築
-    precreate_params = build_up_pattern_params_from( params[:making_pattern] )
+    # 作成中のパターンを取得
+    making = Making.find_by( user_id: current_user.id )
     # 新規パターンの作成とパラメータの代入
-    @pattern = Pattern.new( precreate_params )
-    # トーラス面設定の取得・代入
-    @pattern.is_torus = /true/.match?( params[:is_torus] )
-    # gonにデータを格納
+    @pattern = Pattern.new( making.as_pattern )
+    # gonに新規パターンデータを格納
     set_to_gon( @pattern )
   end
 
@@ -84,19 +82,22 @@ class PatternsController < ApplicationController
 
   private
 
+  # オーナーとログインユーザの識別
   def baria_user
-    # ログインユーザと製作者が一致しているか判定
+    # ログインユーザとオーナーが一致しているか判定
     unless Pattern.find( params[ :id ] ).user_id  == current_user.id then
       # 不一致 => マイページへ
       redirect_to current_user
     end
   end
 
+  # 新規投稿の際に取得するストロングパラメータ
   def create_pattern_params
     params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id,
       :margin_top, :margin_bottom, :margin_left, :margin_right, :is_torus, :normalized_rows_sequence )
   end
 
+  # 更新の際に取得するストロングパラメータ
   def update_pattern_params
     params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id,
       :margin_top, :margin_bottom, :margin_left, :margin_right, :is_torus, :is_secret )
@@ -104,12 +105,9 @@ class PatternsController < ApplicationController
 
   # 一覧表示の項目検索条件取得メソッド
   def search_params
-    begin
-      # カテゴリorキーワード検索の場合
+    # カテゴリorキーワード検索の場合
+    if params.has_key?( :search ) then
       params.require( :search ).permit( :category, :keyword ).to_hash.flatten
-    rescue => e
-      # 全投稿検索の場合
-      # logger.debug e
     end
   end
 

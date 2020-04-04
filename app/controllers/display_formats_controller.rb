@@ -26,7 +26,7 @@ class DisplayFormatsController < ApplicationController
       # cssの設定
       cssOptions:   display_format.as_json_css_options,
       # セルの表示定義設定
-      cellConditions: display_format.as_json_cell_conditions
+      cellConditions: display_format.as_json_cell_conditions,
     }
     # jsonデータを返す
     render json: display_format_as_json

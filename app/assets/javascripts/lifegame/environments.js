@@ -19,11 +19,13 @@ function initializeLifeGame( applyMakingPattern = false, refreshLifeGame = false
   // ライフゲームの初期設定（引数が設定されている場合は実行されない）
   if ( ! applyMakingPattern && ! refreshLifeGame && ! changeDisplayFormat ) {
     // 新規盤面の設定（第２引数はトーラス面フラグ(isTorus)のみ設定が反映可能）
-    patternData = new LifeGame( gon.pattern, gon.cellConditions );
+    patternData = new LifeGame( gon.pattern );
     // セルの表示定義（alive, dead）の変更処理
     patternData.changeCellConditions( gon.cellConditions );
     // cssの設定情報を画面に適用
     applyCssOptions( gon.cssOptions );
+    // トーラス面設定の変更処理
+    patternData.changeTorusFlag( gon.isTorus );
   }
 
   // 作成中のパターンの反映のみ実行
@@ -31,7 +33,9 @@ function initializeLifeGame( applyMakingPattern = false, refreshLifeGame = false
     // 定義済みのライフゲーム変数から破壊的にトーラスフラグを取得
     let currentIsTorusCondition = ! patternData.changeTorusFlag();
     // ライフゲーム変数の再定義
-    patternData = new LifeGame( applyMakingPattern, { isTorus: currentIsTorusCondition } );
+    patternData = new LifeGame( applyMakingPattern );
+    // トーラス面設定の変更処理
+    patternData.changeTorusFlag( currentIsTorusCondition );
   }
 
   // ライフゲームの初期化処理

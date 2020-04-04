@@ -41,18 +41,16 @@ function changePreviewMode() {
 
 // 画面表示切替関連のメソッド
 // ライフームの操作ボタン、「変更を保存」ボタン、「パターン投稿」ボタン、プレビュー表示の切替
-function displayInterface( displaying = false, onlySubmitButtonsCange = false ) {
-  // 「変更を保存」ボタン
+function displayInterface( displaying = false, displayPatternJumpButton = false ) {
+  // 「変更を保存」ボタン（※デフォルトは非表示）
   $("#makings__edit--update").css({ "display": displaying && "inline-block" || "" });
-  // 「変更を保存」ボタン以外のボタン表示も切り替えるか
-  if ( ! onlySubmitButtonsCange ) {
-    // 各操作ボタン
-    $(".patterns__show--lifeGameInterface").css({ "display": ! displaying && "none" || "" });
-    // パターン表示を左寄設定
-    $(".patterns__show--lifeGameDisplay").css({ "text-align": ! displaying && "left" || "" });
-    // パターンの「新規投稿」ボタン
-    $("#patterns__new").css({ "display": displaying && "inline-block" || "" });
-  }
+  // 各操作ボタン
+  $(".patterns__show--lifeGameInterface").css({ "display": ! displaying && "none" || "" });
+  // パターン表示を左寄設定
+  $(".patterns__show--lifeGameDisplay").css({ "text-align": ! displaying && "left" || "" });
+  // パターンの「新規投稿」ボタンは変更があれば常に非表示（※デフォルトは非表示）
+  // Making#updateが成功した場合のみ表示される(views/makings/update.js.erb)
+  $("#patterns__new--jump").css({ "display": displayPatternJumpButton && "inline-block" || "" });
   return false;
 }
 

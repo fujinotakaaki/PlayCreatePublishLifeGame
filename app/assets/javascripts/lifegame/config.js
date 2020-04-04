@@ -7,10 +7,11 @@ class LifeGame {
   // セルの表示設定
   alive = "■";
   dead = "□";
-
+  // 平坦トーラス面フラグ（オプションが設定されている場合は反映）
+  isTorus = false
 
   // ===== ライフゲーム初期化処理 ==============================
-  constructor( pattern = [ "0000", "0111", "1110", "0000" ], options = { isTorus: false } ) {
+  constructor( pattern = [ "0000", "0111", "1110", "0000" ] ) {
     // 世代更新回数
     // this.generationCount = 0;
     // 初期盤面の取得（要素がビット列の１次元配列）
@@ -20,7 +21,7 @@ class LifeGame {
     // セルの表示設定
     // [ this.alive, this.dead ] = [ "■", "□" ];
     // 平坦トーラス面フラグ（オプションが設定されている場合は反映）
-    this.isTorus = options.isTorus;
+    // this.isTorus = options.isTorus;
     // リフレッシュメソッド用初期盤面の格納変数（浅いコピーだが、実装上不具合は見られない2020.03.21）
     this.patternInitial = pattern;
     // 中央座標から見て前後左右斜めの相対位置の組み合わせ（ムーア近傍）

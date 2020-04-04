@@ -14,7 +14,7 @@ class Pattern < ApplicationRecord
 
 
   # お気に入り登録されていればtrueを返す
-  def favoreted?( user )
+  def is_favorite_by?( user )
     !! Favorite.find_by( user_id: user.id, pattern_id: id )
   end
 end

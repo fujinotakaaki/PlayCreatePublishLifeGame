@@ -18,12 +18,13 @@
 
     <!--「変更を保存」ボタンはdisplay: none;がデフォルト設定-->
     <%= f.submit '変更を保存', id: "makings__edit--update", class: "btn btn-success" %>
-		
+
 		<!--パターン新規作成画面への移動アクション-->
-		<%= link_to new_pattern_path, id: "patterns__new", class: "btn btn-default" do %>
-		<%= content_tag :span, ' このパターンを投稿する（パターン情報入力ページへ）', class: "glyphicon glyphicon-pencil", aria: { hidden: true } %>
-		<% end %>
+			<%= link_to new_pattern_path, class: "btn btn-default", id: "patterns__new--jump" do %>
+			<%= content_tag :span, ' このパターンを投稿する（パターン情報入力ページへ）', class: "glyphicon glyphicon-pencil", aria: { hidden: true } %>
+			<% end %>
 	</div>
+
 
 	<div class="tab-pane makings__edit--tabCommon" id="sampleContentB">
 		<!--(1)ビット列の短い行に対する、「左側」への"0"の補完処理-->
