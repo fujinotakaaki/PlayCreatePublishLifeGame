@@ -1,31 +1,17 @@
 class Admin::MembersController < Admin::ApplicationController
+  # ユーザ一覧
   def index
-    @users = User.all
+    @users = User.page( params[ :page ] ).includes( :patterns ).reverse_order.per(10)
   end
 
-  def edit
-    # ユーザ情報の取得
-    @user = User.find( params[ :id ] )
-  end
-
+  # 特定の個人のパターンを情報CSV出力
   def show
-    # ユーザ情報の取得
-    @user = User.find( params[ :id ] )
-  end
-
-  def update
-    # ユーザ情報の取得
-    @user = User.find( params[ :id ] )
-    if @user.update( user_params ) then
-      flash[ :success ] = 'ユーザ情報の更新に成功しました。'
-      redirect_to @user
-    else
-      render :edit
+    @user = User.find( params[:id] )
+    @patterns = @user.patterns.pluck( *Admin::ApplicationController::PICK_UP_KEYS )
+    respond_to do | format |
+      format.csv do
+        send_data render_to_string, filename: "User#{@user.name.camelize}_#{simple_date_time}.csv", type: :csv
+      end
     end
-  end
-
-  private
-  def user_params
-    params.require( :user ).permit( :email, :name, :introduction, :profile_image )
   end
 end

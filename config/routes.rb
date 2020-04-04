@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     # Homesのルーティング
     get 'top' => 'homes#top', as: 'root'
     # ユーザのルーティング
-    resources :members, except: [ :new, :create, :destroy ]
+    resources :members, only: [ :index, :show ]
     # ジャンルのルーティング
     resources :categories, except: [ :new, :show ]
 

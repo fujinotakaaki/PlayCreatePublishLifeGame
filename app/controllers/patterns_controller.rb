@@ -105,7 +105,7 @@ class PatternsController < ApplicationController
 
   # 一覧表示の項目検索条件取得メソッド
   def search_params
-    # カテゴリorキーワード検索の場合
+    # カテゴリorキーワード検索の場合処理
     if params.has_key?( :search ) then
       params.require( :search ).permit( :category, :keyword ).to_hash.flatten
     end

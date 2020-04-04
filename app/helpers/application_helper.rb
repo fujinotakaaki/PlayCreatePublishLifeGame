@@ -9,7 +9,7 @@ module ApplicationHelper
   # カテゴリ一覧の表示判定メソッド(layouts/application.html.erb)
   def include_category_index?( fullpath, controller_name )
     # Top, about, アカウント管理関連ページはカテゴリ一覧を表示しない
-    ! ( %r{\A/users}.match?( fullpath ) || /home/.match?( controller_name ) )
+    ! ( %r{\A/users}.match?( fullpath ) || controller_name == 'homes' )
   end
 
   # 日付を見やすい書式に変換するメソッド(patterns/property)

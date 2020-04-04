@@ -17,12 +17,31 @@
  @import "bootstrap-sprockets";
  @import "bootstrap";
 
+ /*common*/
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ .clearfix::after {
+   content: "";
+   display: block;
+   clear: both;
+ }
+
  header {
    background-color: black;
+   min-height: 150px;
+   h1 {
+     margin: 0;
+     padding: 20px;
+     color: white;
+   }
    nav {
      ul {
        text-align:right;
-       padding: 5px 20px;
+       padding: 40px;
        li {
          color: white;
          padding: 5px;
@@ -43,6 +62,7 @@
 
  footer {
    background-color: black;
+   min-height: 200px;
    nav {
      ul {
        text-align: center;
