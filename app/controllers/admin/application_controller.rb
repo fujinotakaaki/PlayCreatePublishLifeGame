@@ -3,6 +3,7 @@ class Admin::ApplicationController < ActionController::Base
   before_action :authenticate_admin!
   layout 'admin/layouts/application'
   # simple_date_timeメソッドのインクルード
+  include Admin::Concerns::I18nSetting
   include Admin::ApplicationHelper
 
   PICK_UP_KEYS_NAME = %w( パターン名 説明文 行数列 上 下 左 右 トーラス面フラグ)

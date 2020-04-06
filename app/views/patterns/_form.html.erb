@@ -69,7 +69,7 @@
 
 <!--投稿ボタン-->
 <p class="patterns__new--submit">
-  <%= f.submit "これで投稿する", class: "btn btn-primary patterns__new--submit" %>
+  <%= f.submit "これで投稿する", class: "btn btn-primary" %>
 </p>
 
 
@@ -95,9 +95,9 @@
         <td><%= f.number_field :margin_left,       min: 0, class: "form-control" %></td>
         <td><%= f.number_field :margin_right,     min: 0, class: "form-control" %></td>
         <td><%= f.number_field :margin_bottom, min: 0, class: "form-control" %></td>
-        <td>
+        <td class="patterns__edit--submit">
           <!--投稿ボタン-->
-          <%= f.submit "編集完了", class: "btn btn-primary patterns__edit--submit"%>
+          <%= f.submit "編集完了", class: "btn btn-primary"%>
         </td>
       </tr>
     </table>

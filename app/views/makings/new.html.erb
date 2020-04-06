@@ -1,0 +1,45 @@
+<!--アップロード画像-->
+<div class="col-sm-6 makings__new--sectionA">
+  <h3 class="makings__new--headline">オリジナル画像</h3>
+  <div id="crop_area_box">
+    <%= file_field_tag 'making[image]', class: "user_image", id: "crop_image" %>
+  </div>
+</div>
+
+
+<!--プレビュー画面-->
+<div class="col-sm-6 makings__new--sectionB">
+  <h3 class="makings__new--headline">プレビュー表示</h3>
+
+  <div id="crop_preview">
+    <h3 class="makings__new--caution">
+      この表示が出る場合は
+      リロードしてください。
+    </h3>
+  </div>
+
+  <div class="makings__new--changeButton">
+    <button type="button" name="button" onclick="changeBinarizationMode(this);" class="btn btn-info">
+      次へ
+    </button>
+  </div>
+</div>
+
+<!-- キャンバスサイズの初期設定必須 -->
+<div class="col-sm-6 makings__new--sectionC">
+  <h3>２値化処理</h3>
+
+  <!-- ２値化画像 -->
+  <canvas id="crop_preview_binarization"></canvas>
+  <p>
+    <label for="threshold">
+      敷居値：
+      <%= number_field_tag "binarize_threshold", 65, {size: 50, in: 0..256} %>
+    </label>
+
+    <%= form_with( model: Making, url: making_path ) do | f | %>
+    <%= f.hidden_field :making_text %>
+    <input type="button" value="終了" onClick="convertCanvasToMakingPattern(this);" class="btn btn-success" >
+    <% end %>
+  </p>
+</div>

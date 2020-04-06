@@ -1,5 +1,9 @@
-
 .homes {
+  &__top {
+    &--start {
+      text-align: center;
+    }
+  }
   &__about{
     &--headline {
       font-weight: bold;

@@ -6,6 +6,7 @@
 	<li class="makings__edit--tabLi"><a href="#sampleContentB" data-toggle="tab">一括処理</a></li>
 	<li class="makings__edit--tabLi"><a href="#sampleContentC" data-toggle="tab">特殊処理</a></li>
 	<li class="makings__edit--tabLi"><a href="#sampleContentD" data-toggle="tab">パターンの初期化</a></li>
+	<li class="makings__edit--tabLi"><a href="#sampleContentE" data-toggle="tab">画像から作成</a></li>
 </ul>
 
 <!-- タブ内容 -->
@@ -59,5 +60,10 @@
 			<%= content_tag :i, 'パターンを初期化', class:"fas fa-bomb"%>
 			<% end %>
 		</p>
+	</div>
+
+	<div class="tab-pane makings__edit--tabCommon" id="sampleContentE">
+		<!--画像から作成ページへ移動-->
+		<%= link_to '画像から作成', new_making_path, class: 'btn btn-originRainbow' %>
 	</div>
 </div>

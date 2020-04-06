@@ -5,6 +5,17 @@ class MakingsController < ApplicationController
   # build_up_bit_strings_from, set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
   include PatternsHelper
 
+  def new
+    # 画像からパターンを作成する
+  end
+
+  def create
+    # 画像から作成したパターンデータに更新する
+    # エラーは発生しない
+    update
+    # パターン投稿ページへ
+    redirect_to new_pattern_path
+  end
 
   def edit
     # 作成中のパターン取得or新規盤面の作成

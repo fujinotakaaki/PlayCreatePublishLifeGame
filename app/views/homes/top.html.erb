@@ -1,6 +1,13 @@
 <!--ライフゲームエミュレート画面-->
 <%= render 'patterns/emulation' %>
-<%= link_to "dsf", 'https://www.amazon.co.jp/s?k=ライフゲーム' %>
+
+<!-- スタートアクション -->
+<p class="homes__top--start">
+  <button type="button" name="start" class="btn btn-default" onclick="topAction();">
+    スタート！！
+  </button>
+</p>
+
 <script type="text/javascript">
   $( function() {
     // トップページのレイアウト調整
@@ -8,16 +15,7 @@
       'background-color': 'black',
       'color': 'black'
     });
-    // 「ウェルカムメッセージ」ライフゲーム の始動メソッド（9秒後開始）
-    setTimeout( function(){
-      // トップページから離れていなければ実行
-      if ( location.pathname == "/" ) {
-        // turbolinksによる２回目の発動を無効にするため
-        initializeLifeGame();
-        // ライフゲーム実行メソッド
-        startProcess( 180 );
-      }
-      return false;
-    }, 9000 );
+    // ライフゲーム操作用のインターフェース削除
+    $(".patterns__show--lifeGameInterface").remove();
   })
 </script>

@@ -1,6 +1,7 @@
 #patterns__new--jump {
   display: none;
 }
+
 .patterns {
   &__new {
     margin-bottom: 50px;
@@ -69,7 +70,7 @@
       color: limegreen;
       background-color: black;
       line-height: 0.6em;
-      layout-grid-mode: both;
+    white-space: nowrap;
     }
     &--lifeGameInterface {
       padding: 0 20px;

@@ -160,7 +160,7 @@ function verificationMakingPattern() {
 }
 
 
-// ===== パターンの回転実行メソッド ==============================
+// ===== パターンの上下左右反転・回転実行メソッド ==============================
 function makingPatternTouchingUp( n = 0) {
   switch (n) {
     // 上下反転

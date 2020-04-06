@@ -1,11 +1,9 @@
 <!--ライフゲーム実行用部分テンプレート-->
 
-<!--操作ボタン類（トップページでは表示しない）-->
-<% if controller_name != 'homes' then %>
+<!--操作ボタン類-->
 <div class="patterns__show--lifeGameInterface">
   <%= render 'patterns/interface' %>
 </div>
-<% end %>
 
 <p class="patterns__show--lifeGameInfo">
   (ここに世代情報が表示されます)

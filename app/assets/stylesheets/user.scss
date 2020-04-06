@@ -10,6 +10,7 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
+ *= require cropper.min.css
  *= require_tree ./user
  *= require_self
  */
@@ -124,6 +125,7 @@
    }
  }
 
+
  .btn {
    &-originGreen {
      color: white;
@@ -135,4 +137,21 @@
        color: whitesmoke;
      }
    }
+   &-originRainbow {
+     color: darkmagenta;
+     background: -moz-linear-gradient(top left, #FFF, #FFC778);
+     background: -webkit-linear-gradient(top left, #FFF, #FFC778);
+     background: linear-gradient(to bottom right, #FFF, #FFC778);
+     &:hover {
+       color: midnightblue;
+     }
+     &:focus {
+       color: midnightblue;
+     }
+   }
  }
+
+#crop_area_box {
+  width: 100%;
+  min-height: 50vh;
+}

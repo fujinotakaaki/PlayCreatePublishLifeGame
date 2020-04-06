@@ -18,7 +18,12 @@ class PatternsController < ApplicationController
 
   def create
     @pattern = current_user.patterns.build( create_pattern_params )
-    @pattern.save
+    # エラーが発生すれば強制終了
+    return unless @pattern.save
+    # 初期化するデータをピックアップ
+    making = Making.find_by( user_id: current_user.id )
+    # データを削除
+    making.destroy
   end
 
   def index
