@@ -1,8 +1,14 @@
 <!--アップロード画像-->
 <div class="col-sm-6 makings__new--sectionA">
   <h3 class="makings__new--headline">オリジナル画像</h3>
+
   <div id="crop_area_box">
-    <%= file_field_tag 'making[image]', class: "user_image", id: "crop_image" %>
+    <div class="makings__new--labelBox">
+      <label>
+        <%= file_field_tag '', id: "crop_image", style: "display: none;"%>
+        <div class="makings__new--inputLabel">画像をアップロード</div>
+      </label>
+    </div>
   </div>
 </div>
 
@@ -32,14 +38,16 @@
   <!-- ２値化画像 -->
   <canvas id="crop_preview_binarization"></canvas>
   <p>
-    <label for="threshold">
-      敷居値：
-      <%= number_field_tag "binarize_threshold", 65, {size: 50, in: 0..256} %>
-    </label>
+    <label for="threshold_label">閾値：</label>
+    <%= number_field_tag "threshold_form", 0, {size: 50, in: 0..256} %><br>
 
-    <%= form_with( model: Making, url: making_path ) do | f | %>
-    <%= f.hidden_field :making_text %>
-    <input type="button" value="終了" onClick="convertCanvasToMakingPattern(this);" class="btn btn-success" >
-    <% end %>
+    <label for="cells_condition_label">「生」セルの領域：</label>
+    <%= select_tag "cells_condition_form", options_for_select( {"白": 255, "黒": 0 } ) %>
+
+
   </p>
+  <%= form_with( model: Making, url: making_path ) do | f | %>
+  <%= f.hidden_field :making_text %>
+  <input type="button" value="終了" onClick="convertCanvasToMakingPattern(this);" class="btn btn-success" >
+  <% end %>
 </div>

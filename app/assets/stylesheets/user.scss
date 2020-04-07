@@ -151,7 +151,13 @@
    }
  }
 
-#crop_area_box {
-  width: 100%;
-  min-height: 50vh;
-}
+ #crop_area_box {
+   width: 100%;
+   min-height: 50vh;
+   /* Ensure the size of the image fit the container perfectly */
+   img {
+     display: block;
+     /* This rule is very important, please don't ignore this */
+     max-width: 100%;
+   }
+ }
