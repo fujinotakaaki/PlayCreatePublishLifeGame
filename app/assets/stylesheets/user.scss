@@ -151,7 +151,14 @@
    }
  }
 
- #crop_area_box {
+ #crop{
+   &_preview {
+     img {
+       max-width: 150px;
+       max-height: 150px;
+     }
+   }
+   &_area_box {
    width: 100%;
    min-height: 50vh;
    /* Ensure the size of the image fit the container perfectly */
@@ -161,3 +168,4 @@
      max-width: 100%;
    }
  }
+}

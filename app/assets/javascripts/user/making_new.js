@@ -1,4 +1,4 @@
-// ===== Cropperjs処理関連 ===============
+// ===== Makings#new遷移時処理 ===============
 $( function() {
   // リロード促進メッセージの削除
   $(".makings__new--caution").text("");
@@ -31,8 +31,11 @@ $( function() {
         initCrop();
       };
     })(file);
+
     reader.readAsDataURL(file);
+
     $(".makings__new--changeButton").fadeIn();
+    return;
   });
 
   // ===== フォームの閾値が変化した際に画像２値化処理実行 ===============
@@ -57,10 +60,7 @@ function initCrop() {
     // 最小高さ
     minCropBoxHeight: 10,
     // 最小幅
-    minCropBoxWidth: 10,
-    ready: function(){
-      cropperable = true;
-    }
+    minCropBoxWidth: 10
   };
   cropper = new Cropper( crop_image, options );
   // 各処理時のプレビュー反映効果付与
@@ -74,11 +74,8 @@ function initCrop() {
 
 // ===== プレビュー反映処理 ===============
 function cropPreviewDraw() {
-  // canvasサイズの設定
-  let croppedCanvas = cropper.getCroppedCanvas({
-    maxWidth: 150,
-    maxHeight: 150
-  });
+  // クロッピング画像の取得
+  let croppedCanvas = cropper.getCroppedCanvas();
   // クロップ処理後の画像の<img>タグ生成
   let croppedImage = $('<img>').attr({
     src: croppedCanvas.toDataURL()
@@ -99,35 +96,35 @@ function changeBinarizationMode(self) {
   });
   // 画像の２値化実行（判別法による閾値の決定実行）
   imageBinarization( true )
+  return false;
 }
 
 // ===== 画像２値化処理 ===============
 function imageBinarization( autoThreshold = false ) {
-  // グレースケール変換式の定義（0.5000は四捨五入を考慮）
-  // const grayscale = (r, g, b) => 0.2126 * r + 0.7152 * g + 0.0722 * b
-  const grayscale = (r, g, b) => ( 0.500 + 0.299 * r + 0.587 * g + 0.114 * b ) | 0;
-  // クロッピング画像のimg要素取得
-  let croppedImage = $("#crop_preview").find("img");
-  let img = new Image();
-  img.src = croppedImage.attr("src");
-  img.onload = function() {
-    // 画像の寸法取得
-    let [ cw, ch ] = [ croppedImage.width(), croppedImage.height() ];
+  function main( autoThreshold ) {
+    // グレースケール変換式の定義（0.5000は四捨五入を考慮）
+    // const grayscale = (r, g, b) => 0.2126 * r + 0.7152 * g + 0.0722 * b
+    const grayscale = (r, g, b) => ( 0.500 + 0.299 * r + 0.587 * g + 0.114 * b ) | 0;
+    // クロッピング画像のimg要素取得
+    let croppedImage = $("#crop_preview").find("img").get(0);
     // 新規canvas要素生成（画像の伸縮がこの作成方法で防げる）
-    let newCanvas = $( '<canvas/>', { 'id': 'crop_preview_binarization' } ).attr('width', cw).attr('height', ch).get(0);
-    // canvas要素のコンテキスト取得
-    let ctx = newCanvas.getContext("2d");
-    // canvas要素へクロッピング画像の描画
-    ctx.drawImage( img, 0, 0 );
+    let sizeSetting = {
+      'width': croppedImage.width,
+      'height': croppedImage.height
+    }
+    let newCanvas = $('<canvas/>', { 'id': 'crop_preview_binarization' } ).attr( sizeSetting ).get(0);
+    // Draw (Resize)
+    let ctx = newCanvas.getContext('2d');
+    ctx.drawImage(croppedImage, 0, 0, croppedImage.width, croppedImage.height);
     // Uint8ClampedArrayを取得
-    let dst = ctx.getImageData( 0, 0, cw, ch );
+    let dst = ctx.getImageData( 0, 0, croppedImage.width, croppedImage.height );
     // 閾値の取得（true: 判別法, false: 入力フォームの値）
-    let threshold = autoThreshold ? thresholdOtsu( newCanvas, img ) : Number( $("#threshold_form").val() );
+    let threshold = autoThreshold ? thresholdOtsu( croppedImage ) : Number( $("#threshold_form").val() );
     // 入力フォームへ値の上書き
-    $("#threshold_form").val(threshold);
+    $("#threshold_form").val( threshold );
     // 画像２値化処理
     for ( let i = 0; i < dst.data.length; i += 4 ) {
-      let y = 0 | grayscale( dst.data[i], dst.data[i + 1], dst.data[i + 2] );
+      let y = grayscale( dst.data[i], dst.data[i + 1], dst.data[i + 2] );
       let ret = ( y < threshold ) ? 0 : 255;
       dst.data[i] = dst.data[i+1] = dst.data[i+2] = ret;
       dst.data[i+3] = 255; // 不透明にする
@@ -135,12 +132,81 @@ function imageBinarization( autoThreshold = false ) {
     // ２値化画像反映
     ctx.putImageData(dst, 0, 0);
     // ページ上の２値化画像更新
-    $("#crop_preview_binarization").replaceWith(newCanvas);
+    $("#crop_preview_binarization").replaceWith( newCanvas );
   }
+
+  // ===== 判別分析法（大津の2値化）による閾値の決定メソッド ===============
+  function thresholdOtsu( image ) {
+    // ===== 本処理 ===============
+    function search( image ) {
+      // グレースケール変換式の定義（0.5000は四捨五入を考慮）
+      const grayscale = (r, g, b) => ( 0.5000 + 0.2126 * r + 0.7152 * g + 0.0722 * b ) | 0;
+
+      let cvs = $('<canvas/>').attr('width', image.width).attr('height', image.height).get(0);
+      // キャンパス要素から二次元グラフィックスのコンテキストを取得
+      let ctx = cvs.getContext("2d");
+      // 読み込んだ画像を描画
+      ctx.drawImage(image, 0, 0, image.width, image.height);
+      // 画像のUint8ClampedArrayを取得
+      let src = ctx.getImageData(0, 0, image.width, image.height);
+
+      // 総画素数
+      let w = src.data.length / 4;
+      // 輝度総和
+      let s = 0;
+      // 画像の輝度に関する度数分布表作成
+      let histgram = Array(256).fill(0);
+      for (let i = 0; i < w; i++) {
+        let gs = grayscale( src.data[ 4*i ], src.data[ 4*i+1 ], src.data[ 4*i+2 ] );
+        s += gs;
+        histgram[gs]++;
+      }
+
+      // 閾値とクラス間分散の最大値
+      let [ threshold, maxBetweenClassVariance ] = [ 0, 0 ];
+      // クラス間分散の最大値の探索
+      for ( let i = 0; i < 256; i++ ) {
+        let current = calculateBetweenClassVariance( i, w, s, histgram );
+        if ( maxBetweenClassVariance < current ) {
+          maxBetweenClassVariance = current;
+          threshold = i;
+        }
+      }
+
+      // 得られた閾値を返す
+      return threshold;
+    }
+
+    // ===== クラス間分散の計算 ===============
+    function calculateBetweenClassVariance( i, w, s, histgram ) {
+      // クラス0の度数と輝度総和を計算
+      let [ w1, sum1 ] = histgram.reduce( function( acc, val, idx ) {
+        if ( i > idx ) {
+          acc[0] += val;
+          acc[1] += val * idx;
+        }
+        return acc;
+      }, [ 0, 0 ] );
+
+      // 1クラスの度数と輝度総和
+      let [ w2, sum2 ] = [ w - w1, s - sum1 ];
+
+      // 各クラスの輝度平均値
+      let m1 = w1==0 ? 0 : sum1 / w1;
+      let m2 = w2==0 ? 0 : sum2 / w2;
+
+      // クラス間分散
+      return w1 * w2 * (m1 - m2)**2;
+    }
+
+    return search( image );
+  }
+
+  main( autoThreshold );
 }
 
 function convertCanvasToMakingPattern(self) {
-  // 「生」セルの領域取得
+  // 「生」セルの領域の輝度取得
   let alive = Number( $("#cells_condition_form").val() );
   // canvas要素取得
   let cvs = $("#crop_preview_binarization").get(0);
@@ -165,71 +231,4 @@ function convertCanvasToMakingPattern(self) {
   // フォームに値を挿入
   $("#making_making_text").val(binarizedImageBitStrings);
   $(self).closest("form").submit();
-}
-
-
-// ===== 判別分析法（大津の2値化）による閾値の決定メソッド ===============
-thresholdOtsu = function( canvas, image ) {
-  // ===== 本処理 ===============
-  function main( canvas, image ) {
-    // グレースケール変換式の定義（0.5000は四捨五入を考慮）
-    const grayscale = (r, g, b) => ( 0.5000 + 0.2126 * r + 0.7152 * g + 0.0722 * b ) | 0;
-
-    // キャンパス要素から二次元グラフィックスのコンテキストを取得
-    let ctx = canvas.getContext("2d");
-    // 読み込んだ画像を描画
-    ctx.drawImage(image, 0, 0, image.width, image.height);
-    // 画像のUint8ClampedArrayを取得
-    let src = ctx.getImageData(0, 0, image.width, image.height);
-
-    // 総画素数
-    let w = src.data.length / 4;
-    // 輝度総和
-    let s = 0;
-    // 画像の輝度に関する度数分布表作成
-    let histgram = Array(256).fill(0);
-    for (let i = 0; i < w; i++) {
-      let gs = grayscale( src.data[ 4*i ], src.data[ 4*i+1 ], src.data[ 4*i+2 ] );
-      s += gs;
-      histgram[gs]++;
-    }
-
-    // 閾値とクラス間分散の最大値
-    let [ threshold, maxBetweenClassVariance ] = [ 0, 0 ];
-    // クラス間分散の最大値の探索
-    for ( let i = 0; i < 256; i++ ) {
-      let current = calculateBetweenClassVariance( i, w, s, histgram );
-      if ( maxBetweenClassVariance < current ) {
-        maxBetweenClassVariance = current;
-        threshold = i;
-      }
-    }
-
-    // 得られた閾値を返す
-    return threshold;
-  }
-
-  // ===== クラス間分散の計算 ===============
-  function calculateBetweenClassVariance( i, w, s, histgram ) {
-    // クラス0の度数と輝度総和を計算
-    let [ w1, sum1 ] = histgram.reduce( function( acc, val, idx ) {
-      if ( i > idx ) {
-        acc[0] += val;
-        acc[1] += val * idx;
-      }
-      return acc;
-    }, [ 0, 0 ] );
-
-    // 1クラスの度数と輝度総和
-    let [ w2, sum2 ] = [ w - w1, s - sum1 ];
-
-    // 各クラスの輝度平均値
-    let m1 = w1==0 ? 0 : sum1 / w1;
-    let m2 = w2==0 ? 0 : sum2 / w2;
-
-    // クラス間分散
-    return w1 * w2 * (m1 - m2)**2;
-  }
-
-  return main(canvas, image);
 }
