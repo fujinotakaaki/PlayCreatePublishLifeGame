@@ -11,7 +11,7 @@
     </li>
     <li>
       <%= content_tag :span, '', class: "glyphicon glyphicon-comment", aria: { hidden: true } %>
-      コメント: <%= pattern.post_comments.size %>
+      コメント: <%= pattern.comments_count %>
     </li>
     <li>
       <%= content_tag :span, '', class: "glyphicon glyphicon-paperclip", aria: { hidden: true } %>
@@ -31,7 +31,7 @@
       お気に入り数
       <% end %>
       <!--お気に入り登録ユーザ数-->
-      <%= ": #{ pattern.favorites.size }" %>
+      <%= ": #{ pattern.favorites_count }" %>
     </li>
   </ul>
 </nav>

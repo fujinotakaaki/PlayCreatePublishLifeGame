@@ -71,7 +71,7 @@
     <% @sampling_patterns.each do | pattern | %>
     <%= render 'patterns/article', pattern: pattern, character_limit: 20 %>
     <% end %>
-    <%= link_to '関連するパターンを見に行く', patterns_path( category_id: @pattern.category_id) %>
+    <%= link_to '関連するパターンを表示', patterns_path( category_id: @pattern.category_id) %>
     <% end %>
   </div>
 </div>

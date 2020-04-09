@@ -1,6 +1,6 @@
 <!--パターン情報の列挙用部分テンプレート-->
 
-<div class="clearfix patterns__article<%= %( patterns__article--anchorInactive) if character_limit > 512 %>">
+<div class="clearfix patterns__article">
   <!--パターンアピール画像-->
   <div class="patterns__article--divLeft" >
     <%= link_to pattern_path( pattern ) do %>
@@ -26,13 +26,13 @@
       <!--パターン紹介文-->
       <%= pattern.introduction.truncate( character_limit ) %><br>
 
-      <!--投稿者情報（showページでは表示しない）-->
-      <% if action_name != 'show' then %>
+      <!--投稿者紹介-->
       <span class="patterns__article--submitUser">
         by <%= link_to pattern.user.name.truncate( 10 ), member_path( pattern.user_id ) %>さん
-      </span>
-      <%= render 'patterns/property', pattern: pattern %>
-      <% end %>
-    </p>
+        </span
+
+        <!--投稿者情報（showページでは表示しない）-->
+        <%= render 'patterns/property', pattern: pattern if action_name != 'show' %>
+      </p>
+    </div>
   </div>
-</div>

@@ -1,7 +1,8 @@
 class PatternsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :baria_user, only: [ :edit, :update, :destroy ]
-  impressionist :actions=>[:show]
+  # 閲覧数カウントアップ
+  impressionist actions: [ :show ]
   # build_up_pattern_params_fromメソッドをインクルード（ビット列 => dbデータへ変換）
   include MakingsHelper
   # build_up_bit_strings_from, set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
@@ -38,19 +39,19 @@ class PatternsController < ApplicationController
         # カテゴリー検索の場合
         category = Category.find(value)
         [
-          category.patterns.page( params[ :page ] ).includes( :user, :favorites, :post_comments ).reverse_order,
+          category.patterns.page( params[ :page ] ).includes( :user ).reverse_order,
           "カテゴリ：「#{category.name}」", "「#{category.explanation}」"
         ]
       when search_keyword?( value )
         # キーワード検索の場合
         [
-          Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order,
+          Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] ).includes( :user, :category ).reverse_order,
           "「#{value}」の検索結果"
         ]
       else
         # 全投稿表示の場合
         [
-          Pattern.page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order,
+          Pattern.page( params[ :page ] ).includes( :user, :category ).reverse_order,
           "全投稿"
         ]
       end
@@ -67,12 +68,10 @@ class PatternsController < ApplicationController
     @pattern = Pattern.find( params[ :id ] )
     # gonにデータを格納
     set_to_gon( @pattern )
-    # 閲覧数カウントアップ
-    impressionist( @pattern )
     # このパターンに対し最近投稿されたコメント5件をピックアップ
-    @latest_comments = PostComment.where( pattern_id: params[ :id ] ).includes( :user ).reverse_order.limit(5)
+    @latest_comments = @pattern.post_comments.includes( :user ).reverse_order.limit(5)
     # 最近投稿されたカテゴリが同じパターン2件をピックアップ（自分を除く）
-    @sampling_patterns = Pattern.where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id ).includes( :category ).reverse_order.limit(2)
+    @sampling_patterns = Pattern.where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id ).includes( :user, :category ).reverse_order.limit(2)
   end
 
   def update

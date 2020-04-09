@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_09_132618) do
+ActiveRecord::Schema.define(version: 2020_04_09_152308) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -107,7 +107,9 @@ ActiveRecord::Schema.define(version: 2020_04_09_132618) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "normalized_rows_sequence"
-    t.integer "preview_count"
+    t.integer "preview_count", default: 0
+    t.integer "comments_count", default: 0
+    t.integer "favorites_count", default: 0
   end
 
   create_table "post_comments", force: :cascade do |t|
