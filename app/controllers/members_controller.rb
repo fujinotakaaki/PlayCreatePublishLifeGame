@@ -1,6 +1,6 @@
 class MembersController < ApplicationController
   before_action :authenticate_user!, except: [ :show ]
-  before_action :baria_user, only: [ :update, :destroy ]
+  before_action :baria_user, only: [ :edit, :update, :destroy ]
 
   def show
     # ユーザ情報取得
@@ -26,11 +26,10 @@ class MembersController < ApplicationController
   end
 
   def baria_user
-    # ログインユーザと製作者が一致しているか判定
-    unless params[ :id ]  == user_params[ :id ] then
+    # ログインユーザと一致しているか判定
+    unless params[ :id ].to_i  == current_user.id then
       # 不一致 => 一覧ページへ
       redirect_to root_path
-      # redirect_to current_user
     end
   end
 end

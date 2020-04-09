@@ -1,8 +1,2 @@
 // ユーザ情報編集セクション呼び出し処理
-<% if user_signed_in? then %>
-// ログイン中ユーザが呼び出せば、ユーザ情報編集セクションを表示する
 $(".members__show--profile").html( "<%= escape_javascript( render 'members/detail', user: current_user ) %>" );
-<% else %>
-// 非ログインユーザの場合はエラーメッセージを返す
-alert('This alert must not shown.\nPlese tell me this alert ahowing.');
-<% end %>

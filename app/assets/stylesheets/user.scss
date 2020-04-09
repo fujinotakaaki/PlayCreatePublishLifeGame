@@ -127,14 +127,29 @@
 
 
  .btn {
+   cursor: pointer;
    &-originGreen {
      color: white;
-     background-color: darkgreen;
+     background-color: forestgreen;
      &:hover {
        color: whitesmoke;
+       background-color: #003300;
      }
      &:focus {
        color: whitesmoke;
+       background-color: #003300;
+     }
+   }
+   &-originPink {
+     // color: forestgreen;
+     background-color: lightpink;
+     &:hover {
+       color: #eee;
+       background-color: palevioletred;
+     }
+     &:focus {
+       color: #eee;
+       background-color: palevioletred;
      }
    }
    &-originRainbow {

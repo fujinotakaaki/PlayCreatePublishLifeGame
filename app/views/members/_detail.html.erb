@@ -38,7 +38,12 @@
   <%= attachment_image_tag @user, :profile_image, fallback: "no_image.jpg", class: "members__show--img" %><br>
   <!--編集開始ボタンの表示設定-->
   <% if @user.id == current_user&.id then %>
-  <%= content_tag :input, '',value: "編集", type: "button", class: "btn btn-default members__edit--callForm members__show--#{ current_user&.id || 0 }", onclick: "editUserInfo(this);" %>
+  <%#= content_tag :input, '',value: "編集", type: "button", class: "btn btn-default members__edit--callForm members__show--#{ current_user&.id || 0 }", onclick: "editUserInfo(this);" %>
+
+
+  <%= link_to edit_member_path( current_user ), remote: true, class: "btn btn-default" do %>
+  <%= content_tag :i, " 編集", class: "fas fa-tools" %>
+  <% end %>
   <% end %>
 </div>
 

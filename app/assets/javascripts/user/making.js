@@ -11,9 +11,9 @@ $(document).on( 'keypress', '.makings__edit--textarea', function(e) {
 
     case 13: // "Enter"キー
     // 行数を計算
-    let row_count = $(this).val().split("\n").length;
-    // テキストエリアの高さ調整
-    $( this ).css({ 'height': `${ 5 + ( row_count + 1) * 20 }px` });
+    // let row_count = $(this).val().split("\n").length;
+    // テキストエリアの高さ調整（動くのが煩わしいと考え、一時無効）
+    // $( this ).css({ 'height': `${ 5 + ( row_count + 1) * 20 }px` });
     break;
 
     case 48: case 49: // 0 or 1キー => 入力を許可
@@ -29,20 +29,21 @@ $(document).on( 'keypress', '.makings__edit--textarea', function(e) {
   applyMakingPattern();
 });
 
+
 /*
 * =============================
 * ボタン除去とプレビュー表示への切替メソッド（パターンに変更があった場合の処理）
 * =============================
 */
 function changePreviewMode() {
+  // 繰り返し処理の停止
+  stopProcess();
   // アラート表示を全部消す（user/application.js）
   callMessageWindow();
   // 「変更を保存」ボタンを非表示にする（元々の設定に戻す）
   displayInterface( false );
   // 世代情報を「プレビューを表示中」に切替え
   $(".patterns__show--lifeGameInfo").text( "プレビューを表示中" );
-  // 繰り返し処理の停止
-  stopProcess();
 }
 
 
@@ -57,12 +58,13 @@ function displayInterface( displaying = false, displayPatternJumpButton = false 
   $("#makings__edit--update").css({ "display": displaying && "inline-block" || "" });
   // 各操作ボタン
   $(".patterns__show--lifeGameInterface").css({ "display": ! displaying && "none" || "" });
+  // 上下左右反転・回転ボタン
+  $(".makings__edit--preview").prop( "disabled", ! displaying );
   // パターン表示を左寄設定
   $(".patterns__show--lifeGameDisplay").css({ "text-align": ! displaying && "left" || "" });
   // パターンの「新規投稿」ボタンは変更があれば常に非表示（※デフォルトは非表示）
   // Making#updateが成功した場合のみ表示される(views/makings/update.js.erb)
   $("#patterns__new--jump").css({ "display": displayPatternJumpButton && "inline-block" || "" });
-  return false;
 }
 
 /*
@@ -76,8 +78,8 @@ function applyMakingPattern( makingPatternArray = false ) {
   // テキストエリアに反映
   $(".makings__edit--textarea").val( makingPatternArray.join("\n") );
   // セルの状態表示に変換
-  let convertMakingPatternArray = makingPatternArray.map( currentbitString =>
-    currentbitString.replace( /1/g, "■" ).replace( /0/g, "□" )
+  let convertMakingPatternArray = makingPatternArray.map( bitString =>
+    bitString.replace( /1/g, "■" ).replace( /0/g, "□" )
   );
   // プレビュー画面へ反映
   $(".patterns__show--lifeGameDisplay").html( convertMakingPatternArray.join("<br>") );
@@ -93,8 +95,8 @@ function getMakingPatternTextareaInfo( normalization = true ) {
   let makingPatternArray = $(".makings__edit--textarea").val().split("\n");
   if ( normalization ) {
     // 全ビット列に対して"0"と"1"以外の文字を除去する処理
-    makingPatternArray = makingPatternArray.map( currentbitString =>
-      currentbitString.replace( /[^01]/g, "" )
+    makingPatternArray = makingPatternArray.map( bitString =>
+      bitString.replace( /[^01]/g, "" )
     );
   }
   // 最長の文字列の文字数を取得
@@ -118,13 +120,13 @@ function autoComplement( side ) {
   // 作成中パターンの「各ビット列の配列」と「最長のビット列の長さ」を取得
   let [ makingPatternArray, maxBitLength ] = getMakingPatternTextareaInfo( true );
   // 横方向に対するビットの補完処理（0で補完）
-  let autoComplementMakingPatternArray = makingPatternArray.map( function( currentBitString ) {
+  let autoComplementMakingPatternArray = makingPatternArray.map( function( bitString ) {
     if ( autoCompleteToRightSide ) {
       // 右側に補完する場合の処理
-      return currentBitString.concat( "0".repeat( maxBitLength - currentBitString.length ) );
+      return bitString.concat( "0".repeat( maxBitLength - bitString.length ) );
     }else {
       // 左側に補完する場合の処理
-      return "0".repeat( maxBitLength - currentBitString.length ).concat( currentBitString );
+      return "0".repeat( maxBitLength - bitString.length ).concat( bitString );
     }
   });
   // エミュレーション画面をプレビュー画面へ切替
@@ -150,17 +152,17 @@ function verificationMakingPattern() {
     errorMessages.push("セルがありません。");
   }
   // (2) 各ビット列の長さが等しいか
-  let test2 = ! makingPatternArray.every( currentBitString => currentBitString.length == maxBitLength );
+  let test2 = ! makingPatternArray.every( bitString => bitString.length == maxBitLength );
   if ( test2 ) {
     errorMessages.push("パターンが不揃いです。");
   }
   // (3) "0"または"1"以外の文字が含まれていないか
-  let test3 = ! makingPatternArray.every( currentBitString => ! /[^01]/.test( currentBitString ) );
+  let test3 = ! makingPatternArray.every( bitString => ! /[^01]/.test( bitString ) );
   if ( test3 ) {
     errorMessages.push("不適切な文字が混入してます。");
   }
   // (4) 「生」セルは存在するか（最初のテストが不通過なら実行しない）
-  let test4 = ! test1 && makingPatternArray.every( currentBitString => ! /1/.test( currentBitString ) );
+  let test4 = ! test1 && makingPatternArray.every( bitString => ! /1/.test( bitString ) );
   if ( test4 ) {
     errorMessages.push("「生」セルがありません。");
   }
@@ -189,7 +191,7 @@ function verificationMakingPattern() {
 * パターンの上下左右反転・回転実行メソッド
 * =============================
 */
-function makingPatternTouchingUp( n = 0 ) {
+function touchingMmakingPattern( n = 0 ) {
   switch (n) {
     // 上下反転
     case 1:
@@ -213,4 +215,63 @@ function makingPatternTouchingUp( n = 0 ) {
   applyMakingPattern( patternData.patternInitial );
   // 現在の状態反映
   showCurrentGeneration();
+}
+
+
+/*
+* =============================
+* パターンの上下の行または各ビット列の端のセル追加・削除メソッド
+* =============================
+*/
+function touchingLine( n = 0 ) {
+  // 作成中パターンの「各ビット列の配列」と「最長のビット列の長さ」を取得
+  let [ makingPatternArray, maxBitLength ] = getMakingPatternTextareaInfo( false );
+  // 削除処理の分岐
+  switch (n) {
+    // 行を追加
+    // 先頭に行を追加
+    case 1:
+    makingPatternArray.unshift( '0'.repeat( maxBitLength ) )
+    break;
+
+    // 後尾に行を追加
+    case 2:
+    makingPatternArray.push('0'.repeat( maxBitLength ) )
+    break;
+
+    // 左に行を追加
+    case 3:
+    makingPatternArray = makingPatternArray.map( ( bitString ) => '0' + bitString );
+    break;
+
+    // 右に行を追加
+    case 4:
+    makingPatternArray = makingPatternArray.map( ( bitString ) => bitString + '0' );
+    break;
+
+    // 行を削除
+    case 5: case 6:
+    // 1なら最初の行を、2なら最後の行を削除
+    n == 5 ? makingPatternArray.shift() : makingPatternArray.pop();
+    break;
+
+    //列を削除
+    case 7: case 8:
+    makingPatternArray = makingPatternArray.map( function( bitString ) {
+      // 最長でないビット列については処理を実行しない
+      if ( bitString.length == maxBitLength ) {
+        // 3なら最初のセルを、4なら最後のセルを削除
+        return n == 7 ? bitString.slice(1) : bitString.slice(0, -1);
+      }
+      return bitString;
+    });
+    break;
+
+    default:
+    return false;
+  }
+  // エミュレーション画面をプレビュー画面へ切替
+  changePreviewMode();
+  // テキストエリアの整形とパターン表示への反映
+  applyMakingPattern( makingPatternArray );
 }
