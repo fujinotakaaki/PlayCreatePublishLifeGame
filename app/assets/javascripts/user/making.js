@@ -1,6 +1,10 @@
 // Makingコントローラーで使用されるメソッド類
 
-// "0", "1", "Enter"以外の入力を阻害するメソッド
+/*
+* =============================
+* "0", "1", "Enter"以外の入力を阻害するメソッド
+* =============================
+*/
 $(document).on( 'keypress', '.makings__edit--textarea', function(e) {
   // 押下したキーの種類で処理分岐
   switch ( e.which ) {
@@ -25,8 +29,11 @@ $(document).on( 'keypress', '.makings__edit--textarea', function(e) {
   applyMakingPattern();
 });
 
-
-// ボタン除去とプレビュー表示への切替メソッド（パターンに変更があった場合の処理）
+/*
+* =============================
+* ボタン除去とプレビュー表示への切替メソッド（パターンに変更があった場合の処理）
+* =============================
+*/
 function changePreviewMode() {
   // アラート表示を全部消す（user/application.js）
   callMessageWindow();
@@ -39,8 +46,12 @@ function changePreviewMode() {
 }
 
 
-// 画面表示切替関連のメソッド
-// ライフームの操作ボタン、「変更を保存」ボタン、「パターン投稿」ボタン、プレビュー表示の切替
+/*
+* =============================
+* 画面表示切替関連のメソッド
+* ライフームの操作ボタン、「変更を保存」ボタン、「パターン投稿」ボタン、プレビュー表示の切替
+* =============================
+*/
 function displayInterface( displaying = false, displayPatternJumpButton = false ) {
   // 「変更を保存」ボタン（※デフォルトは非表示）
   $("#makings__edit--update").css({ "display": displaying && "inline-block" || "" });
@@ -54,23 +65,29 @@ function displayInterface( displaying = false, displayPatternJumpButton = false 
   return false;
 }
 
-
-// 「テキストエリアのテキスト置換」と「そのテキストのプレビュー画面への反映」メソッド
+/*
+* =============================
+* 「テキストエリアのテキスト置換」と「そのテキストのプレビュー画面への反映」メソッド
+* =============================
+*/
 function applyMakingPattern( makingPatternArray = false ) {
-  // 引数がundefinedの場合は、作成中パターンの各ビット列を配列として取得（"0"と"1"以外の文字は除去）
+  // 引数がない場合は、作成中のパターンを配列として取得（"0"と"1"以外の文字は除去）
   makingPatternArray = makingPatternArray || getMakingPatternTextareaInfo( true )[0];
   // テキストエリアに反映
   $(".makings__edit--textarea").val( makingPatternArray.join("\n") );
   // セルの状態表示に変換
   let convertMakingPatternArray = makingPatternArray.map( currentbitString =>
-    currentbitString.replace( /0/g, "□" ).replace( /1/g, "■" )
+    currentbitString.replace( /1/g, "■" ).replace( /0/g, "□" )
   );
   // プレビュー画面へ反映
   $(".patterns__show--lifeGameDisplay").html( convertMakingPatternArray.join("<br>") );
 }
 
-
-// 作成中パターンの「各ビット列の配列」と「最長のビット列の長さ」を計算するメソッド
+/*
+* =============================
+* 作成中パターンの「各ビット列の配列」と「最長のビット列の長さ」を計算するメソッド
+* =============================
+*/
 function getMakingPatternTextareaInfo( normalization = true ) {
   // テキストエリアのテキストを行区切りで配列化
   let makingPatternArray = $(".makings__edit--textarea").val().split("\n");
@@ -90,8 +107,11 @@ function getMakingPatternTextareaInfo( normalization = true ) {
   return [ makingPatternArray, maxBitLength ];
 }
 
-
-// パターンのビット長を揃えるためのメソッド
+/*
+* =============================
+* 作成中パターンのビット長方向に補完するメソッド
+* =============================
+*/
 function autoComplement( side ) {
   // 右側に補完するか判定（falseなら左側に補完）
   let autoCompleteToRightSide = /right/.test( side );
@@ -113,13 +133,16 @@ function autoComplement( side ) {
   applyMakingPattern( autoComplementMakingPatternArray );
 }
 
-
-// 適切なパターンかの判定メソッド =>適切なら「変更を保存」ボタンの復活
+/*
+* =============================
+* 作成中パターンのバリデーションメソッド
+* =============================
+*/
 function verificationMakingPattern() {
   // 作成中パターンの「各ビット列の配列」と「最長のビット列の長さ」を取得
   let [ makingPatternArray, maxBitLength ] = getMakingPatternTextareaInfo( false );
 
-  // ===バリデーション処理===================================
+  // ### バリデーション処理 #####################
   let errorMessages = new Array;
   // (1) 最長のビット列の長さが1以上か
   let test1 = ! maxBitLength;
@@ -127,41 +150,46 @@ function verificationMakingPattern() {
     errorMessages.push("セルがありません。");
   }
   // (2) 各ビット列の長さが等しいか
-  let test2 = ! makingPatternArray.every( currentBitString => currentBitString.length == maxBitLength )
+  let test2 = ! makingPatternArray.every( currentBitString => currentBitString.length == maxBitLength );
   if ( test2 ) {
     errorMessages.push("パターンが不揃いです。");
   }
   // (3) "0"または"1"以外の文字が含まれていないか
-  let test3 = ! makingPatternArray.every( currentBitString => ! /[^01]/.test( currentBitString ) )
+  let test3 = ! makingPatternArray.every( currentBitString => ! /[^01]/.test( currentBitString ) );
   if ( test3 ) {
     errorMessages.push("不適切な文字が混入してます。");
   }
   // (4) 「生」セルは存在するか（最初のテストが不通過なら実行しない）
-  let test4 = ! test1 && makingPatternArray.every( currentBitString => ! /1/.test( currentBitString ) )
+  let test4 = ! test1 && makingPatternArray.every( currentBitString => ! /1/.test( currentBitString ) );
   if ( test4 ) {
     errorMessages.push("「生」セルがありません。");
   }
-  // =====================================================
+  // #########################################
 
   // エラーが存在したか判定
-  if ( ! errorMessages.length ) {
-    // サクセスメッセージの表示（user/application.js）
-    callMessageWindow( "info", "保存可能なパターンです。" );
-    // 「変更を保存」ボタンの復活処理
-    displayInterface( true );
-    // 検証を通過したパターンの反映（lifegame/environments.js）
-    initializeLifeGame( makingPatternArray );
-    return true;
-  }else {
+  if ( !! errorMessages.length ) {
     // エラー検出とエラー内容の表示（user/application.js）
     callMessageWindow( "warning", errorMessages );
+    // バリデーション結果を返す
+    return false;
   }
-  return false;
+
+  // サクセスメッセージの表示（user/application.js）
+  callMessageWindow( "info", "保存可能なパターンです。" );
+  // 「変更を保存」ボタンの復活処理
+  displayInterface( true );
+  // 検証を通過したパターンの反映（lifegame/environments.js）
+  initializeLifeGame( makingPatternArray );
+  // バリデーション結果を返す
+  return true;
 }
 
-
-// ===== パターンの上下左右反転・回転実行メソッド ==============================
-function makingPatternTouchingUp( n = 0) {
+/*
+* =============================
+* パターンの上下左右反転・回転実行メソッド
+* =============================
+*/
+function makingPatternTouchingUp( n = 0 ) {
   switch (n) {
     // 上下反転
     case 1:
@@ -181,8 +209,8 @@ function makingPatternTouchingUp( n = 0) {
     default:
     return false;
   }
-  // テキストエリアの整形とパターン表示への反映
+  // テキストエリアへの反映
   applyMakingPattern( patternData.patternInitial );
-  // リフレッシュ処理
-  initializeLifeGame( false, true )
+  // 現在の状態反映
+  showCurrentGeneration();
 }

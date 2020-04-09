@@ -1,4 +1,8 @@
-// ヘッダー直下のアラートを操作するメソッド
+/*
+* =============================
+* ヘッダー直下のアラートを操作するメソッド
+* =============================
+*/
 function callMessageWindow( kind = "", messages = false ) {
   // 表示されている全てのアラートを非表示にする（元々の設定に戻す）
   $(".application__alert--common").css({ "display": "" });
@@ -23,7 +27,12 @@ function callMessageWindow( kind = "", messages = false ) {
   return false;
 }
 
-// ページトップにアニメーション移動するメソッド
+
+/*
+* =============================
+* ページトップにアニメーション移動するメソッド
+* =============================
+*/
 function movePageTop() {
   $('html, body').animate({
     // 移動する座標

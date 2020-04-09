@@ -1,4 +1,8 @@
-// ===== Makings#new遷移時処理 ===============
+/*
+* =============================
+* Makings#new遷移時処理
+* =============================
+*/
 $( function() {
   // リロード促進メッセージの削除
   $(".makings__new--caution").text("");
@@ -42,9 +46,13 @@ $( function() {
   $("#threshold_form").on( 'change', () => imageBinarization() );
 });
 
-// グローバル変数2
+// グローバル変数3
 var cropper;
-// ===== Cropperjs初期設定 ====================
+/*
+* =============================
+* Cropperjs初期設定
+* =============================
+*/
 function initCrop() {
   // オプションの定義
   let options = {
@@ -72,7 +80,12 @@ function initCrop() {
   $("#crop_image").on( 'zoom', () => cropPreviewDraw() );
 }
 
-// ===== プレビュー反映処理 ===============
+
+/*
+* =============================
+* プレビュー反映処理
+* =============================
+*/
 function cropPreviewDraw() {
   // クロッピング画像の取得
   let croppedCanvas = cropper.getCroppedCanvas();
@@ -84,7 +97,12 @@ function cropPreviewDraw() {
   $("#crop_preview").html(croppedImage);
 }
 
-// ===== 処理移行モード（画像２値化） ===============
+
+/*
+* =============================
+* 処理移行モード（画像２値化）
+* =============================
+*/
 function changeBinarizationMode(self) {
   // 元画像を表示しているセクションの画像位以外の要素を非表示にする
   $(".makings__new--sectionA h3").hide();
@@ -99,8 +117,14 @@ function changeBinarizationMode(self) {
   return false;
 }
 
-// ===== 画像２値化処理 ===============
+
+/*
+* =============================
+* 画像２値化処理
+* =============================
+*/
 function imageBinarization( autoThreshold = false ) {
+  // ===== 本処理 ====================
   function main( autoThreshold ) {
     // グレースケール変換式の定義（0.5000は四捨五入を考慮）
     // const grayscale = (r, g, b) => 0.2126 * r + 0.7152 * g + 0.0722 * b
@@ -135,9 +159,13 @@ function imageBinarization( autoThreshold = false ) {
     $("#crop_preview_binarization").replaceWith( newCanvas );
   }
 
-  // ===== 判別分析法（大津の2値化）による閾値の決定メソッド ===============
+  /*
+  * =============================
+  * 判別分析法（大津の2値化）による閾値の決定メソッド
+  * =============================
+  */
   function thresholdOtsu( image ) {
-    // ===== 本処理 ===============
+    // ===== 判別分析法の本処理 ===============
     function search( image ) {
       // グレースケール変換式の定義（0.5000は四捨五入を考慮）
       const grayscale = (r, g, b) => ( 0.5000 + 0.2126 * r + 0.7152 * g + 0.0722 * b ) | 0;
@@ -205,6 +233,13 @@ function imageBinarization( autoThreshold = false ) {
   main( autoThreshold );
 }
 
+
+/*
+* =============================
+* 全ての操作終了後の処理
+* 終了ボタン押下 => Patterns#newへ遷移処理
+* =============================
+*/
 function convertCanvasToMakingPattern(self) {
   // 「生」セルの領域の輝度取得
   let alive = Number( $("#cells_condition_form").val() );
