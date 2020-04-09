@@ -26,6 +26,7 @@ class DisplayFormat < ApplicationRecord
 
   belongs_to :user
   has_many :patterns
+  has_many :makings
 
   # 特定のフォーマットを使用しているパターンがあるか判定
   def used?

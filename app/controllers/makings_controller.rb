@@ -11,8 +11,7 @@ class MakingsController < ApplicationController
 
   def create
     # 画像から作成したパターンデータに更新する
-    # エラーは発生しない
-    update
+    update{ | making | making.update( { display_format_id: 2 } ) }
     # パターン投稿ページへ
     redirect_to new_pattern_path
   end
@@ -38,6 +37,8 @@ class MakingsController < ApplicationController
     end
     # 更新実行
     @making.update( making_params )
+    # cereateから呼ばれている場合はdisplay_format_idを2に更新する
+    yield @making if block_given?
   end
 
   def destroy
@@ -61,6 +62,6 @@ class MakingsController < ApplicationController
     # エラーがあった場合はエラーメッセージを返す
     return convert_params unless convert_params.is_a?( Hash )
     # ストロングパラメータにマージして返す
-    raw_params.merge( convert_params )
+    raw_params.merge({ display_format_id: 1, **convert_params } )
   end
 end
