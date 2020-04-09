@@ -12,6 +12,7 @@ class Pattern < ApplicationRecord
   has_many  :post_comments, dependent: :destroy
   has_many  :favorites, dependent: :destroy
 
+  is_impressionable #counter_cache: true
 
   # お気に入り登録されていればtrueを返す
   def is_favorite_by?( user )

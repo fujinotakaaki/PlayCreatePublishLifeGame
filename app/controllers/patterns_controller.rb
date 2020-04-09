@@ -1,6 +1,7 @@
 class PatternsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :baria_user, only: [ :edit, :update, :destroy ]
+  impressionist :actions=>[:show]
   # build_up_pattern_params_fromメソッドをインクルード（ビット列 => dbデータへ変換）
   include MakingsHelper
   # build_up_bit_strings_from, set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
@@ -66,6 +67,8 @@ class PatternsController < ApplicationController
     @pattern = Pattern.find( params[ :id ] )
     # gonにデータを格納
     set_to_gon( @pattern )
+    # 閲覧数カウントアップ
+    impressionist( @pattern )
     # このパターンに対し最近投稿されたコメント5件をピックアップ
     @latest_comments = PostComment.where( pattern_id: params[ :id ] ).includes( :user ).reverse_order.limit(5)
     # 最近投稿されたカテゴリが同じパターン2件をピックアップ（自分を除く）
