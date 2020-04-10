@@ -1,0 +1,2 @@
+// 全投稿コメント表示
+$(".comments__index").html( "<%= escape_javascript( render 'post_comments/index', post_comments: @comments ) %>" );

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     # パターンのルーティング
     resources :patterns do
       # コメント投稿のルーティング
-      resource :post_comment, only: [ :create ]
+      resource :post_comment, only: [ :create, :show ]
       # お気に入りのルーティング
       resource :favorite, only: [ :create, :destroy ]
     end

@@ -4,7 +4,7 @@
 alert( "<%= @comment.errors.full_messages.join('\n') %>" );
 <% else %>
 // 投稿内容をindexのトップに反映
-$( ".comments__index--headline" ).after( "<%= escape_javascript( render 'post_comments/article', comment: @comment ) %>" );
+$(".comments__index").prepend( "<%= escape_javascript( render 'post_comments/article', post_comment: @comment ) %>" );
 // テキストエリアの初期化
-$( ".comments__form--body" ).val("");
+$(".comments__form--body").val("");
 <% end %>

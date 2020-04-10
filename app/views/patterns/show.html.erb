@@ -24,10 +24,29 @@
 <div class="clearfix patterns__show--bottom">
   <!--ページ下部（左セクション）-->
   <div class="patterns__show--bottomLeft">
-    <div class="comments__index">
-      <!--コメント一覧タイトル-->
-      <h3 class="comments__index--headline">最新のコメント</h3>
+    <!--コメント投稿フォーム（ログインユーザのみ表示）-->
+    <% if user_signed_in? then %>
+    <!--フォームタイトル-->
+    <h4 class="comments__index--headline">
+      <%= content_tag :i, '', class: "fas fa-pencil-alt" %>
+      コメント投稿フォーム
+    </h4>
+    <!--フォーム本体-->
+    <div class="comments__form">
+      <%= form_with( model: PostComment, url: pattern_post_comment_path( @pattern ) ) do | f |%>
+      <%= f.text_area :body, class: "comments__form--body", rows: 3 %>
+      <%= f.submit '投稿', class: "btn btn-default comments__form--submit" %>
+      <% end %>
+    </div>
+    <% end %>
 
+    <!--コメント一覧タイトル-->
+    <h4 class="comments__index--headline">
+      <%= content_tag :i, '', class: "fas fa-comments" %>
+      <%= @pattern.comments_count %>件のコメント
+    </h4>
+    <!--コメント一覧-->
+    <div class="comments__index">
       <!--投稿コメント一覧-->
       <% if @latest_comments.empty? then %>
       <!--コメントがない場合の表示-->
@@ -36,30 +55,26 @@
       </p>
       <% else %>
       <!--最新のコメント5件まで表示-->
-      <% @latest_comments.each do | comment | %>
-      <%= render 'post_comments/article', comment: comment %>
-      <% end %>
-      <% end %>
-    </div>
+      <%= render 'post_comments/index', post_comments: @latest_comments %>
 
-    <!--コメント投稿フォーム（ログインユーザのみ表示）-->
-    <% if user_signed_in? then %>
-    <div class="comments__form">
-      <%= form_with( url: pattern_post_comment_path( @pattern ) ) do | f |%>
-      <%= f.text_area :body, class: "comments__form--body", rows: 3 %>
-      <%= f.submit '投稿', class: "btn btn-default comments__form--submit" %>
+      <!--コメント6件目移行の表示アクション-->
+      <% if @pattern.comments_count > 5 then %>
+      <%= link_to pattern_post_comment_path( @pattern ), class: "btn btn-default comments__index--more", remote: true do %>
+      <%= content_tag :i, '', class: "fas fa-comment-dots" %>
+      全コメント表示
+      <% end %>
+      <% end %>
       <% end %>
     </div>
-    <% end %>
   </div>
 
   <!--ページ下部（右セクション）-->
   <div class="patterns__show--bottomRight">
     <!--関連するカテゴリ情報表示のタイトル-->
-    <h3>
+    <h4>
       <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
       このカテゴリに関連するパターン
-    </h3>
+    </h4>
 
     <% if @sampling_patterns.empty? then %>
     <!--投稿がない場合の表示-->
