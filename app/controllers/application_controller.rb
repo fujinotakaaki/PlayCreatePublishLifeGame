@@ -1,11 +1,14 @@
 class ApplicationController < ActionController::Base
+  include I18nSetting
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
-
+  before_action :set_locale
   # サイトアクセス時のみカテゴリ一覧取得（一般ユーザが編集する機能がないため）
   CATEGORY_INDEX = Category.all.pluck( :id, :name )
 
-  # ログイン成功後の遷移先指定
+  protected
+
+  # ログイン後の遷移先指定
   def after_sign_in_path_for( resource )
     case resource
     when User
@@ -22,11 +25,8 @@ class ApplicationController < ActionController::Base
     root_path
   end
 
-
-  protected
-
+  # サインアップ時に必要なパラメータの設定
   def configure_permitted_parameters
-    # サインアップ時に必要なパラメータの設定
     devise_parameter_sanitizer.permit( :sign_up, keys: [ :email, :name ] )
   end
 end

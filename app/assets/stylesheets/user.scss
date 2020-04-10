@@ -10,7 +10,7 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree ./common
+ *= require cropper.min.css
  *= require_tree ./user
  *= require_self
  */
@@ -18,14 +18,169 @@
  @import "bootstrap-sprockets";
  @import "bootstrap";
 
-.devise {
-  &__common {
-    padding: 10px 30px;
-    background: radial-gradient( white, silver );
-    border: medium solid #888;
-    border-radius: 20px;
-    &--headline {
-      margin: 1em 20px;
-    }
-  }
+ /*common*/
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ .clearfix::after {
+   content: "";
+   display: block;
+   clear: both;
+ }
+
+ header {
+   color: white;
+   background-color: black;
+   min-height: 10em;
+   padding: 10px 30px;
+   margin-bottom: 40px;
+   h1 {
+     color: limegreen;
+   }
+   nav {
+     position: absolute;
+     top: 2em;
+     right: 1em;
+   }
+   img {
+     border: thin solid dimgray;
+     background-color: black;
+   }
+   a {
+     color: white;
+     text-decoration: none;
+     &:hover {
+       color: yellow;
+       text-decoration: none;
+     }
+   }
+ }
+
+ body {
+   background-color: #eee;
+ }
+
+
+ footer {
+   height: 150px;
+   width: 100%;
+   background-color: black;
+   color: #fff;
+   margin-top: 30px;
+ }
+
+ #menue-parent {
+   position: relative;
+   text-align: left;
+   &:hover {
+     #menue-child {
+       display: block;
+     }
+   }
+ }
+
+ #menue-child {
+   display: none;
+   position: absolute;
+   top: 100%;
+   right: 0;
+   text-align: left;
+   background-color: white;
+   li {
+     display: block;
+     width: 180px;
+     margin: 0;
+     border: thin solid black;
+     border-top: none;
+     padding: 2px 10px;
+     color: black;
+     &:hover {
+       color: black;
+     }
+     &:first-child {
+       background-color: #aaa;
+     }
+     a {
+       color: black;
+       &:hover {
+         color: purple;
+         text-decoration: none;
+       }
+     }
+   }
+ }
+
+ .devise {
+   &__common {
+     padding: 10px 30px;
+     background: radial-gradient( white, silver );
+     border: medium solid #888;
+     border-radius: 20px;
+     &--headline {
+       margin: 1em 20px;
+     }
+   }
+ }
+
+
+ .btn {
+   cursor: pointer;
+   &-originGreen {
+     color: white;
+     background-color: forestgreen;
+     &:hover {
+       color: whitesmoke;
+       background-color: #003300;
+     }
+     &:focus {
+       color: whitesmoke;
+       background-color: #003300;
+     }
+   }
+   &-originPink {
+     // color: forestgreen;
+     background-color: lightpink;
+     &:hover {
+       color: #eee;
+       background-color: palevioletred;
+     }
+     &:focus {
+       color: #eee;
+       background-color: palevioletred;
+     }
+   }
+   &-originRainbow {
+     color: darkmagenta;
+     background: -moz-linear-gradient(top left, #FFF, #FFC778);
+     background: -webkit-linear-gradient(top left, #FFF, #FFC778);
+     background: linear-gradient(to bottom right, #FFF, #FFC778);
+     &:hover {
+       color: midnightblue;
+     }
+     &:focus {
+       color: midnightblue;
+     }
+   }
+ }
+
+ #crop{
+   &_preview {
+     img {
+       max-width: 150px;
+       max-height: 150px;
+     }
+   }
+   &_area_box {
+   width: 100%;
+   min-height: 50vh;
+   /* Ensure the size of the image fit the container perfectly */
+   img {
+     display: block;
+     /* This rule is very important, please don't ignore this */
+     max-width: 100%;
+   }
+ }
 }

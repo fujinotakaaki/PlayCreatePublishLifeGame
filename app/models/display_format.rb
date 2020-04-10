@@ -26,23 +26,29 @@ class DisplayFormat < ApplicationRecord
 
   belongs_to :user
   has_many :patterns
+  has_many :makings
 
-  # 特定のフォーマットを使用した投稿があるか判定
+  # 特定のフォーマットを使用しているパターンがあるか判定
   def used?
     patterns.exists?
   end
 
-  # cssの設定情報を抽出し、json形式に変換するメソッド
+  # cssの設定情報をjson形式に変換
   def as_json_css_options
-    as_json(
-      only: [ :font_color, :background_color, :line_height_rate, :letter_spacing, :font_size ]
-    ).transform_keys{ | key | key.to_s.camelize( :lower ).to_sym }
+    # css設定に関するカラムの選択
+    convert_key_to_life_game( :font_color, :background_color, :font_size, :line_height_rate, :letter_spacing )
   end
 
-  # セルの表示定義の設定情報を抽出し、json形式に変換するメソッド
-  def as_json_cell_conditions( option = { is_torus: false } )
-    as_json(
-      only: [ :alive, :dead ]
-    ).merge( option ).transform_keys{ | key | key.to_s.camelize( :lower ).to_sym }
+  # セルの表示定義情報をjson形式に変換
+  def as_json_cell_conditions
+    # セルの表示定義に関するカラムの選択
+    convert_key_to_life_game( :alive, :dead )
+  end
+
+  private
+
+  # カラムと値の連想配列作成（キーはJSで取り扱えるように適宜変換）
+  def convert_key_to_life_game( *pick_up_keys )
+    as_json( only: pick_up_keys ).transform_keys{ | key | key.camelize( :lower ).to_sym }
   end
 end

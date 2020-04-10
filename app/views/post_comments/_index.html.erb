@@ -1,0 +1,4 @@
+<!--コメント一覧用部分テンプレート-->
+<% post_comments.each do | post_comment | %>
+<%= render 'post_comments/article', post_comment: post_comment %>
+<% end %>

@@ -1,16 +1,12 @@
-<h2>This section is showed for debug.</h2>
-
 <nav>
   <ul>
     <li>
-      <h4>Members</h4>
-      <%= link_to 'Index', admin_members_path %>
+      <h4>全パターンCSV出力</h4>
+      <%= link_to "CSV出力", admin_patterns_path(format: :csv), class: "btn btn-primary" %>
     </li>
     <li>
-      <h4>Categories</h4>
-      <%= link_to 'Index', admin_categories_path %>
+      <h4>開発環境用めーる</h4>
+      <%= link_to "LetterOpener", '/letter_opener', class: "btn btn-default" %>
     </li>
   </ul>
 </nav>
-
-<%= debug(params) %>

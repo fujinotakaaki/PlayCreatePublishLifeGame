@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>PlayCreatePublishLifeGame_管理者</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= stylesheet_link_tag    'admin', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'admin', 'data-turbolinks-track': 'reload' %>
-  </head>
+<head>
+  <title>PlayCreatePublishLifeGame_管理者</title>
+  <%= favicon_link_tag "favicon2.ico" %>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag    'admin', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'admin', 'data-turbolinks-track': 'reload' %>
+</head>
 
-  <header>
-    <h1>（管理者）</h1>
+<header>
+  <h1>PlayCreatePublishLifeGame_管理者ページ</h1>
 
-    <nav>
+  <nav>
     <ul>
       <li><%= link_to "Top for user", root_path %></li>
       <li><%= link_to "Top for Admin", admin_root_path %></li>
       <li><%= link_to '管理者ログアウト', destroy_admin_session_path, method: :delete, data: { confirm: 'ログアウトしますか？' } %></li>
     </ul>
   </nav>
-  </header>
+</header>
 
-  <body>
+<body>
+  <div class="container">
     <%= yield %>
-  </body>
+  </div>
+</body>
 
-  <footer>
-    <% if Rails.env.development? then %>
-    <%= render 'admin/layouts/debug_section' %>
-    <% end %>
-  </footer>
+
+<footer>
+  <% if Rails.env.development? then %>
+  <%= render 'admin/layouts/debug_section' %>
+  <% end %>
+</footer>
 </html>

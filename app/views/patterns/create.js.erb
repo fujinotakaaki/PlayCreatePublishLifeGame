@@ -9,7 +9,7 @@ $("#pattern_introduction").removeClass("application__errors--textField");
 <% if @pattern.errors.any? then %>
 // バリデーションエラーメッセージの表示
 callMessageWindow( "warning", "<%= @pattern.errors.full_messages.join( ?, ) %>".split(',') );
-// エラー項目にエラー用のclassを追加する
+// エラー項目にエラー項目通知用のclassを適用する
 <% @pattern.errors.each do | column, message | %>
 $("#pattern_<%= column %>").addClass("application__errors--textField");
 <% end %>
@@ -18,5 +18,5 @@ $("#pattern_<%= column %>").addClass("application__errors--textField");
 // 作成中パターンのデータ更新成功の通知
 callMessageWindow( "success", "投稿に成功しました。" );
 // 「投稿」ボタンを「マイページ遷移」ボタンに置換する
-$('<%= link_to "マイページへ", member_path( current_user ), class: "btn btn-success" %>').replaceAll(".patterns__new--submit");
+$(".patterns__new--submit").html('<%= link_to "マイページへ", member_path( current_user ), class: "btn btn-success" %>');
 <% end %>

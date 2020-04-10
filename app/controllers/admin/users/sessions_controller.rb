@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Admin::Users::SessionsController < Devise::SessionsController
+  include Admin::Concerns::I18nSetting
+  layout 'admin/layouts/application'
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in

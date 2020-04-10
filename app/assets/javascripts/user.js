@@ -12,6 +12,7 @@
 //
 //= require rails-ujs
 //= require activestorage
+//= require cropper.min.js
 //= require turbolinks
 //= require jquery
 //= require bootstrap-sprockets

@@ -1,0 +1,4 @@
+// ページトップへ移動(common/application.js)
+movePageTop();
+// フォームを編集モードへの切り替え
+$(".categories___article--form").html("<%= escape_javascript( render 'admin/categories/form', category: @category ) %>");

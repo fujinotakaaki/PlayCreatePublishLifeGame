@@ -1,1 +1,12 @@
-<%= link_to "めーるみる", '/letter_opener' if Rails.env.development? %>
+<div class="row">
+  <div class="col-sm-6 homes__top--body">
+    <%= link_to 'ユーザ一覧へ', admin_members_path, class: "btn btn-primary homes__top--button" %>
+    <h2>ユーザ数：<%= User.count %></h2>
+    <h2>パターン投稿数：<%= Pattern.count %></h2>
+  </div>
+
+  <div class="col-sm-6 homes__top--body">
+    <%= link_to 'カテゴリ一覧へ',  admin_categories_path, class: "btn btn-primary homes__top--button" %>
+    <h2>カテゴリ数：<%= Category.count %></h2>
+  </div>
+</div>

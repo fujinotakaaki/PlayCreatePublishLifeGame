@@ -1,0 +1,23 @@
+<!--通常表示用テンプレート-->
+
+<!--プロフィール画像-->
+<div class="members__show--divLeft">
+  <%= link_to member_path( user ) do %>
+  <%= attachment_image_tag user, :profile_image, fallback: "no_image.jpg", class: "members__show--img" %>
+  <% end %>
+</div>
+
+<!--ユーザ紹介テンプレート-->
+<div class="members__show--divRight">
+  <!--ユーザ名表示-->
+  <h4 class="members__show--headline">
+    <%= content_tag :span, '', class: "glyphicon glyphicon-user", aria: { hidden: true } %>
+    <%= user.name %>
+    <%= link_to "このユーザの投稿パターン全取得", admin_member_path( user, format: :csv ), class: "btn btn-primary" %>
+  </h4>
+  <!--自己紹介文表示-->
+  <%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %>
+  自己紹介文
+  <%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %><br>
+  <%= user.introduction.blank? ? '本文がありません' : user.introduction %><br>
+</div>

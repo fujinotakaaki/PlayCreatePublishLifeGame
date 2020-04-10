@@ -1,57 +1,76 @@
+/*
+* =============================
+* ライフゲームのシステム部
+* =============================
+* # => 内部操作
+* @ => 外部操作
+*/
 class LifeGame {
+  /* =============================
+  # 定数など
+  ============================= */
+  // 中央座標から見て前後左右斜めの相対位置の組み合わせ（ムーア近傍）
+  MOORE_NEIGHBORHOOD = [ [1,1], [1,0], [1,-1], [0,1], [0,-1], [-1,1], [-1,0], [-1,-1] ];
+  // 世代更新回数
+  generationCount = 0;
+  // セルの表示設定
+  alive = "■";
+  dead = "□";
+  // 平坦トーラス面フラグ（オプションが設定されている場合は反映）
+  isTorus = false
 
-
-  // 盤面情報と表示形式情報の設定
-  constructor( pattern = [ "0000", "0111", "1110", "0000" ], options = { isTorus: false } ) {
+  /* =============================
+  # ライフゲーム初期化処理
+  ============================= */
+  constructor( pattern = [ "0000", "0111", "1110", "0000" ] ) {
     // 世代更新回数
-    this.generation_count = 0;
+    // this.generationCount = 0;
     // 初期盤面の取得（要素がビット列の１次元配列）
     this.pattern = pattern;
     // 盤面の定義域取得
     [ this.height, this.width ] = [ pattern.length, pattern[0].length ];
     // セルの表示設定
-    [ this.alive, this.dead ] = [ "■", "□" ];
+    // [ this.alive, this.dead ] = [ "■", "□" ];
     // 平坦トーラス面フラグ（オプションが設定されている場合は反映）
-    this.isTorus = !! options.isTorus;
-
-    // リフレッシュメソッド用初期盤面の格納変数（浅いコピーだが、実装上不具合は見られない2020.03.21）
+    // this.isTorus = options.isTorus;
+    // リフレッシュ処理用初期盤面の格納変数（浅いコピーだが、実装上不具合は見られない2020.03.21）
     this.patternInitial = pattern;
-    // 世代交代後の盤面
-    this.newPattern = new Array;
     // 中央座標から見て前後左右斜めの相対位置の組み合わせ（ムーア近傍）
-    this.mooreNeighborhood = [ [1,1], [1,0], [1,-1], [0,1], [0,-1], [-1,1], [-1,0], [-1,-1] ];
+    // this.mooreNeighborhood = [ [1,1], [1,0], [1,-1], [0,1], [0,-1], [-1,1], [-1,0], [-1,-1] ];
   }
 
 
-  // 盤面の世代更新回数を出力するメソッド
-  get getGenerationCount() {
-    return this.generation_count;
-  }
-
-
-  // 盤面のHTMLテキストへの出力するメソッド
+  /* =============================
+  @ 盤面のHTMLテキストの出力処理
+  ============================= */
   get getPatternText() {
     // ビット列を表示形式に変換して返す（ 不具合①：this.alive = '0'だと正しく変換できない）
     return this.pattern.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
   }
 
 
-  // 世代更新を行っていない初期状態に戻すメソッド
+  /* =============================
+  @ 盤面の初期化処理
+  ============================= */
   get patternRefresh() {
     // 初期世代の配置に置き換える（浅いコピーだが、実装上不具合は見られない2020.03.21）
     this.pattern = this.patternInitial;
     // 世代更新回数のリセット
-    this.generation_count = 0;
+    this.generationCount = 0;
   }
 
 
-  // セルの表示定義変更メソッド
+  /* =============================
+  @ セルの表示定義変更処理
+  ============================= */
   changeCellConditions( options = { alive: '■', dead: '□' }  ) {
     [ this.alive, this.dead ] = [ options.alive, options.dead ];
   }
 
 
-  // トーラス設定の切り替えメソッド（変更結果を出力できる）
+  /* =============================
+  @ トーラス設定の切替処理
+  ============================= */
   changeTorusFlag( bool = 0 ) {
     this.isTorus = ( Number.isInteger( bool ) ? ! this.isTorus : !! bool )
     // 変更結果を返す
@@ -59,8 +78,12 @@ class LifeGame {
   }
 
 
-  // 世代交代の処理メソッド
+  /* =============================
+  @ 世代交代処理
+  ============================= */
   get generationChange() {
+    // 世代更新後のパターン記憶変数
+    let newPattern = new Array;
     // 配列のインデックス番号を生成
     for ( let y = 0; y < this.height; y++ ) {
       // 世代更新後の盤面のy行目のビット列を格納する変数
@@ -71,25 +94,25 @@ class LifeGame {
         row += this.deadOrAlive( y, x );
       }
       // y行目の処理が済んだら、次世代盤面へ（配列）追加
-      this.newPattern.push( row );
+      newPattern.push( row );
     }
     // 次世代パターンを現在世代パターンに反映
-    this.pattern = this.newPattern;
-    // 次世代パターン（配列）の初期化
-    this.newPattern = new Array;
+    this.pattern = newPattern;
     // 世代更新回数のカウントアップ
-    this.generation_count++;
+    this.generationCount++;
   }
 
 
-  // セルの誕生、生存、過疎、過密処理
+  /* =============================
+  # 各セルの世代更新後の状態（誕生、生存、過疎、過密）決定処理
+  ============================= */
   deadOrAlive( y, x ) {
     // (1) 周辺の生きているセルのカウントアップ（マップ外は「死」扱い）
     let aliveCellsCount = 0;
-    // ムーア近傍を調べる（８箇所）
-    for ( let [ t, s ] of this.mooreNeighborhood ) {
+    // ムーア近傍を調査（８箇所）
+    for ( let [ t, s ] of this.MOORE_NEIGHBORHOOD ) {
       // 各座標の算出
-      let [ b, a ] = [ y + t, x + s];
+      let [ b, a ] = [ y + t, x + s ];
       // 盤面内判定（ 0 <= y < this.height, 0 <= x < this.width ）
       if ( b + 1 && b - this.height && a + 1 && a - this.width ) {
         // 盤面内の場合
@@ -99,6 +122,7 @@ class LifeGame {
         aliveCellsCount += Number( this.isTorus ? this.pattern[ ( b + this.height ) % this.height ][ ( a + this.width ) % this.width ] : 0 );
       }
     }
+    // ムーア近傍を調査（別案）
     // aliveCellsCount +=  Number( this.pattern?.[ y + t ]?.[ x + s ] || ( this.isTorus ? this.pattern[ ( y + t + this.height ) % this.height ][ ( x + s + this.width ) % this.width ] : 0 ) );
 
     // (2) 世代更新後の中心座標のセルの生死状態判定
@@ -114,5 +138,56 @@ class LifeGame {
     }
     // 次世代での状態を返す => "0" or "1"
     return String( nextCondition );
+  }
+
+
+  /* =============================
+  @ 上下反転処理
+  ============================= */
+  get flipVertical() {
+    this.patternInitial = this.patternInitial.reverse();
+    // 盤面の初期化
+    this.patternRefresh;
+  }
+
+
+  /* =============================
+  @ 左右反転処理
+  ============================= */
+  get flipHorizontal() {
+    // 各行のビット列に対して処理実行
+    this.patternInitial = this.patternInitial.map( bit_string =>
+      // ビット列 => 配列 => （反転） => 文字列化
+      bit_string.split('').reverse().join('')
+    )
+    // 盤面の初期化
+    this.patternRefresh;
+  }
+
+
+  /* =============================
+  @ パターンの回転処理（反時計回りに90°回転）
+  ============================= */
+  get rotateCounterClockwise() {
+    // 回転処理後のパターン記憶変数
+    let newPattern = new Array;
+    // 列後方からの処理
+    for ( let x = this.width - 1; x >= 0; x-- ) {
+      // 回転後の各行のビット列
+      let row = new String;
+      // 先頭行からの処理
+      for ( let y = 0; y < this.height; y++ ) {
+        // 行へビットの挿入
+        row += this.patternInitial[y][x];
+      }
+      // パターン記憶変数に回転後のビット列を挿入
+      newPattern.push( row );
+    }
+    // 初期盤面の更新
+    this.patternInitial = newPattern;
+    // 盤面の定義域変更
+    [ this.height, this.width ] = [ this.width, this.height ];
+    // 盤面の初期化
+    this.patternRefresh;
   }
 } // class

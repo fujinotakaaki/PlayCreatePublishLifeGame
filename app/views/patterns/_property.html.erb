@@ -7,19 +7,19 @@
     </li>
     <li>
       <%= content_tag :span, '', class: "glyphicon glyphicon-eye-open", aria: { hidden: true } %>
-      閲覧数: <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>工事中<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+      閲覧数:<%= pattern.preview_count %>
     </li>
     <li>
-      <%= content_tag :span, '', class: "glyphicon glyphicon-comment", aria: { hidden: true } %>
-      コメント: <%= pattern.post_comments.size %>
+      <%= content_tag :i, '', class: "fas fa-comment" %>
+      コメント: <%= pattern.comments_count %>
     </li>
     <li>
       <%= content_tag :span, '', class: "glyphicon glyphicon-paperclip", aria: { hidden: true } %>
       <!--お気に入り項目-->
-      <% if /show/.match?( action_name ) && !! current_user then %>
+      <% if action_name == 'show' && !! current_user then %>
       <!--ログイン中のユーザの場合-->
       <!--お気に入り登録・削除の表示-->
-      <% if pattern.favoreted?( current_user ) then %>
+      <% if pattern.is_favorite_by?( current_user ) then %>
       <!--登録済の場合-->
       <%= render 'favorites/destroy', pattern_id: pattern.id %>
       <% else %>
@@ -31,7 +31,7 @@
       お気に入り数
       <% end %>
       <!--お気に入り登録ユーザ数-->
-      <%= ": #{ pattern.favorites.size }" %>
+      <%= ": #{ pattern.favorites_count }" %>
     </li>
   </ul>
 </nav>

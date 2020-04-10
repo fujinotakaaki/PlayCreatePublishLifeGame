@@ -10,6 +10,12 @@ module PlayCreatePublishLifeGame
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
+
+    # 言語設定
+    config.i18n.available_locales = [ :ja, :en ]
+    config.i18n.enforce_available_locales = true
+    config.i18n.default_locale = :ja
+
     # 時刻設定
     config.active_record.default_timezone = :local
     config.time_zone = 'Tokyo'

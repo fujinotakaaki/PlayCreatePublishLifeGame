@@ -1,3 +1,27 @@
-// Place all the styles related to the Members controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.members {
+  &__show {
+    &--headline {
+      font-size: 20px;
+      font-weight: bold;
+      padding-top: 0.5em;
+    }
+    &--divLeft {
+      float: left;
+      width: 30%;
+      text-align: center;
+    }
+    &--divRight {
+      float: left;
+      width: 70%;
+      vertical-align: bottom;
+    }
+    &--img {
+      background-color: black;
+      max-height: 150px;
+      display: inline-block;
+      padding: 5px;
+      border: thin solid dimgray;
+      margin-bottom: 1em;
+    }
+  }
+}

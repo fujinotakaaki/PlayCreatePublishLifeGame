@@ -1,11 +1,9 @@
 <!--ライフゲーム実行用部分テンプレート-->
 
-<!--操作ボタン類（トップページでは表示しない）-->
-<% unless /home/.match?( controller_name ) then %>
+<!--操作ボタン類-->
 <div class="patterns__show--lifeGameInterface">
   <%= render 'patterns/interface' %>
 </div>
-<% end %>
 
 <p class="patterns__show--lifeGameInfo">
   (ここに世代情報が表示されます)
@@ -15,8 +13,9 @@
   (ここにライフゲームが表示されます)
 </p>
 
-<!--呼び出し時の画面整形-->
+<!--gonデータ受け渡し用のJSタグ生成-->
 <%= include_gon %>
+<!--呼び出し時の画面整形-->
 <script type="text/javascript">
   $(function(){
     // カテゴリ欄の削除

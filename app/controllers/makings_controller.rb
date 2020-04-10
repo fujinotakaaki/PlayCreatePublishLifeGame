@@ -5,6 +5,16 @@ class MakingsController < ApplicationController
   # build_up_bit_strings_from, set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
   include PatternsHelper
 
+  def new
+    # 画像からパターンを作成する
+  end
+
+  def create
+    # 画像から作成したパターンデータに更新する
+    update{ | making | making.update( { display_format_id: 2 } ) }
+    # パターン投稿ページへ
+    redirect_to new_pattern_path
+  end
 
   def edit
     # 作成中のパターン取得or新規盤面の作成
@@ -14,19 +24,21 @@ class MakingsController < ApplicationController
   end
 
   def update
+    # データ更新を実施するデータをピックアップ
+    @making = Making.find_by( user_id: current_user.id )
     # ストロングパラメータ取得（エラーがあればエラーメッセージを取得）
     making_params = update_params
     # エラーメッセージかチェック
-    unless making_params.instance_of?( ActionController::Parameters ) then
+    unless making_params.is_a?( ActionController::Parameters ) then
       # エラーメッセージを格納
       @convertion_error_message = making_params
-      # 処理を強制終了
+      # 強制終了
       return
     end
-    # データ更新を実施するデータをピックアップ
-    @making = Making.find_by( user_id: current_user.id )
     # 更新実行
     @making.update( making_params )
+    # cereateから呼ばれている場合はdisplay_format_idを2に更新する
+    yield @making if block_given?
   end
 
   def destroy
@@ -40,20 +52,16 @@ class MakingsController < ApplicationController
 
 
   private
-  
+
   def update_params
     # 送信されてきたデータから必要なパラメータを抽出
     raw_params = params.require( :making ).permit( :is_torus, :making_text )
     # :making_textデータを余白とパターンの行データ数列に変換する。
-    convert_params = build_up_pattern_params_from( raw_params.delete( :making_text ) )
     # パラメータ（Hash）orエラーメッセージ(String)を受け取る
-    # パラメータへの変換結果によって返す値を決定する
-    if convert_params.instance_of?( Hash ) then
-      # 正常に変換が完了した場合 => トーラス面フラグと供にパラメータを返す
-      raw_params.merge( convert_params )
-    else
-      # 問題があった場合 => エラーメッセージを返す
-      convert_params
-    end
+    convert_params = build_up_pattern_params_from( raw_params.delete( :making_text ) )
+    # エラーがあった場合はエラーメッセージを返す
+    return convert_params unless convert_params.is_a?( Hash )
+    # ストロングパラメータにマージして返す
+    raw_params.merge({ display_format_id: 1, **convert_params } )
   end
 end

@@ -3,5 +3,5 @@ class PostComment < ApplicationRecord
   validates :body, presence: true, length: { maximum: 511 }
 
   belongs_to :user
-  belongs_to :pattern
+  belongs_to :pattern, counter_cache: :comments_count
 end

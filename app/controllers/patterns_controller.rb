@@ -1,6 +1,8 @@
 class PatternsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :baria_user, only: [ :edit, :update, :destroy ]
+  # 閲覧数カウントアップ
+  impressionist actions: [ :show ]
   # build_up_pattern_params_fromメソッドをインクルード（ビット列 => dbデータへ変換）
   include MakingsHelper
   # build_up_bit_strings_from, set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
@@ -8,19 +10,22 @@ class PatternsController < ApplicationController
 
 
   def new
-    # パラメータの構築
-    precreate_params = build_up_pattern_params_from( params[:making_pattern] )
+    # 作成中のパターンを取得
+    making = Making.find_by( user_id: current_user.id )
     # 新規パターンの作成とパラメータの代入
-    @pattern = Pattern.new( precreate_params )
-    # トーラス面設定の取得・代入
-    @pattern.is_torus = /true/.match?( params[:is_torus] )
-    # gonにデータを格納
+    @pattern = Pattern.new( making.as_pattern )
+    # gonに新規パターンデータを格納
     set_to_gon( @pattern )
   end
 
   def create
     @pattern = current_user.patterns.build( create_pattern_params )
-    @pattern.save
+    # エラーが発生すれば強制終了
+    return unless @pattern.save
+    # 初期化するデータをピックアップ
+    making = Making.find_by( user_id: current_user.id )
+    # データを削除
+    making.destroy
   end
 
   def index
@@ -34,19 +39,19 @@ class PatternsController < ApplicationController
         # カテゴリー検索の場合
         category = Category.find(value)
         [
-          category.patterns.page( params[ :page ] ).includes( :user, :favorites, :post_comments ).reverse_order,
+          category.patterns.page( params[ :page ] ).includes( :user ).reverse_order,
           "カテゴリ：「#{category.name}」", "「#{category.explanation}」"
         ]
       when search_keyword?( value )
         # キーワード検索の場合
         [
-          Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order,
+          Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] ).includes( :user, :category ).reverse_order,
           "「#{value}」の検索結果"
         ]
       else
         # 全投稿表示の場合
         [
-          Pattern.page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order,
+          Pattern.page( params[ :page ] ).includes( :user, :category ).reverse_order,
           "全投稿"
         ]
       end
@@ -64,9 +69,9 @@ class PatternsController < ApplicationController
     # gonにデータを格納
     set_to_gon( @pattern )
     # このパターンに対し最近投稿されたコメント5件をピックアップ
-    @latest_comments = PostComment.where( pattern_id: params[ :id ] ).includes( :user ).reverse_order.limit(5)
+    @latest_comments = @pattern.post_comments.reverse_order.limit(5)
     # 最近投稿されたカテゴリが同じパターン2件をピックアップ（自分を除く）
-    @sampling_patterns = Pattern.where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id ).includes( :category ).reverse_order.limit(2)
+    @sampling_patterns = Pattern.where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id ).includes( :user, :category ).reverse_order.limit(2)
   end
 
   def update
@@ -84,19 +89,22 @@ class PatternsController < ApplicationController
 
   private
 
+  # オーナーとログインユーザの識別
   def baria_user
-    # ログインユーザと製作者が一致しているか判定
+    # ログインユーザとオーナーが一致しているか判定
     unless Pattern.find( params[ :id ] ).user_id  == current_user.id then
       # 不一致 => マイページへ
       redirect_to current_user
     end
   end
 
+  # 新規投稿の際に取得するストロングパラメータ
   def create_pattern_params
     params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id,
       :margin_top, :margin_bottom, :margin_left, :margin_right, :is_torus, :normalized_rows_sequence )
   end
 
+  # 更新の際に取得するストロングパラメータ
   def update_pattern_params
     params.require( :pattern ).permit( :name, :introduction, :image, :category_id, :display_format_id,
       :margin_top, :margin_bottom, :margin_left, :margin_right, :is_torus, :is_secret )
@@ -104,12 +112,9 @@ class PatternsController < ApplicationController
 
   # 一覧表示の項目検索条件取得メソッド
   def search_params
-    begin
-      # カテゴリorキーワード検索の場合
+    # カテゴリorキーワード検索の場合処理
+    if params.has_key?( :search ) then
       params.require( :search ).permit( :category, :keyword ).to_hash.flatten
-    rescue => e
-      # 全投稿検索の場合
-      # logger.debug e
     end
   end
 

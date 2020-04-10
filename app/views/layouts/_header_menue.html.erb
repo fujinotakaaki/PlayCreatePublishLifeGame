@@ -3,7 +3,7 @@
 <nav>
   <!--各リンク-->
   <ul class="application__header--searchForm">
-    <%= form_with url: patterns_path, local: true, method: :get do | f | %>
+    <%= form_with( url: patterns_path, local: true, method: :get ) do | f | %>
     <li>
       <%= f.text_field "search[keyword]", placeholder: "サイト内検索", class: "form-control application__search--form" %>
     </li>

@@ -1,0 +1,37 @@
+.comments {
+  &__index {
+    max-height: 300px;
+    width: 100%;
+    overflow: auto;
+    &--more {
+      width: 90%;
+      margin: 10px 5%;
+    }
+    &--headline {
+      padding-left: 1em;
+      line-height: 2em;
+    }
+  }
+  &__article {
+    font-size: 10px;
+    padding: 15px;
+    margin: 2px 5px;
+    background-color: #fafafa;
+    border: thin solid #888;
+    border-radius: 10px;
+    word-wrap: break-word;
+    &--nothing {
+      font-size: 13px;
+    }
+  }
+  &__form {
+    width: 100%;
+    &--body {
+      resize: none;
+      width: 100%;
+    }
+    &--submit {
+      width: 100%;
+    }
+  }
+}

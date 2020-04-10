@@ -1,41 +1,99 @@
 <!--作成中パターンの操作用インターフェース-->
 
-<!--提出前・動作チェック前パターンの適性チェック用アクション-->
-<button type="button" class="btn btn-primary makings__edit--verification" onclick="verificationMakingPattern();">
-	検証
-</button>
+<!-- タブ・メニュー -->
+<ul class="nav nav-tabs makings__edit--tabNav">
+	<li class="makings__edit--tabLi active"><a href="#sampleContentA" data-toggle="tab">パターンの検証</a></li>
+	<li class="makings__edit--tabLi"><a href="#sampleContentB" data-toggle="tab">補完処理</a></li>
+	<li class="makings__edit--tabLi"><a href="#sampleContentC" data-toggle="tab">特殊処理</a></li>
+	<li class="makings__edit--tabLi"><a href="#sampleContentD" data-toggle="tab">一斉操作</a></li>
+	<li class="makings__edit--tabLi"><a href="#sampleContentE" data-toggle="tab">画像から作成</a></li>
+	<li class="makings__edit--tabLi"><a href="#sampleContentF" data-toggle="tab">パターンの初期化</a></li>
+</ul>
 
-<!--パターン加工処理-->
-<div class="btn-group">
-	<!--ドロップダウンボタンの表示-->
-	<button type="button" class="btn btn-danger">
-		一括処理
-	</button>
 
-	<!--ドロップダウン表示アクション-->
-	<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-		<span class="caret"></span>
-	</button>
+<!-- タブ内容 -->
+<div class="tab-content">
+	<div class="tab-pane makings__edit--tabCommon active" id="sampleContentA">
+		<!--提出前・動作チェック前パターンの適性チェック用アクション-->
+		<h4>保存・投稿メニュー</h4>
+			<button type="button" class="btn btn-primary makings__edit--verification" onclick="verificationMakingPattern();">
+				検証
+			</button>
 
-	<!--ドロップダウンリスト-->
-	<ul class="dropdown-menu" role="menu">
-		<!--(1)ビット列の短い行に対する、「右側」への"0"の補完処理-->
-		<li role="presentation">
-			<a role="menuitem" tabindex="-1" href="#" onclick="autoComplement( 'right' ); return false;">
-				自動補完（右側）
-			</a>
-		</li>
-		<!--(2)ビット列の短い行に対する、「左側」への"0"の補完処理-->
-		<li role="presentation">
-			<a role="menuitem" tabindex="-1" href="#" onclick="autoComplement( 'left' ); return false;">
-				自動補完（左側）
-			</a>
-		</li>
-		<!--(3)作成中のパターンを初期化-->
-		<li role="presentation" class="makings__edit--destroy" id="unko">
-			<%= link_to making_path, method: :delete, role: "menuitem", tabindex:"-1", "data-confirm" => "作成中のパターンを初期化しますか？", role: "menuitem", tabindex: -1 do %>
+			<!--「変更を保存」ボタンはdisplay: none;がデフォルト設定-->
+			<%= f.submit '変更を保存', id: "makings__edit--update", class: "btn btn-success" %>
+
+			<!--パターン新規作成画面への移動アクション-->
+			<%= link_to new_pattern_path, id: "patterns__new--jump", class: "btn btn-default" do %>
+			<%= content_tag :span, ' このパターンを投稿する（パターン情報入力ページへ）', class: "glyphicon glyphicon-pencil", aria: { hidden: true } %>
+			<% end %>
+	</div>
+
+
+	<div class="tab-pane makings__edit--tabCommon" id="sampleContentB">
+		<h4>ビット列補完メニュー</h4>
+		<!--(1)ビット列の短い行に対する、「左側」への"0"の補完処理-->
+		<button type="button" class="btn btn-originGreen" onclick="autoComplement( 'left' );">
+			自動補完（左側）
+		</button>
+		<!--(2)ビット列の短い行に対する、「右側」への"0"の補完処理-->
+		<button type="button" class="btn btn-originGreen" onclick="autoComplement( 'right' );">
+			自動補完（右側）
+		</button>
+	</div>
+
+
+	<div class="tab-pane makings__edit--tabCommon" id="sampleContentC">
+		<h4>パターンの反転・回転操作メニュー</h4>
+		<!--(1)上下反転アクション-->
+		<button type="button" class="btn btn-originGreen makings__edit--preview" onclick="touchingMmakingPattern(1);">
+			<%= content_tag :i, ' 上下反転', class: "fas fa-arrows-alt-v" %>
+		</button>
+		<!--(2)左右反転アクション-->
+		<button type="button" class="btn btn-originGreen makings__edit--preview" onclick="touchingMmakingPattern(2);">
+			<%= content_tag :i, ' 左右反転', class: "fas fa-arrows-alt-h" %>
+		</button>
+		<!--(3)回転アクション-->
+		<button type="button" class="btn btn-originGreen makings__edit--preview" onclick="touchingMmakingPattern(3);">
+			<%= content_tag :i, ' 反時計回りに回転', class: "fas fa-undo" %>
+		</button>
+	</div>
+
+
+	<div class="tab-pane makings__edit--tabCommon" id="sampleContentD">
+		<h4>パターンの行列操作メニュー</h4>
+		<!--行・列の追加-->
+		<h5>追加メニュー</h5>
+		<p>
+			<button type="button" class="btn btn-originGreen" onclick="touchingLine(1);">先頭に行を追加</button>
+			<button type="button" class="btn btn-originGreen" onclick="touchingLine(2);">後尾に行を追加</button>
+			<button type="button" class="btn btn-originGreen" onclick="touchingLine(3);">左に列を追加</button>
+			<button type="button" class="btn btn-originGreen" onclick="touchingLine(4);">右に列を追加</button>
+		</p>
+		<!--行・列の削除-->
+		<h5>削除メニュー</h5>
+		<p>
+			<button type="button" class="btn btn-danger" onclick="touchingLine(5);">先頭の行を削除</button>
+			<button type="button" class="btn btn-danger" onclick="touchingLine(6);">最後の行を削除</button>
+			<button type="button" class="btn btn-danger" onclick="touchingLine(7);">左の列を削除</button>
+			<button type="button" class="btn btn-danger" onclick="touchingLine(8);">右の列を削除</button>
+		</p>
+	</div>
+
+
+	<div class="tab-pane makings__edit--tabCommon" id="sampleContentE">
+		<h4>画像からパターン作成</h4>
+		<!--画像から作成ページへ移動-->
+		<%= link_to 'Go', new_making_path, class: 'btn btn-originRainbow' %>
+	</div>
+
+
+	<div class="tab-pane makings__edit--tabCommon" id="sampleContentF">
+		<!--作成中のパターンを初期化-->
+		<p class="makings__edit--destroyTab">
+			<%= link_to making_path, method: :delete, data: { confirm: "作成中のパターンを初期化しますか？" } do %>
 			<%= content_tag :i, 'パターンを初期化', class:"fas fa-bomb"%>
 			<% end %>
-		</li>
-	</ul>
+		</p>
+	</div>
 </div>
