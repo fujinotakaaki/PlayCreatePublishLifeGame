@@ -2,6 +2,7 @@
 
 class Users::ConfirmationsController < Devise::ConfirmationsController
   include I18nSetting
+  before_action :set_locale
   # GET /resource/confirmation/new
   # def new
   #   super

@@ -11,7 +11,7 @@ class MakingsController < ApplicationController
 
   def create
     # 画像から作成したパターンデータに更新する
-    update{ | making | making.update( { display_format_id: 2 } ) }
+    update{ | making_params | making_params.merge!( { display_format_id: 2 } ) }
     # パターン投稿ページへ
     redirect_to new_pattern_path
   end
@@ -19,7 +19,7 @@ class MakingsController < ApplicationController
   def edit
     # 作成中のパターン取得or新規盤面の作成
     @making = Making.find_or_create_by( user_id: current_user.id )
-    # gonにデータを格納
+    # ライフゲームのエミュレーション準備（作成中のパターンを使用）
     set_to_gon( @making )
   end
 
@@ -35,15 +35,15 @@ class MakingsController < ApplicationController
       # 強制終了
       return
     end
+    # cereateから呼ばれている場合はdisplay_format_idを2に更新する
+    yield making_params if block_given?
     # 更新実行
     @making.update( making_params )
-    # cereateから呼ばれている場合はdisplay_format_idを2に更新する
-    yield @making if block_given?
   end
 
   def destroy
     # 初期化するデータをピックアップ
-    making = Making.find_by( user_id: current_user.id )
+    making = current_user.making
     # データを削除
     making.destroy
     # 編集ページへ戻る
@@ -56,7 +56,7 @@ class MakingsController < ApplicationController
   def update_params
     # 送信されてきたデータから必要なパラメータを抽出
     raw_params = params.require( :making ).permit( :is_torus, :making_text )
-    # :making_textデータを余白とパターンの行データ数列に変換する。
+    # :making_textデータから、:margin_XXXと:normalized_rows_sequenceに変換・取得する。
     # パラメータ（Hash）orエラーメッセージ(String)を受け取る
     convert_params = build_up_pattern_params_from( raw_params.delete( :making_text ) )
     # エラーがあった場合はエラーメッセージを返す

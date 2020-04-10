@@ -39,7 +39,11 @@
 
 
 <script type="text/javascript">
-  // パターンアップデート前のバリデーションメソッド
+  /*
+  * =============================
+  * パターンアップデート前のバリデーション処理
+  * =============================
+  */
   $(function(){
     $("form").submit( function() {
       // アクション名を取得
@@ -52,14 +56,14 @@
         return verificationMakingPattern();
       }
     });
-    // トーラス面フラグ変更適用メソッド
-    $("#making_is_torus_true").change( function() {
-      // 有効にチェックが入った場合は有効にする
-      patternData.changeTorusFlag( true );
-    });
-    $("#making_is_torus_false").change( function() {
-      // 無効にチェックが入った場合は無効にする
-      patternData.changeTorusFlag( false );
-    });
+
+
+    /*
+    * =============================
+    * トーラス面フラグのリアルタイム反映メソッド処理
+    * =============================
+    */
+    $("#making_is_torus_true").change( () => patternData.changeTorusFlag( true ) );
+    $("#making_is_torus_false").change( () => patternData.changeTorusFlag( false ) );
   });
 </script>

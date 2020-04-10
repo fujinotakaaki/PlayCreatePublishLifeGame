@@ -1,6 +1,8 @@
 class Making < ApplicationRecord
+  # ===== アソシエーションの設定 =======================
   belongs_to :user
   belongs_to :display_format
+  # ================================================
 
   # MakingレコードからPatternレコードに移す際に必要なパラメータを抽出
   def as_pattern

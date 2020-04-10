@@ -16,7 +16,7 @@
     <!--本人が作成したセルの表示形式一覧-->
     <% display_formats.each do | display_format | %>
     <li role="presentation">
-      <%= link_to display_format.name, edit_display_format_path( display_format ), tabindex: -1, role: "menuitem" %>
+      <%= link_to display_format.second, edit_display_format_path( display_format.first ), tabindex: -1, role: "menuitem" %>
     </li>
     <% end %>
     <% else %>

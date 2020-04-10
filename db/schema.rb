@@ -34,15 +34,15 @@ ActiveRecord::Schema.define(version: 2020_04_09_152308) do
   create_table "display_formats", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name"
-    t.string "alive"
-    t.string "dead"
+    t.string "alive", default: "■"
+    t.string "dead", default: "□"
     t.string "font_color", default: "#32CD32"
     t.string "background_color", default: "#000000"
-    t.integer "line_height_rate", default: 100
+    t.integer "line_height_rate", default: 53
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "letter_spacing", default: 0
-    t.integer "font_size", default: 30
+    t.integer "letter_spacing", default: -3
+    t.integer "font_size", default: 40
   end
 
   create_table "favorites", force: :cascade do |t|

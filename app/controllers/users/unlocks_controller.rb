@@ -2,6 +2,7 @@
 
 class Users::UnlocksController < Devise::UnlocksController
   include I18nSetting
+  before_action :set_locale
   # GET /resource/unlock/new
   # def new
   #   super

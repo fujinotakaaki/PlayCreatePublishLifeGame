@@ -1,11 +1,16 @@
+<!-- カテゴリ一覧の部分テンプレート -->
+
 <!--patterns/_emulationが呼ばれる場合はテンプレート内jsメソッドにより除去されます-->
 <div class="categories__index">
+  <!-- タイトル -->
   <h4 class='categories__index--headline'>
     <%= content_tag :span, '', class: "glyphicon glyphicon-th-large",aria: { hidden: true } %>
     カテゴリー
     <%= content_tag :span, '', class: "glyphicon glyphicon-th-large",aria: { hidden: true } %>
   </h4>
-  <% ApplicationController::CATEGORY_INDEX.each do | category | %>
+
+  <!-- 一覧 -->
+  <% Category.get_index.each do | category | %>
   <ul>
     <li class="categories__index--li">
       <%= content_tag :span, '', class: "glyphicon glyphicon-tag",aria: { hidden: true } %>

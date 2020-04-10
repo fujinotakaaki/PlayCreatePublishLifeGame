@@ -1,7 +1,9 @@
 class PostCommentsController < ApplicationController
   before_action :authenticate_user!, except: [ :show ]
 
+  # 非同期通信
   def show
+    # 対象パターンへの全コメント取得
     @comments = PostComment.where( pattern_id: params[ :pattern_id ] ).reverse_order
   end
 

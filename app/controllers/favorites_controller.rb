@@ -3,7 +3,7 @@ class FavoritesController < ApplicationController
 
   # お気に入り登録
   def create
-    favorite = Favorite.new( user_id: current_user.id, pattern_id: params[ :pattern_id ] )
+    favorite = current_user.favorites.build( pattern_id: params[ :pattern_id ] )
     favorite.save
     @pattern_id = params[ :pattern_id ]
   end

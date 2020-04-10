@@ -2,6 +2,7 @@
 
 class Users::PasswordsController < Devise::PasswordsController
   include I18nSetting
+  before_action :set_locale
   # GET /resource/password/new
   # def new
   #   super

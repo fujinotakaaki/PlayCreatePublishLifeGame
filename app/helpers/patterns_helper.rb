@@ -1,8 +1,11 @@
 module PatternsHelper
   # ===== gonにデータを格納するメソッド ===============
-  def  set_to_gon( pattern )
-    # 表示情報データの呼び出し（MakingモデルであればDefault 1のデータをピックアップ）
-    display_format = pattern.try( :display_format ) || DisplayFormat.first
+  def  set_to_gon( pattern = nil, display_format = nil )
+    # パターンデータが存在しない場合はwelcomeデータを使用
+    pattern ||= Pattern.welcome
+    # 表示情報データの呼び出し（消去されているデータの場合はwelcomeデータを使用）
+    # DisplayFormats#new, #editのみ第２引数が指定されているため、それを使用
+    display_format ||= pattern.display_format || DisplayFormat.welcome
     # gonにデータを格納するメソッド
     gon.push({
       # パターンを１次元配列に変換したものを格納

@@ -51,3 +51,54 @@
   <input type="button" value="終了" onClick="convertCanvasToMakingPattern(this);" class="btn btn-success" >
   <% end %>
 </div>
+
+
+<script type="text/javascript">
+  /*
+  * =============================
+  * Makings#new遷移時処理
+  * =============================
+  */
+  $( function() {
+    // リロード促進メッセージの削除
+    $(".makings__new--caution").text("");
+    // アップロードボタンの表示
+    $(".makings__new--sectionA").css({"display": "block"});
+    // プレビュー見出しの表示
+    $(".makings__new--headline").css({"display": "block"});
+
+    var fileName;
+    // ===== 画像ファイルアップロード時の処理 ===============
+    $("#crop_image").on( 'change', function(event) {
+      // アップロードしたファイルの取得
+      let file = event.target.files[0];
+      // 画像ファイル以外の場合は何もしない
+      if ( file.type.indexOf('image') < 0 ) { return false; }
+      // ファイル名取得
+      fileName = file.name;
+      let reader = new FileReader();
+      // ファイル読み込みが完了した際のイベント登録
+      reader.onload = ( function(file) {
+        return function(event) {
+          // クロッピングする画像の<img>タグ生成
+          let currentCroppingImage = $('<img>').attr({
+            src: event.target.result,
+            id: "crop_image",
+            title: fileName
+          });
+          $('#crop_area_box').html( currentCroppingImage );
+          // 初期設定
+          initCrop();
+        };
+      })(file);
+
+      reader.readAsDataURL(file);
+
+      $(".makings__new--changeButton").fadeIn();
+      return;
+    });
+
+    // ===== フォームの閾値が変化した際に画像２値化処理実行 ===============
+    $("#threshold_form").on( 'change', () => imageBinarization() );
+  });
+</script>

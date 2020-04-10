@@ -46,9 +46,9 @@
 <div class="form-group">
   <%= f.label :is_torus, " トーラス面設定", class: "fas fa-globe-asia col-sm-2 control-label" %>
   <div class="col-sm-10">
-    <%= f.radio_button :is_torus, true, disabled: ( action_name == 'new' ) %>
+    <%= f.radio_button :is_torus, true %>
     <%= f.label :is_torus, '有効' %>
-    <%= f.radio_button :is_torus, false, disabled:( action_name == 'new' )%>
+    <%= f.radio_button :is_torus, false %>
     <%= f.label :is_torus, '無効' %>
   </div>
 </div>
@@ -108,5 +108,22 @@
 
 <% end %>
 
-<!--リアルタイムでライフゲームの書式を変更できるようにするためのJSをインポート-->
-<%= render 'patterns/form_preview_script' %>
+
+<script type="text/javascript">
+  /*
+  * =============================
+  * リアルタイムでライフゲームの書式変更適用処理
+  * =============================
+  */
+  $( function() {
+    // 画像アップロード時にサムネイルを表示するメソッド
+    $("#pattern_image").change( displayUploadPatternImage );
+
+    // 表示形式のリアルタイム変更メソッド
+    $("#pattern_display_format_id").change( previewDisplayFormatAtPatternsNew );
+
+    // トーラス面フラグのリアルタイム反映メソッド
+    $("#pattern_is_torus_true").change( () => patternData.changeTorusFlag( true ) );
+    $("#pattern_is_torus_false").change( () => patternData.changeTorusFlag( false ) );
+  });
+</script>

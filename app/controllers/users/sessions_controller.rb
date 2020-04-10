@@ -2,6 +2,7 @@
 
 class Users::SessionsController < Devise::SessionsController
   include I18nSetting
+  before_action :set_locale
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in

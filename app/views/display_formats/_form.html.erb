@@ -74,4 +74,15 @@
 </p>
 <% end %>
 
-<%= render 'display_formats/form_preview_script' %>
+
+<script type="text/javascript">
+  /*
+  * =============================
+  * ライフゲーム画面のCSS及びセルの表示定義を反映処理
+  * =============================
+  */
+  $( function() {
+    // 入力項目のいずれかが変更された場合に発火
+    $("input").change( realTimeReflectDisplayFormat );
+  });
+</script>

@@ -11,10 +11,10 @@ class PatternsController < ApplicationController
 
   def new
     # 作成中のパターンを取得
-    making = Making.find_by( user_id: current_user.id )
+    making = current_user.making
     # 新規パターンの作成とパラメータの代入
     @pattern = Pattern.new( making.as_pattern )
-    # gonに新規パターンデータを格納
+    # ライフゲームのエミュレーション準備（新規パターンデータを使用）
     set_to_gon( @pattern )
   end
 
@@ -23,7 +23,7 @@ class PatternsController < ApplicationController
     # エラーが発生すれば強制終了
     return unless @pattern.save
     # 初期化するデータをピックアップ
-    making = Making.find_by( user_id: current_user.id )
+    making = current_user.making
     # データを削除
     making.destroy
   end
@@ -60,13 +60,13 @@ class PatternsController < ApplicationController
 
   def edit
     @pattern = Pattern.find( params[ :id ] )
-    # gonにデータを格納
+    # ライフゲームのエミュレーション準備
     set_to_gon( @pattern )
   end
 
   def show
     @pattern = Pattern.find( params[ :id ] )
-    # gonにデータを格納
+    # ライフゲームのエミュレーション準備
     set_to_gon( @pattern )
     # このパターンに対し最近投稿されたコメント5件をピックアップ
     @latest_comments = @pattern.post_comments.reverse_order.limit(5)

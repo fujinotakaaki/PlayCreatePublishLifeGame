@@ -5,7 +5,7 @@ class MembersController < ApplicationController
   def show
     # ユーザ情報取得
     @user = User.find( params[ :id ] )
-    @patterns = @user.patterns.page( params[ :page ] ).includes( :user, :category, :favorites, :post_comments ).reverse_order
+    @patterns = @user.patterns.page( params[ :page ] ).includes( :category ).reverse_order
   end
 
   def edit
@@ -13,9 +13,9 @@ class MembersController < ApplicationController
 
   def update
     # （ログイン中の）ユーザ情報取得
-    @user = User.find( params[ :id ] )
+    @user = current_user
     # ユーザ更新処理
-    @user.update!( user_params )
+    @user.update( user_params )
   end
 
 

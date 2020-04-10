@@ -2,6 +2,7 @@
 
 class Admin::Users::SessionsController < Devise::SessionsController
   include Admin::Concerns::I18nSetting
+  before_action :set_locale
   layout 'admin/layouts/application'
   # before_action :configure_sign_in_params, only: [:create]
 

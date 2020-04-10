@@ -2,6 +2,7 @@
 
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   include I18nSetting
+  before_action :set_locale
   # You should configure your model like this:
   # devise :omniauthable, omniauth_providers: [:twitter]
 

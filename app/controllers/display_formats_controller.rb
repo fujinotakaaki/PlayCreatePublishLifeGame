@@ -7,19 +7,19 @@ class DisplayFormatsController < ApplicationController
   def new
     @display_format = DisplayFormat.new
     # ログインユーザの投稿したセルの表示形式を全件取得
-    @display_formats = current_user.display_formats
-    set_to_gon( Pattern.take )
+    @display_formats = current_user.display_formats.pluck( :id, :name )
+    # ライフゲームのエミュレーション準備
+    # 初期パターンはウェルカムメッセージのパターンとする
+    set_to_gon( nil, @display_format )
   end
 
   def create
-    # 新規データ取得
     @display_format = current_user.display_formats.build( display_format_params )
-    # 新規データ保存
     @display_format.save
   end
 
+  # 非同期通信（Patterns#new, #editで使用）
   def show
-    # 詳細データの取得（Patterns#new, #editで使用）
     display_format = DisplayFormat.find( params[ :id ] )
     # 所定のデータ形式に変換
     display_format_as_json = {
@@ -33,24 +33,23 @@ class DisplayFormatsController < ApplicationController
   end
 
   def edit
-    # 編集データ取得
     @display_format = DisplayFormat.find( params[ :id ] )
-    # 編集データが使われているパターンを取得（なければ適当なパターンを使用）
-    set_to_gon( @display_format.patterns.take || Pattern.take )
+    # 編集データが使われているパターンを1個取得（自分が作成したものに限定）
+    sample_pattern = Pattern.find_by( display_format_id: params[ :id ], user_id: current_user.id )
+    # ライフゲームのエミュレーション準備
+    # 第１引数のパターンが存在しない場合を考慮し、第２引数の指定必要あり
+    set_to_gon( sample_pattern, @display_format )
   end
 
   def update
-    # 編集データ取得
     @display_format = DisplayFormat.find( params[ :id ] )
-    # 編集データ更新
     @display_format.update( display_format_params )
   end
 
   def destroy
-    # 削除したいデータ取得
     display_format = DisplayFormat.find( params[ :id ] )
     display_format.destroy
-    # 一覧ページへ
+    # マイページへ
     redirect_to member_path( current_user )
   end
 
@@ -65,7 +64,7 @@ class DisplayFormatsController < ApplicationController
   def baria_user
     # ログインユーザと製作者が一致しているか判定
     unless DisplayFormat.find( params[ :id ] ).user_id  == current_user.id then
-      # 不一致 => rootへ
+      # 不一致 => TOPへ
       redirect_to root_path
     end
   end
