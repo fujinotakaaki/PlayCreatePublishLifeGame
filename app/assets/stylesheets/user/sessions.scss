@@ -13,4 +13,18 @@
     border: 2px solid #000 !important;
     }
   }
+  &__edit {
+    &--form {
+      border: thin solid #888;
+    }
+    &--submitForm {
+      text-align: right;
+    }
+    &--submitButton {
+    font-size: 30px !important;
+    color: white;
+    background: radial-gradient( dodgerblue 20%, #0000CD ) !important;
+    border: 2px solid #000 !important;
+    }
+  }
 }
