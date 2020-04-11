@@ -4,7 +4,7 @@
   <!--パターンアピール画像-->
   <div class="patterns__article--divLeft" >
     <%= link_to pattern_path( pattern ) do %>
-    <%= attachment_image_tag pattern, :image, fallback: 'no_pattern_image.jpg', class: "center-block patterns__article--img" %>
+    <%= attachment_image_tag pattern, :image, fallback: asset_path( "no_pattern_image.jpg" ), class: "center-block patterns__article--img" %>
     <% end %>
   </div>
 

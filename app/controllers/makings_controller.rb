@@ -1,9 +1,5 @@
 class MakingsController < ApplicationController
   before_action :authenticate_user!
-  # build_up_pattern_params_fromメソッドをインクルード（ビット列 => dbデータへ変換）
-  include MakingsHelper
-  # build_up_bit_strings_from, set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
-  include PatternsHelper
 
   def new
     # 画像からパターンを作成する

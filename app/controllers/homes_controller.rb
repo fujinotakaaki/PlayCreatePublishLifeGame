@@ -1,7 +1,4 @@
 class HomesController < ApplicationController
-  # set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
-  include PatternsHelper
-
 
   def top
     # ライフゲームのエミュレーション準備

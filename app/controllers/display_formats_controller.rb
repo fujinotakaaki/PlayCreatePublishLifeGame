@@ -1,8 +1,6 @@
 class DisplayFormatsController < ApplicationController
   before_action :authenticate_user!
   before_action :baria_user, only: [ :edit, :update, :destroy ]
-  # set_to_gonメソッドのインクルード
-  include PatternsHelper
 
   def new
     @display_format = DisplayFormat.new

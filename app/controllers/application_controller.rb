@@ -1,6 +1,11 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  # 言語設定関連メソッドのインクルード
   include I18nSetting
+  # build_up_pattern_params_fromメソッドをインクルード（ビット列 => dbデータへ変換）
+  include MakingsHelper
+  # build_up_bit_strings_from, set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
+  include PatternsHelper
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_locale
 

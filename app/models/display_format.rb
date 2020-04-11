@@ -1,28 +1,40 @@
 class DisplayFormat < ApplicationRecord
-  DISPLAY_FORMAT_ERROR_MESSAGES = {
-    length: "セル表示は1文字で定義してください",
-    display_format: "「生」と「死」のセル状態は同じ文字にできません",
-    color: "セルの色と背景色は同じにできません",
-  }
-
   # ===== バリデーションの設定 =========================
   # 1) 表示形式名は定義する
   validates :name, presence: true
   # 2) cssのline-height負の値ではいけない（css上は問題ないはず）
-  validates :line_height_rate, :numericality => { greater_than_or_equal_to: 0 }
+  validates :line_height_rate, :numericality => { greater_than_or_equal_to: 0, message: "0未満は無効です。" }
 
   # 3) セル状態に関するバリデーション
-  validates_each :alive, :dead do | record, attr, value |
-    # 1文字で無いならNG
-    record.errors.add( attr, DISPLAY_FORMAT_ERROR_MESSAGES[:length] ) unless value.length == 1
+  # 3-1) 「生」のセルは「0」の使用を許可しない
+  validates :alive, format: { with: /[^0]/, message: "は「0」を使用できません。" }
+
+  # 3-2) 「生」のセル状態に関するバリデーション
+  validates_each :alive do | record, attr, value |
+    # 1文字でないならNG
+    record.errors.add( attr, "は1文字で定義してください" ) unless value.length == 1
     # 「生」と「死」のセル状態が同じならNG
-    record.errors.add( attr, DISPLAY_FORMAT_ERROR_MESSAGES[:display_format] ) unless record.alive != record.dead
+    record.errors.add( attr, "は「死」セルと同じ文字を使用できません" ) unless record.alive != record.dead
   end
 
-  # 4) 表示色に関するバリデーション
-  validates_each :font_color, :background_color do | record, attr, value |
+  # 3-3) 「死」のセル状態に関するバリデーション
+  validates_each :alive do | record, attr, value |
+    # 1文字でないならNG
+    record.errors.add( attr, "は1文字で定義してください" ) unless value.length == 1
     # 「生」と「死」のセル状態が同じならNG
-    record.errors.add( attr, DISPLAY_FORMAT_ERROR_MESSAGES[:color] ) unless record.font_color != record.background_color
+    record.errors.add( attr, "は「生」セルと同じ文字を使用できません" ) unless record.alive != record.dead
+  end
+
+
+  # 4) 表示色に関するバリデーション
+  # 4-1) セルの色（文字の色）
+  validates_each :font_color do | record, attr, value |
+    record.errors.add( attr, "は背景色と同じにできません" ) unless record.font_color != record.background_color
+  end
+
+  # 4-2) 背景色
+  validates_each :background_color do | record, attr, value |
+    record.errors.add( attr, "はセルの色と同じにできません" ) unless record.font_color != record.background_color
   end
   # ================================================
 

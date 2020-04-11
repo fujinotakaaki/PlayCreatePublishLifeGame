@@ -1,0 +1,58 @@
+# バリデーション実装項目のみ日本語化実装
+# adminとuserについてはdevis.ja.ymlにて定義
+ja:
+  activerecord:
+    models:
+      category: カテゴリ
+      display_format: 表示形式
+      favorite: お気に入り
+      making: 作成中パターン
+      pattern: パターン
+      post_comment: 投稿コメント
+    attributes:
+      category:
+        name: カテゴリ名
+        explanation: 説明文
+      display_format:
+        user_id: ユーザID
+        name: 表示形式名
+        alive: 「生」セル
+        dead: 「死」セル
+        font_color: セルの色
+        background_color: 背景色
+        line_height_rate: 行の高さ
+        letter_spacing: セル間隔
+        font_size: セルサイズ
+      favorite:
+        user_id: ユーザID
+        pattern_id: パターンID
+      making:
+        user_id: ユーザID
+        display_format_id: 表示形式ID
+        is_torus: トラス面フラグ
+        margin_top: 上側余白
+        margin_bottom: 下側余白
+        margin_left: 左側余白
+        margin_right: 右側余白
+        normalized_rows_sequence: 正規化列数列
+      pattern:
+        user_id: ユーザID
+        category_id: カテゴリID
+        display_format_id: 表示形式ID
+        name: パターン名
+        introduction: 紹介文
+        image_id: パターン画像
+        is_torus: トラス面フラグ
+        margin_top: 上側余白
+        margin_bottom: 下側余白
+        margin_left: 左側余白
+        margin_right: 右側余白
+        normalized_rows_sequence: 正規化列数列
+        is_secret: 公開フラグ
+        preview_count: 閲覧数
+        comments_count: コメント数
+        favorites_count: お気に入り数
+      post_comment:
+        user_id: ユーザID
+        pattern_id: パターンID
+        body: コメント

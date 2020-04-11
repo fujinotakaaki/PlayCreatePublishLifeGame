@@ -1,3 +1,13 @@
+<div class="row">
+  <div class="col-lg-10">
+    <h3 class="makings__new--info">
+      この表示が出る場合は
+      リロードしてください。
+    </h3>
+  </div>
+</div>
+
+<div class="row">
 <!--アップロード画像-->
 <div class="col-sm-6 makings__new--sectionA">
   <h3 class="makings__new--headline">オリジナル画像</h3>
@@ -18,10 +28,6 @@
   <h3 class="makings__new--headline">プレビュー表示</h3>
 
   <div id="crop_preview" overflow="hidden">
-    <h3 class="makings__new--caution">
-      この表示が出る場合は
-      リロードしてください。
-    </h3>
   </div>
 
   <div class="makings__new--changeButton">
@@ -51,6 +57,7 @@
   <input type="button" value="終了" onClick="convertCanvasToMakingPattern(this);" class="btn btn-success" >
   <% end %>
 </div>
+</div>
 
 
 <script type="text/javascript">
@@ -60,12 +67,14 @@
   * =============================
   */
   $( function() {
-    // リロード促進メッセージの削除
-    $(".makings__new--caution").text("");
+    // リロード促進メッセージの削除 => 手順１表示
+    $(".makings__new--info").text("手順１：画像のアップロード");
     // アップロードボタンの表示
     $(".makings__new--sectionA").css({"display": "block"});
     // プレビュー見出しの表示
     $(".makings__new--headline").css({"display": "block"});
+    // パターン表示を画面最大に
+    $(".application__layouts--rightSection").removeClass().addClass("col-lg-10");
 
     var fileName;
     // ===== 画像ファイルアップロード時の処理 ===============
@@ -94,7 +103,12 @@
 
       reader.readAsDataURL(file);
 
+      // 画像加工（クロッピング）の完了ボタン（次へ）表示
       $(".makings__new--changeButton").fadeIn();
+      // 手順表示の切り替え
+      $(".makings__new--info").fadeOut(function(){
+        $(this).text("手順２：画像のトリミング").fadeIn();
+      });
       return;
     });
 

@@ -5,7 +5,7 @@ class Pattern < ApplicationRecord
   # ===== バリデーションの設定 =========================
   # パターン名は定義必須
   validates :name, presence: true
-  # パターン説明文は定義必須、かつ511文字以内
+  # パターン紹介文は定義必須、かつ511文字以内
   validates :introduction, presence: true, length: { maximum: 511 }
   # ================================================
 

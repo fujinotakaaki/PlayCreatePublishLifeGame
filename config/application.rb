@@ -15,6 +15,9 @@ module PlayCreatePublishLifeGame
     config.i18n.available_locales = [ :ja, :en ]
     config.i18n.enforce_available_locales = true
     config.i18n.default_locale = :ja
+    
+    # モデルカラム名の日本語化
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml').to_s]
 
     # 時刻設定
     config.active_record.default_timezone = :local

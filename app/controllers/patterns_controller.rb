@@ -3,11 +3,6 @@ class PatternsController < ApplicationController
   before_action :baria_user, only: [ :edit, :update, :destroy ]
   # 閲覧数カウントアップ
   impressionist actions: [ :show ]
-  # build_up_pattern_params_fromメソッドをインクルード（ビット列 => dbデータへ変換）
-  include MakingsHelper
-  # build_up_bit_strings_from, set_to_gonメソッドをインクルード（dbデータ=> ビット列へ変換）
-  include PatternsHelper
-
 
   def new
     # 作成中のパターンを取得
@@ -120,6 +115,6 @@ class PatternsController < ApplicationController
 
   # キーワード検索か判定（空文字の場合はfalse）
   def search_keyword?( value )
-    -> key { ! value.blank? && key&.match?( 'keyword' ) }
+    -> key { value.present? && key&.match?( 'keyword' ) }
   end
 end # class

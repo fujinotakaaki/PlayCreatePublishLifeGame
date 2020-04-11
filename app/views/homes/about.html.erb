@@ -29,7 +29,7 @@
   <p class="homes__about--body">
     死んでいるセルに隣接する生きたセルがちょうど3つあれば、次の世代が誕生する。（ここでいう隣接は、上下左右と斜めの位置の意）
   </p>
-  <%= image_tag 'birth.jpg', alt: 'サンプル画像：誕生', class: "homes__about--img" %>
+  <%= image_tag asset_path( 'birth.jpg' ), alt: 'サンプル画像：誕生', class: "homes__about--img" %>
 </div>
 
 <div class="homes__about--ruleSample">
@@ -37,7 +37,7 @@
   <p class="homes__about--body">
     生きているセルに隣接する生きたセルが2つか3つならば、次の世代でも生存する。
   </p>
-  <%= image_tag 'alive.jpg', alt: 'サンプル画像：生存', class: "homes__about--img" %>
+  <%= image_tag asset_path( 'alive.jpg' ), alt: 'サンプル画像：生存', class: "homes__about--img" %>
 </div>
 
 <div class="homes__about--ruleSample">
@@ -45,7 +45,7 @@
   <p class="homes__about--body">
     生きているセルに隣接する生きたセルが1つ以下ならば、過疎により死滅する。
   </p>
-  <%= image_tag 'depopulation.jpg', alt: 'サンプル画像：過疎', class: "homes__about--img" %>
+  <%= image_tag asset_path( 'depopulation.jpg' ), alt: 'サンプル画像：過疎', class: "homes__about--img" %>
 </div>
 
 <div class="homes__about--ruleSample">
@@ -53,5 +53,5 @@
   <p class="homes__about--body">
     生きているセルに隣接する生きたセルが4つ以上ならば、過密により死滅する。
   </p>
-  <%= image_tag 'overcrowding.jpg', alt: 'サンプル画像：過密', class: "homes__about--img" %>
+  <%= image_tag asset_path( 'overcrowding.jpg' ), alt: 'サンプル画像：過密', class: "homes__about--img" %>
 </div>

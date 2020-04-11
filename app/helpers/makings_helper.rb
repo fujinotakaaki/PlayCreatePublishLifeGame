@@ -5,7 +5,7 @@ module MakingsHelper
   }
 
   # concated_bit_stringsから、
-  # 上下左右のマージンとパターンの核となる部分について、
+  # 上下左右のマージンとパターンの核となるnormalized_rows_sequenceについて、
   # 各行を16進数に変換した配列を、カンマ区切りの文字列として生成
   def build_up_pattern_params_from( concated_bit_strings )
     # セパレータを基に配列に分割

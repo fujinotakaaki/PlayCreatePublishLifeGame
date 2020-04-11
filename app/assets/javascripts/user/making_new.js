@@ -59,6 +59,10 @@ function changeBinarizationMode(self) {
   // 元画像を表示しているセクションの画像位以外の要素を非表示にする
   $(".makings__new--sectionA h3").hide();
   self.remove();
+  // 手順表示の切り替え
+  $(".makings__new--info").fadeOut(function(){
+    $(this).text("手順３：画像の２値化").fadeIn();
+  });
   // 元画像を表示しているセクションを非表示にする
   $(".makings__new--sectionA").animate( { width: 'hide' }, 'slow', function() {
     // 画像の２値化処理画面表示

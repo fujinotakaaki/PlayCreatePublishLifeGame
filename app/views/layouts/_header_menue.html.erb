@@ -21,7 +21,7 @@
     <!--ログインユーザ用インターフェース-->
 
     <!--プロフィール画像-->
-    <li><%= attachment_image_tag current_user, :profile_image, size:"30x30", format: "jpeg", fallback: "no_image.jpg", size:"30x30" %></li>
+    <li><%= attachment_image_tag current_user, :profile_image, size:"30x30", format: "jpeg", fallback: asset_path( "no_image.jpg" ), size:"30x30" %></li>
     <!--ドロップダウンリスト（トップ表記）-->
     <li id="menue-parent">
       こんにちは、<br>

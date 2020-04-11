@@ -8,7 +8,7 @@
 <%= f.hidden_field :id, value: current_user.id, readonly: true %>
 <!--プロフィール画像-->
 <div class="members__show--divLeft">
-  <%= attachment_image_tag user, :profile_image, fallback: "no_image.jpg", class: "members__show--img" %><br>
+  <%= attachment_image_tag user, :profile_image, fallback: asset_path( "no_image.jpg" ), class: "members__show--img" %><br>
   <%= f.attachment_field :profile_image %>
 </div>
 
@@ -35,7 +35,7 @@
 
 <!--プロフィール画像-->
 <div class="members__show--divLeft">
-  <%= attachment_image_tag @user, :profile_image, fallback: "no_image.jpg", class: "members__show--img" %><br>
+  <%= attachment_image_tag @user, :profile_image, fallback: asset_path( "no_image.jpg" ), class: "members__show--img" %><br>
   <!--編集開始ボタンの表示設定-->
   <% if @user.id == current_user&.id then %>
   <%#= content_tag :input, '',value: "編集", type: "button", class: "btn btn-default members__edit--callForm members__show--#{ current_user&.id || 0 }", onclick: "editUserInfo(this);" %>
