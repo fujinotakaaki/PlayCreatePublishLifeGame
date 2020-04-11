@@ -114,6 +114,12 @@
  }
 
  .devise {
+   &__errors {
+     &--ul {
+       margin: 30px;
+       text-align: center;
+     }
+   }
    &__common {
      padding: 10px 30px;
      background: radial-gradient( white, silver );

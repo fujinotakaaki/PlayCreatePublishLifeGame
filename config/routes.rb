@@ -24,6 +24,10 @@ Rails.application.routes.draw do
         passwords: 'users/passwords',
       }
     end
+    # サインアップエラー時のリロードではroot_pathへ飛ばす（エラー回避のため）
+    get 'users' => 'homes#top'
+    # パスワード再発行用メールの要求エラー時のリロードではroot_pathへ飛ばす（エラー回避のため）
+    get 'users/password' => 'homes#top'
 
     # ===管理者側のルーティング===============
     namespace :admin do

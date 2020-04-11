@@ -7,4 +7,8 @@ class HomesController < ApplicationController
 
   def about
   end
+
+  def jump
+    redirect_to root_path
+  end
 end

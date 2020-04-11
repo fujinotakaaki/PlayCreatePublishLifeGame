@@ -1,0 +1,16 @@
+.sessions {
+  &__new {
+    &--form {
+      border: thin solid #888;
+    }
+    &--submitForm {
+      text-align: right;
+    }
+    &--submitButton {
+    font-size: 30px !important;
+    color: white;
+    background: linear-gradient( to bottom, darkorange, lightgreen 20%, lightgreen 80%, darkorange ) !important;
+    border: 2px solid #000 !important;
+    }
+  }
+}

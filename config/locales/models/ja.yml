@@ -1,4 +1,3 @@
-# バリデーション実装項目のみ日本語化実装
 # adminとuserについてはdevis.ja.ymlにて定義
 ja:
   activerecord:
@@ -29,7 +28,7 @@ ja:
       making:
         user_id: ユーザID
         display_format_id: 表示形式ID
-        is_torus: トラス面フラグ
+        is_torus: トーラス面フラグ
         margin_top: 上側余白
         margin_bottom: 下側余白
         margin_left: 左側余白
@@ -42,7 +41,7 @@ ja:
         name: パターン名
         introduction: 紹介文
         image_id: パターン画像
-        is_torus: トラス面フラグ
+        is_torus: トーラス面フラグ
         margin_top: 上側余白
         margin_bottom: 下側余白
         margin_left: 左側余白

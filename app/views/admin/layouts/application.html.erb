@@ -12,13 +12,14 @@
 <header>
   <h1>PlayCreatePublishLifeGame_管理者ページ</h1>
 
+  <% if admin_signed_in? then %>
   <nav>
     <ul>
-      <li><%= link_to "Top for user", root_path %></li>
       <li><%= link_to "Top for Admin", admin_root_path %></li>
       <li><%= link_to '管理者ログアウト', destroy_admin_session_path, method: :delete, data: { confirm: 'ログアウトしますか？' } %></li>
     </ul>
   </nav>
+  <% end %>
 </header>
 
 <body>
@@ -29,7 +30,7 @@
 
 
 <footer>
-  <% if Rails.env.development? then %>
+  <% if Rails.env.development? && admin_signed_in? then %>
   <%= render 'admin/layouts/debug_section' %>
   <% end %>
 </footer>

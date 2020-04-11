@@ -4,6 +4,11 @@
     PCPLGへログイン
   </h2>
   <%= form_for( resource, as: resource_name, url: new_user_session_path ) do |f| %>
+  <% if flash[:alert] then %>
+  <ul>
+    <li><%= flash[:alert] %></li>
+  </ul>
+  <% end %>
 
   <div class="form-group">
     <%= f.label :email, 'Eメール', class: "col-sm-2" %>
@@ -20,11 +25,11 @@
     <%= f.check_box :remember_me %>
     <%= f.label :remember_me, 'ログイン情報を記憶する' %>
   </div>
+  <% end %>
 
   <p class="sessions__new--submitForm">
     <%= f.submit "ログイン", class: "btn sessions__new--submitButton" %>
   </p>
-  <% end %>
 
   <div class="">
     <%= render "users/shared/links" %>
