@@ -1,0 +1,41 @@
+<!--ユーザ退会確認ページ-->
+
+<!--ページメッセージ-->
+<p class="members__confirm--content">
+  <span class="members__confirm--headline">本当に退会しますか？</span><br>
+  退会すると、会員登録情報や<br>
+  これまでに投稿したパターンやコメントは削除されます。<br>
+  退会処理を続行する場合は、「退会する」をクリックしてください。
+</p>
+
+<!--アクションボタン-->
+<p class="members__confirm--content">
+  <%= link_to "戻る", member_path( current_user ), class: "btn btn-primary" %>
+  <%= link_to "退会する", "javascript:void(0)", class: "btn btn-danger", onclick: "modalOpen();" %>
+</p>
+
+<!--モーダルウィンドウ-->
+<div class="members__modal">
+  <!--透けた黒い背景-->
+  <div class="members__modal--background"></div>
+  <!--コンテンツ-->
+  <div class="members__modal--content">
+    <!--「閉じる」アクション-->
+    <p style="text-align: right;">
+      <%= link_to 'javascript:void(0)', class: "members__modal--close", onclick: "modalClose();" do %>
+      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      <% end %>
+    </p>
+    <!--タイトル-->
+    <h3 class="members__confirm--caution">最終確認</h3>
+    <!--本文-->
+    <p>
+      この操作が実行されると取り消しはできません。<br>
+      確認のために、「<%= content_tag :span, current_user.confirm_text, class: "members__confirm--machingText" %>」と入力してください。
+    </p>
+    <!--退会確認フォーム-->
+    <%= text_field_tag 'confirm_member', nil, class: "form-control members__confirm--textField" %>
+    <!--確定ボタン-->
+    <%= link_to "退会", user_registration_path, method: :delete, class: "btn members__confirm--submit" %>
+  </div>
+</div>

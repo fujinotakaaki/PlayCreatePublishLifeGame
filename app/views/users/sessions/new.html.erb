@@ -3,7 +3,7 @@
     <%= content_tag :i, '', class: "fas fa-door-open" %>
     PCPLGへログイン
   </h2>
-  <%= form_for( resource, as: resource_name, url: new_user_session_path, html: { local: :ja  } ) do |f| %>
+  <%= form_for( resource, as: resource_name, url: new_user_session_path, html: { local: :ja } ) do |f| %>
   <% if flash[:alert] then %>
   <ul>
     <li><%= flash[:alert] %></li>

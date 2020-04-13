@@ -6,7 +6,7 @@
 
 # Ignore seed data
 db/seeds.rb
-db/pattern_library.rb
+db/pattern_library.csv
 
 # Ignore environments variable
 /.env

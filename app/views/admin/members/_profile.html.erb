@@ -13,11 +13,15 @@
   <h4 class="members__show--headline">
     <%= content_tag :span, '', class: "glyphicon glyphicon-user", aria: { hidden: true } %>
     <%= user.name %>
-    <%= link_to "このユーザの投稿パターン全取得", admin_member_path( user, format: :csv ), class: "btn btn-primary" %>
   </h4>
   <!--自己紹介文表示-->
   <%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %>
   自己紹介文
   <%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %><br>
   <%= user.introduction.blank? ? '本文がありません' : user.introduction %><br>
+</div>
+
+<!-- ユーザの投稿したパターンデータ取得 -->
+<div class="members__show--bottom">
+  <%= link_to "このユーザの投稿パターン全取得", admin_member_path( user, format: :csv ), class: "btn btn-primary" %>
 </div>

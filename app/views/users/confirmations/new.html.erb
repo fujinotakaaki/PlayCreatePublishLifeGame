@@ -1,16 +1,24 @@
-<h2>Resend confirmation instructions</h2>
+<div class="form-horizontal devise__common">
+  <h2 class="devise__common--headline">
+    <%= content_tag :span, '', class: "glyphicon glyphicon-envelope", aria: { hidden: true } %>
+    確認メールの再送信
+  </h2>
 
-<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= form_for(resource, as: resource_name, url: user_confirmation_path, html: { method: :post, local: :ja }) do |f| %>
+  <%= render "users/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+
+  <div class="form-group">
+    <%= f.label :email, 'Eメール', class: "col-sm-2" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "col-sm-3 registrations__new--form", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Resend confirmation instructions" %>
-  </div>
-<% end %>
+  <p class="registrations__new--submitForm">
+    <%= f.submit "再送信", class: "btn sessions__new--submitButton" %>
+  </p>
+  <% end %>
 
-<%= render "users/shared/links" %>
+  <div class="">
+    <%= render "users/shared/links" %>
+  </div>
+</div>

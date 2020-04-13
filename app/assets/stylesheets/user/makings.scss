@@ -29,9 +29,12 @@
     &--sectionC {
       display: none;
     }
-    &--info {
+    &--infoH3 {
       font-weight: bold;
       line-height: 1.3em;
+      text-align: center;
+    }
+    &--infoH6 {
       text-align: center;
     }
     &--headline {

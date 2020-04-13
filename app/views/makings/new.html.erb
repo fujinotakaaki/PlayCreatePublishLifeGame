@@ -1,9 +1,10 @@
 <div class="row">
   <div class="col-lg-10">
-    <h3 class="makings__new--info">
+    <h3 class="makings__new--infoH3">
       この表示が出る場合は
       リロードしてください。
     </h3>
+    <h6 class="makings__new--infoH6">ライフゲームのパターン化したい画像をアップしてください。</h6>
   </div>
 </div>
 
@@ -68,7 +69,7 @@
   */
   $( function() {
     // リロード促進メッセージの削除 => 手順１表示
-    $(".makings__new--info").text("手順１：画像のアップロード");
+    $(".makings__new--infoH3").text("手順１：画像のアップロード");
     // アップロードボタンの表示
     $(".makings__new--sectionA").css({"display": "block"});
     // プレビュー見出しの表示
@@ -106,8 +107,9 @@
       // 画像加工（クロッピング）の完了ボタン（次へ）表示
       $(".makings__new--changeButton").fadeIn();
       // 手順表示の切り替え
-      $(".makings__new--info").fadeOut(function(){
+      $(".makings__new--infoH3").fadeOut(function(){
         $(this).text("手順２：画像のトリミング").fadeIn();
+        $(".makings__new--infoH6").text("トリミング画像は縦横最大150pxまでになります。");
       });
       return;
     });

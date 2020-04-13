@@ -1,5 +1,31 @@
-<p>Welcome <%= @email %>!</p>
+<h4>
+  ようこそ <%= @resource.name %>様！
+</h4>
 
-<p>You can confirm your account email through the link below:</p>
+<p>
+  PlayCreatePublishLifeGameへのサインアップありがとうございます！<br>
+  下記のボタンをクリックすることで、登録されたアカウントが有効になります。
+</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+<table class="confirmations__instructions--table">
+  <tr>
+    <th>Eメール</th>
+    <td><%= @email %></td>
+  </tr>
+  <tr>
+    <th>ニックネーム</th>
+    <td><%= @resource.name %></td>
+  </tr>
+</table>
+
+<p>
+  <% if Rails.env.production? then %>
+  <%= link_to 'アカウント有効化', confirmation_url( @resource, confirmation_token: @token, protocol: 'https' ), class: "btn btn-info" %>
+  <% else %>
+  <%= link_to 'アカウント有効化', confirmation_url( @resource, confirmation_token: @token ), class: "btn btn-info" %>
+  <% end %>
+</p>
+
+<p>
+  ※有効期限は72時間です
+</p>

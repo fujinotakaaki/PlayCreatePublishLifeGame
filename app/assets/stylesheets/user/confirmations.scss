@@ -1,0 +1,13 @@
+.confirmations {
+  &__instructions {
+    &--table {
+      th {
+        font-weight: bold;
+        text-align: right;
+      }
+      td {
+        padding-left: 1.5em; 
+      }
+    }
+  }
+}

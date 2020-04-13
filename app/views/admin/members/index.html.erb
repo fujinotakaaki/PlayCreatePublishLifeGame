@@ -1,6 +1,6 @@
 <h2>全ユーザ一覧</h2>
 <% @users.each do | user | %>
-<div class='<%= "clearfix users__profile--id#{user.id}" %>'>
+<div class='clearfix <%= "users__profile--id#{user.id}" %>'>
   <%= render 'admin/members/profile', user: user %>
 </div>
 <% end %>

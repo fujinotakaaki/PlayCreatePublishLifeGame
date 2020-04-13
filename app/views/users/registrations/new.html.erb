@@ -3,8 +3,13 @@
     <%= content_tag :i, '', class: "fas fa-user-plus" %>
     新規ユーザ登録
   </h2>
+  <p>
+    新規登録には「Eメールアドレス」、「ニックネーム」、「パスワード」の３種類の入力が必要です。<br>
+    「アカウント作成」を実行すると、ご入力頂いたEメールアドレス宛にアカウント登録確認メールを送信します。<br>
+    送信したメール本文中の「アカウント有効化」を実行していただくことでアカウントの登録が完了します。
+  </p>
   <%= form_for( resource, as: resource_name, url: user_registration_path, html: { local: :ja  } ) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= render "users/shared/error_messages", resource: resource %>
 
   <div class="form-group">
     <%= f.label :email, 'Eメール', class: "col-sm-2" %>
@@ -32,7 +37,7 @@
   </div>
 
   <p class="registrations__new--submitForm">
-    <%= f.submit "新規登録", class: "btn sessions__new--submitButton" %>
+    <%= f.submit "アカウント作成", class: "btn sessions__new--submitButton" %>
   </p>
   <% end %>
 

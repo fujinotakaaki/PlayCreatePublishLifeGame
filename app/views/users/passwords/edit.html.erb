@@ -3,7 +3,7 @@
   <p>新しいパスワードを入力してください。</p>
 
   <%= form_for( resource, as: resource_name, url: user_password_path, html: { method: :put, local: :ja } ) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= render "users/shared/error_messages", resource: resource %>
   <%= f.hidden_field :reset_password_token %>
 
   <div class="form-group">

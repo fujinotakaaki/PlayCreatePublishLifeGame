@@ -1,4 +1,15 @@
 module PatternsHelper
+  FIRST_MESSAGE = "ようこそ！！
+  パターンを作成するには、ここにセルの状態を直接入力・配置してください。
+  セルの状態は「生」が「１」、「死」が「０」となっています。
+  ※入力は半角の「０」と「１」、改行が有効です。
+  例）「グライダー」の場合
+  ０００００
+  ００１００
+  ０００１０
+  ０１１１０
+  ０００００"
+  
   # ===== gonにデータを格納するメソッド ===============
   def  set_to_gon( pattern = nil, display_format = nil )
     # パターンデータが存在しない場合はwelcomeデータを使用
@@ -23,7 +34,7 @@ module PatternsHelper
   def build_up_bit_strings_from( pattern )
     # 行データがない場合はウェルカムメッセージを配置（なんでもいい）
     # パターンを初めて作る（行データがないため）場合に発生する
-    return [ "ようこそ！！" ] if pattern.normalized_rows_sequence.blank?
+    return [ FIRST_MESSAGE ] if pattern.normalized_rows_sequence.blank?
     # カンマ区切りの16進数文字列を分割・数値化
     pattern_rows = pattern.normalized_rows_sequence.split( ?, ).map(&:hex)
     # 最も大きい自然数のビット列数を算出

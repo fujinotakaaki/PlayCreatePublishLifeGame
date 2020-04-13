@@ -60,8 +60,9 @@ function changeBinarizationMode(self) {
   $(".makings__new--sectionA h3").hide();
   self.remove();
   // 手順表示の切り替え
-  $(".makings__new--info").fadeOut(function(){
+  $(".makings__new--infoH3").fadeOut(function(){
     $(this).text("手順３：画像の２値化").fadeIn();
+    $(".makings__new--infoH6").text("本処理が終了すればパターンとして一時保存されます。");
   });
   // 元画像を表示しているセクションを非表示にする
   $(".makings__new--sectionA").animate( { width: 'hide' }, 'slow', function() {

@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   scope "(:locale)" do
     # ===一般ユーザ側のルーティング============
+    # ユーザ退会確認ページへのルーティング
+    get 'mambers/:id/confirm' => 'members#confirm', as: 'confirm_member'
     # ユーザのルーティング
     resources :members, except: [ :index, :new, :create, :destroy ]
     # パターンのルーティング
