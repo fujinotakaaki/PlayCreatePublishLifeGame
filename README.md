@@ -1,4 +1,10 @@
-# <Play!Create!Publish! LifeGame!>
+# Play!Create!Publish! LifeGame!
+<div align="center">
+  <a href="https://playcreatepublishlifegame.work">
+  ![PlayCreatePublishLifeGame_logo](https://user-images.githubusercontent.com/59040709/79304960-6b610e00-7f2d-11ea-8f56-5015885a8557.jpg)
+  </a>
+</div>
+
 
 ## サイト概要
 Play!Create!Publish! LifeGame!は「<em>ライフゲーム</em>」をブラウザ上エミュレートできるサイトです。
@@ -35,8 +41,16 @@ Play!Create!Publish! LifeGame!は「<em>ライフゲーム</em>」をブラウ�
 電車移動や自宅など、自由な時間があるときに、ライフゲームの動きの面白さを楽しんでもらう、
 また、さらに余裕があれば、自作のパターンを創作、投稿してもらいたい。  
 
-
-## 設計書
+### 構成
+- Ruby v.2.5.7
+- Rails v5.2.4.2
+- DB: MySQL
+- OS: Linux
+- WEBサーバー: nginx
+- アプリケーションサーバー: puma
+<div align="center">
+  ![Network](https://user-images.githubusercontent.com/59040709/79305427-589b0900-7f2e-11ea-8cdb-6e632cd8485d.png)
+</div>
 
 
 ### 機能一覧
