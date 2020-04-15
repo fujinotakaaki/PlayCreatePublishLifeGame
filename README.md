@@ -1,7 +1,7 @@
 # Play!Create!Publish! LifeGame!
 <div align="center">
   <a href="https://playcreatepublishlifegame.work">
-  ![PlayCreatePublishLifeGame_logo](https://user-images.githubusercontent.com/59040709/79304960-6b610e00-7f2d-11ea-8f56-5015885a8557.jpg)
+  <img src="https://user-images.githubusercontent.com/59040709/79304960-6b610e00-7f2d-11ea-8f56-5015885a8557.jpg">
   </a>
 </div>
 
@@ -49,7 +49,7 @@ Play!Create!Publish! LifeGame!は「<em>ライフゲーム</em>」をブラウ�
 - WEBサーバー: nginx
 - アプリケーションサーバー: puma
 <div align="center">
-  ![Network](https://user-images.githubusercontent.com/59040709/79305427-589b0900-7f2e-11ea-8cdb-6e632cd8485d.png)
+<img src="https://user-images.githubusercontent.com/59040709/79305427-589b0900-7f2e-11ea-8cdb-6e632cd8485d.png">
 </div>
 
 
