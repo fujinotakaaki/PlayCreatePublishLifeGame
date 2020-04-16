@@ -74,7 +74,7 @@ function displayInterface( displaying = false, displayPatternJumpButton = false 
 */
 function applyMakingPattern( makingPatternArray = false ) {
   // 引数がない場合は、作成中のパターンを配列として取得（"0"と"1"以外の文字は除去）
-  makingPatternArray = makingPatternArray || getMakingPatternTextareaInfo( true )[0];
+  makingPatternArray ||= getMakingPatternTextareaInfo( true )[0];
   // テキストエリアに反映
   $(".makings__edit--textarea").val( makingPatternArray.join("\n") );
   // セルの状態表示に変換

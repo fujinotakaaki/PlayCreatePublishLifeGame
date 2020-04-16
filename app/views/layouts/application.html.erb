@@ -2,11 +2,8 @@
 <html>
 <head>
   <title>Play!Create!Publish! LifeGame</title>
-  <% if Rails.env.production? then %>
+  <%#= favicon_link_tag( asset_path( "favicon1.ico" ) )%>
   <link rel="shortcut icon" type="image/x-icon" href="<%= asset_path("favicon1.ico") %>">
-  <% else %>
-  <%= favicon_link_tag( asset_path( "favicon1.ico" ) )%>
-  <% end %>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <%= stylesheet_link_tag    "user", media: "all", "data-turbolinks-track": "reload" %>

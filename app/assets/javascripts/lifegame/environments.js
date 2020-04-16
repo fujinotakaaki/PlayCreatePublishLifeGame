@@ -40,11 +40,8 @@ function initializeLifeGame( applyMakingPattern = false, refreshLifeGame = false
     patternData.changeTorusFlag( currentIsTorusCondition );
   }
 
-  // ライフゲームの初期化処理
-  if ( !! refreshLifeGame ) {
-    // 定義済み盤面の初期化
-    patternData.patternRefresh;
-  }
+  // 盤面を初期世代に戻す処理
+  if ( !! refreshLifeGame ) patternData.patternRefresh;
 
   // セルの表示状態変更処理
   if ( !! changeDisplayFormat ) {
@@ -54,7 +51,7 @@ function initializeLifeGame( applyMakingPattern = false, refreshLifeGame = false
     applyCssOptions( changeDisplayFormat.cssOptions );
   }
 
-  // 現在の状態反映
+  // 現世代を画面に反映
   showCurrentGeneration();
 }
 
@@ -83,7 +80,7 @@ function applyCssOptions( cssOptions = { fontColor: "limegreen", backgroundColor
 
 /*
 * =============================
-* 画面表示の更新処理
+* 現世代のパターンを画面に反映する処理
 * =============================
 */
 function showCurrentGeneration() {
