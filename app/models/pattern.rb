@@ -61,5 +61,10 @@ class Pattern < ApplicationRecord
     def welcome
       new( WELCOM_MESSAGE_PATTERN )
     end
+
+    # パターン一覧取得
+    def get_index
+      $patterns ||= all.pluck( :name, :id ).to_h
+    end
   end
 end

@@ -6,6 +6,7 @@
 	<li class="makings__edit--tabLi"><a href="#sampleContentB" data-toggle="tab">一斉操作</a></li>
 	<li class="makings__edit--tabLi"><a href="#sampleContentC" data-toggle="tab">補完処理</a></li>
 	<li class="makings__edit--tabLi"><a href="#sampleContentD" data-toggle="tab">特殊処理</a></li>
+	<li class="makings__edit--tabLi"><a href="#sampleContentG" data-toggle="tab">パターン合成</a></li>
 	<li class="makings__edit--tabLi"><a href="#sampleContentE" data-toggle="tab">画像から作成</a></li>
 	<li class="makings__edit--tabLi"><a href="#sampleContentF" data-toggle="tab">パターンの初期化</a></li>
 </ul>
@@ -96,5 +97,25 @@
 			<%= content_tag :i, 'パターンを初期化', class:"fas fa-bomb"%>
 			<% end %>
 		</p>
+	</div>
+
+
+	<div class="tab-pane makings__edit--tabCommon" id="sampleContentG">
+		<!--パターン合成-->
+		<h4>パターン合成</h4>
+		<div class="">
+			<h6>手順１：投稿済みパターンから選択</h6>
+			<%= select_tag( :coupler, options_for_select( Pattern.get_index ), onchange: "changeCouplingMode('start');" ) %>
+		</div>
+		<div class="">
+			<h6>手順２：十字キーで置換場所の選択</h6>
+			<span>選んだパターンの設置場所選択</span>
+		</div>
+		<div class="">
+			<h6>手順３：置換場所が決まったら「決定」ボタンを押下</h6>
+			<button type="button" name="button" onclick="changeCouplingMode('finish');">決定</button>
+		</div>
+
+
 	</div>
 </div>

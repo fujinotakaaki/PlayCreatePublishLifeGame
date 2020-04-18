@@ -74,7 +74,7 @@ function displayInterface( displaying = false, displayPatternJumpButton = false 
 */
 function applyMakingPattern( makingPatternArray = false ) {
   // 引数がない場合は、作成中のパターンを配列として取得（"0"と"1"以外の文字は除去）
-  makingPatternArray ||= getMakingPatternTextareaInfo( true )[0];
+  makingPatternArray = makingPatternArray || getMakingPatternTextareaInfo( true )[0];
   // テキストエリアに反映
   $(".makings__edit--textarea").val( makingPatternArray.join("\n") );
   // セルの状態表示に変換
@@ -274,4 +274,46 @@ function touchingLine( n = 0 ) {
   changePreviewMode();
   // テキストエリアの整形とパターン表示への反映
   applyMakingPattern( makingPatternArray );
+}
+
+function changeCouplingMode(state) {
+  function startCouplingMode() {
+  let pattern_id = $("#coupler").val();
+  console.log( pattern_id);
+    patternData.setCoupler([ "010", "001", "111" ]);
+    $(".patterns__show--lifeGameDisplay").html(patternData.couplingPreview());
+    $(window).off().on('keydown', function(e) {
+      e.preventDefault();
+      switch (e.keyCode) {
+        case 37: //←
+        patternData.movePutPosition([0,-1]);
+        break;
+        case 38: // ↑
+        patternData.movePutPosition([-1,0]);
+        break;
+        case 39: // →
+        patternData.movePutPosition([0,1]);
+        break;
+        case 40: // ↓
+        patternData.movePutPosition([1,0]);
+        break;
+        default:
+      }
+      $(".patterns__show--lifeGameDisplay").html(patternData.couplingPreview());
+    });
+  }
+
+  function finishCoupulingMode() {
+    $(".patterns__show--lifeGameDisplay").html(patternData.couplingPreview({ finishCoupling: true }));
+    $(window).off();
+  }
+
+  switch (state) {
+    case 'start':
+    startCouplingMode()
+    break;
+    case 'finish':
+    finishCoupulingMode()
+    break;
+  }
 }

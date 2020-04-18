@@ -190,4 +190,63 @@ class LifeGame {
     // 盤面の初期化
     this.patternRefresh;
   }
+
+
+
+  /* =============================
+  # パターンの合成用管理変数
+  ============================= */
+  rowIndex = 0;
+  columnIndex = 0;
+  operableCouplingMode = false;
+
+  /* =============================
+  @ 合成するパターンの入力処理
+  ============================= */
+  setCoupler(coupler) {
+    this.coupler = new LifeGame(coupler);
+    this.operableCouplingMode = true;
+    if ( this.height < this.coupler.height || this.width < this.coupler.width ) {
+      console.error("合成するパターンが大き過ぎます");
+      this.operableCouplingMode = false;
+    }
+    return this.operableCouplingMode;
+  }
+
+  /* =============================
+  @ 合成位置移動処理
+  ============================= */
+  movePutPosition(move = [0,0]) {
+    if ( ! this.operableCouplingMode ) return false;
+    let [ y, x ] = [ this.rowIndex + move[0], this.columnIndex + move[1] ];
+    if ( y + 1 && y - ( this.height - this.coupler.height + 1 ) ) this.rowIndex = y;
+    if ( x + 1 && x - ( this.width - this.coupler.width + 1 ) ) this.columnIndex = x;
+  }
+
+
+  /* =============================
+  @ 合成プレビュー盤面取得処理
+  ============================= */
+  couplingPreview( state = { finishCoupling: false } ) {
+    if ( ! this.operableCouplingMode ) return false;
+    let [ yd, xd ] = [ this.rowIndex, this.columnIndex ];
+    let [ yu, xu ] = [ yd + this.coupler.height, xd + this.coupler.width ];
+    let result = this.patternInitial;
+    result = result.map( function(bitString,idx){
+      if ( yd <= idx && idx < yu) {
+        let couplerSection  = state.finishCoupling ? this[idx-yd] : `<span class="patterns__edit--coupler">${this[idx-yd]}</span>`;
+        return bitString.slice(0,xd) + `${couplerSection}` + bitString.slice(xu);
+      }
+      return bitString;
+    }, this.coupler.patternInitial );
+    if ( state.finishCoupling ) {
+      // 初期盤面の更新
+      this.patternInitial = result;
+      // 盤面の初期化
+      this.patternRefresh;
+      // 置換位置の初期化
+      [ this.rowIndex, this.columnIndex ] = [ 0, 0 ];
+    }
+    return result.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
+  }
 } // class
