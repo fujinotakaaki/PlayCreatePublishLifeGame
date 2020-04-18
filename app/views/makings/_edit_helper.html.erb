@@ -14,9 +14,13 @@
 
 <!-- タブ内容 -->
 <div class="tab-content">
+	<!-- パターンの検証セクション -->
 	<div class="tab-pane makings__edit--tabCommon active" id="sampleContentA">
 		<!--提出前・動作チェック前パターンの適性チェック用アクション-->
-		<h4>保存・投稿メニュー</h4>
+		<h4>
+			<span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+			保存・投稿メニュー
+		</h4>
 		<h6>「検証」を通過、一時保存したパターンは投稿・公開が可能になります。</h6>
 		<button type="button" class="btn btn-primary makings__edit--verification" onclick="verificationMakingPattern();">
 			検証
@@ -32,10 +36,16 @@
 	</div>
 
 
+	<!-- 一斉操作セクション -->
 	<div class="tab-pane makings__edit--tabCommon" id="sampleContentB">
-		<h4>パターンの行列操作メニュー</h4>
+		<h4>
+			パターンの行列操作メニュー
+		</h4>
 		<!--行・列の追加-->
-		<h5>追加メニュー</h5>
+		<h5>
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+			追加メニュー
+		</h5>
 		<p>
 			<button type="button" class="btn btn-originGreen" onclick="touchingLine(1);">上に行を追加</button>
 			<button type="button" class="btn btn-originGreen" onclick="touchingLine(2);">下に行を追加</button>
@@ -43,7 +53,10 @@
 			<button type="button" class="btn btn-originGreen" onclick="touchingLine(4);">右に列を追加</button>
 		</p>
 		<!--行・列の削除-->
-		<h5>削除メニュー</h5>
+		<h5>
+			<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+			削除メニュー
+		</h5>
 		<p>
 			<button type="button" class="btn btn-danger" onclick="touchingLine(5);">上の行を削除</button>
 			<button type="button" class="btn btn-danger" onclick="touchingLine(6);">下の行を削除</button>
@@ -53,8 +66,12 @@
 	</div>
 
 
+	<!-- 補完処理セクション -->
 	<div class="tab-pane makings__edit--tabCommon" id="sampleContentC">
-		<h4>ビット列補完メニュー</h4>
+		<h4>
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+			ビット列補完メニュー
+		</h4>
 		<!--(1)ビット列の短い行に対する、「左側」への"0"の補完処理-->
 		<button type="button" class="btn btn-originGreen" onclick="autoComplement( 'left' );">
 			自動補完（左側）
@@ -66,8 +83,12 @@
 	</div>
 
 
+	<!-- 特殊処理セクション -->
 	<div class="tab-pane makings__edit--tabCommon" id="sampleContentD">
-		<h4>パターンの反転・回転操作メニュー</h4>
+		<h4>
+			<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+			パターンの反転・回転操作メニュー
+		</h4>
 		<!--(1)上下反転アクション-->
 		<button type="button" class="btn btn-originGreen makings__edit--preview" onclick="touchingMmakingPattern(1);">
 			<%= content_tag :i, ' 上下反転', class: "fas fa-arrows-alt-v" %>
@@ -83,39 +104,66 @@
 	</div>
 
 
+	<!-- 画像から作成セクション -->
 	<div class="tab-pane makings__edit--tabCommon" id="sampleContentE">
-		<h4>画像からパターン作成</h4>
+		<h4>
+			<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+			画像からパターン作成
+		</h4>
 		<!--画像から作成ページへ移動-->
 		<%= link_to 'Go', new_making_path, class: 'btn btn-originRainbow' %>
 	</div>
 
 
+	<!-- パターンの初期化セクション -->
 	<div class="tab-pane makings__edit--tabCommon" id="sampleContentF">
 		<!--作成中のパターンを初期化-->
+		<%= link_to making_path, method: :delete, data: { confirm: "作成中のパターンを初期化しますか？" } do %>
 		<p class="makings__edit--destroyTab">
-			<%= link_to making_path, method: :delete, data: { confirm: "作成中のパターンを初期化しますか？" } do %>
 			<%= content_tag :i, 'パターンを初期化', class:"fas fa-bomb"%>
-			<% end %>
 		</p>
+		<% end %>
 	</div>
 
 
+	<!-- パターン合成セクション -->
 	<div class="tab-pane makings__edit--tabCommon" id="sampleContentG">
-		<!--パターン合成-->
-		<h4>パターン合成</h4>
-		<div class="">
-			<h6>手順１：投稿済みパターンから選択</h6>
-			<%= select_tag( :coupler, options_for_select( Pattern.get_index ), onchange: "changeCouplingMode('start');" ) %>
-		</div>
-		<div class="">
-			<h6>手順２：十字キーで置換場所の選択</h6>
-			<span>選んだパターンの設置場所選択</span>
-		</div>
-		<div class="">
-			<h6>手順３：置換場所が決まったら「決定」ボタンを押下</h6>
-			<button type="button" name="button" onclick="changeCouplingMode('finish');">決定</button>
+		<!--パターン合成タイトル-->
+		<h4>
+			<i class="fas fa-object-group"></i>
+			パターン合成
+		</h4>
+
+		<!-- 手順１：投稿済みパターンから選択 -->
+		<div class="makings__edit--couplingDiv1">
+			<h5>
+				<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+				手順１：投稿済みパターンから選択
+			</h5>
+			<%= select_tag( 'coupler_selection', options_for_select( Pattern.get_index ), class: "form-control", onchange: "changeCouplingMode('select');", prompt: " --- 選択してください --- " ) %>
+			<p class="makings__edit--couplingButtonPosition">
+				<button type="button" name="button" onclick="changeCouplingMode('start');" class="btn btn-originPink makings__edit--startCoupling" disabled>
+					開始
+				</button>
+			</p>
+			<p class="makings__edit--couplerPreview"></p>
 		</div>
 
-
+		<!-- 手順２：couplerの移動・決定（完了） -->
+		<div class="makings__edit--couplingDiv2">
+			<h5>
+				<i class="fas fa-arrows-alt"></i>
+				手順２：合成するパターンの設置場所決定
+			</h5>
+			<h6>
+				十字キーでパターンのおきたい場所に移動してください。<br>
+				置き場所が決まったら「決定」ボタンを押してください。
+			</h6>
+			<p class="makings__edit--couplingButtonPosition">
+				<button type="button" name="button" onclick="changeCouplingMode('finish');" class="btn btn-primary">
+					決定
+				</button>
+			</p>
+		</div>
 	</div>
 </div>

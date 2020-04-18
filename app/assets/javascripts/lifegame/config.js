@@ -17,26 +17,18 @@ class LifeGame {
   alive = "■";
   dead = "□";
   // 平坦トーラス面フラグ（オプションが設定されている場合は反映）
-  isTorus = false
+  isTorus = false;
 
   /* =============================
   # ライフゲーム初期化処理
   ============================= */
   constructor( pattern = [ "0000", "0111", "1110", "0000" ] ) {
-    // 世代更新回数
-    // this.generationCount = 0;
     // 初期盤面の取得（要素がビット列の１次元配列）
     this.pattern = pattern;
     // 盤面の定義域取得
     [ this.height, this.width ] = [ pattern.length, pattern[0].length ];
-    // セルの表示設定
-    // [ this.alive, this.dead ] = [ "■", "□" ];
-    // 平坦トーラス面フラグ（オプションが設定されている場合は反映）
-    // this.isTorus = options.isTorus;
     // リフレッシュ処理用初期盤面の格納変数（浅いコピーだが、実装上不具合は見られない2020.03.21）
     this.patternInitial = pattern;
-    // 中央座標から見て前後左右斜めの相対位置の組み合わせ（ムーア近傍）
-    // this.mooreNeighborhood = [ [1,1], [1,0], [1,-1], [0,1], [0,-1], [-1,1], [-1,0], [-1,-1] ];
   }
 
 
@@ -44,8 +36,17 @@ class LifeGame {
   @ 盤面のHTMLテキストの出力処理
   ============================= */
   get getPatternText() {
-    // ビット列を表示形式に変換して返す（ 不具合①：this.alive = '0'だと正しく変換できない）
+    // ビット列をセルの表示形式に変換して返す（ 不具合①：this.alive = '0'だと正しく変換できない）
     return this.pattern.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
+  }
+
+
+  /* =============================
+  @ 盤面のHTMLテキストの出力処理（上の処理と同じ、統合したいがわからない）
+  ============================= */
+  static convertPatternText( patternArray ) {
+    // ビット列をセルの表示形式に変換して返す
+    return patternArray.map( str => str.replace( /1/g, "■" ).replace( /0/g, "□" ) ).join( '<br>' );
   }
 
 
@@ -57,6 +58,8 @@ class LifeGame {
     this.pattern = this.patternInitial;
     // 世代更新回数のリセット
     this.generationCount = 0;
+    // coupler位置の初期化
+    [ this.rowIndex, this.columnIndex ] = [ 0, 0 ];
   }
 
 
@@ -72,7 +75,7 @@ class LifeGame {
   @ トーラス設定の切替処理
   ============================= */
   changeTorusFlag( bool = 0 ) {
-    this.isTorus = ( Number.isInteger( bool ) ? ! this.isTorus : !! bool )
+    this.isTorus = ( Number.isInteger( bool ) ? ! this.isTorus : !! bool );
     // 変更結果を返す
     return this.isTorus;
   }
@@ -131,10 +134,10 @@ class LifeGame {
     // 次世代で「生」になる可能性があるか判定
     if ( /0/.test( this.pattern[y][x] ) ) {
       // 元々「死」の状態だった場合 => 誕生するか判定
-      if ( /3/.test( aliveCellsCount ) ) { nextCondition = 1; }
+      if ( /3/.test( aliveCellsCount ) ) nextCondition = 1;
     } else {
       // 元々「生」の状態だった場合 => 生存するか判定
-      if ( /2|3/.test( aliveCellsCount ) ) { nextCondition = 1; }
+      if ( /2|3/.test( aliveCellsCount ) ) nextCondition = 1;
     }
     // 次世代での状態を返す => "0" or "1"
     return String( nextCondition );
@@ -196,28 +199,36 @@ class LifeGame {
   /* =============================
   # パターンの合成用管理変数
   ============================= */
+  // couplerの行数
   rowIndex = 0;
+  // couplerの列数
   columnIndex = 0;
-  operableCouplingMode = false;
+  // 合成可能判定の初期化
+  coupleable = false;
+
 
   /* =============================
-  @ 合成するパターンの入力処理
+  @ couplerの入力処理
   ============================= */
   setCoupler(coupler) {
+    // couplerのオブジェクト作成
     this.coupler = new LifeGame(coupler);
-    this.operableCouplingMode = true;
-    if ( this.height < this.coupler.height || this.width < this.coupler.width ) {
+    // couplerが母体のサイズを超えていないか判定
+    this.coupleable = this.height >= this.coupler.height && this.width >= this.coupler.width;
+    // couplerが母体のサイズよりも大きいパターンの場合
+    if ( ! this.coupleable ) {
+      // 設定の失敗通知
       console.error("合成するパターンが大き過ぎます");
-      this.operableCouplingMode = false;
     }
-    return this.operableCouplingMode;
+    // 設定の結果を返す
+    return this.coupleable;
   }
 
   /* =============================
-  @ 合成位置移動処理
+  @ coupler位置移動処理
   ============================= */
   movePutPosition(move = [0,0]) {
-    if ( ! this.operableCouplingMode ) return false;
+    if ( ! this.coupleable ) return false;
     let [ y, x ] = [ this.rowIndex + move[0], this.columnIndex + move[1] ];
     if ( y + 1 && y - ( this.height - this.coupler.height + 1 ) ) this.rowIndex = y;
     if ( x + 1 && x - ( this.width - this.coupler.width + 1 ) ) this.columnIndex = x;
@@ -225,16 +236,16 @@ class LifeGame {
 
 
   /* =============================
-  @ 合成プレビュー盤面取得処理
+  @ 合成状態の盤面プレビュー取得処理
   ============================= */
   couplingPreview( state = { finishCoupling: false } ) {
-    if ( ! this.operableCouplingMode ) return false;
+    if ( ! this.coupleable ) return false;
     let [ yd, xd ] = [ this.rowIndex, this.columnIndex ];
     let [ yu, xu ] = [ yd + this.coupler.height, xd + this.coupler.width ];
     let result = this.patternInitial;
-    result = result.map( function(bitString,idx){
+    result = result.map( function(bitString,idx) {
       if ( yd <= idx && idx < yu) {
-        let couplerSection  = state.finishCoupling ? this[idx-yd] : `<span class="patterns__edit--coupler">${this[idx-yd]}</span>`;
+        let couplerSection  = state.finishCoupling ? this[idx-yd] : `<span style="color: magenta;">${this[idx-yd]}</span>`;
         return bitString.slice(0,xd) + `${couplerSection}` + bitString.slice(xu);
       }
       return bitString;
@@ -244,8 +255,8 @@ class LifeGame {
       this.patternInitial = result;
       // 盤面の初期化
       this.patternRefresh;
-      // 置換位置の初期化
-      [ this.rowIndex, this.columnIndex ] = [ 0, 0 ];
+      // 合成可能判定の初期化
+      // this.coupleable = false;
     }
     return result.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
   }

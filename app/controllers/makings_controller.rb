@@ -51,13 +51,13 @@ class MakingsController < ApplicationController
 
   def update_params
     # 送信されてきたデータから必要なパラメータを抽出
-    raw_params = params.require( :making ).permit( :is_torus, :making_text )
+    raw_params = params.require( :making ).permit( :display_format_id, :is_torus, :making_text )
     # :making_textデータから、:margin_XXXと:normalized_rows_sequenceに変換・取得する。
     # パラメータ（Hash）orエラーメッセージ(String)を受け取る
     convert_params = build_up_pattern_params_from( raw_params.delete( :making_text ) )
     # エラーがあった場合はエラーメッセージを返す
     return convert_params unless convert_params.is_a?( Hash )
     # ストロングパラメータにマージして返す
-    raw_params.merge({ display_format_id: 1, **convert_params } )
+    raw_params.merge( convert_params )
   end
 end

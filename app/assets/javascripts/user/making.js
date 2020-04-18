@@ -60,7 +60,11 @@ function displayInterface( displaying = false, displayPatternJumpButton = false 
   $(".patterns__show--lifeGameInterface").css({ "display": ! displaying && "none" || "" });
   // 上下左右反転・回転ボタン
   $(".makings__edit--preview").prop( "disabled", ! displaying );
-  // パターン表示を左寄設定
+  // 合成パターン選択ウィンドウ
+  $("#coupler_selection").prop( "disabled", ! displaying );
+  // 合成パターン決定ボタン
+  $(".makings__edit--startCoupling").prop( "disabled", true );
+  // パターン表示を左寄せ
   $(".patterns__show--lifeGameDisplay").css({ "text-align": ! displaying && "left" || "" });
   // パターンの「新規投稿」ボタンは変更があれば常に非表示（※デフォルトは非表示）
   // Making#updateが成功した場合のみ表示される(views/makings/update.js.erb)
@@ -77,12 +81,8 @@ function applyMakingPattern( makingPatternArray = false ) {
   makingPatternArray = makingPatternArray || getMakingPatternTextareaInfo( true )[0];
   // テキストエリアに反映
   $(".makings__edit--textarea").val( makingPatternArray.join("\n") );
-  // セルの状態表示に変換
-  let convertMakingPatternArray = makingPatternArray.map( bitString =>
-    bitString.replace( /1/g, "■" ).replace( /0/g, "□" )
-  );
-  // プレビュー画面へ反映
-  $(".patterns__show--lifeGameDisplay").html( convertMakingPatternArray.join("<br>") );
+  // セルの状態表示に変換＆プレビュー画面へ変更の反映
+  $(".patterns__show--lifeGameDisplay").html( LifeGame.convertPatternText( makingPatternArray ) );
 }
 
 /*
@@ -213,7 +213,7 @@ function touchingMmakingPattern( n = 0 ) {
   }
   // テキストエリアへの反映
   applyMakingPattern( patternData.patternInitial );
-  // 現在の状態反映
+  // 現在の状態反映（javascripts/lifegame/environments.js）
   showCurrentGeneration();
 }
 
@@ -226,17 +226,17 @@ function touchingMmakingPattern( n = 0 ) {
 function touchingLine( n = 0 ) {
   // 作成中パターンの「各ビット列の配列」と「最長のビット列の長さ」を取得
   let [ makingPatternArray, maxBitLength ] = getMakingPatternTextareaInfo( false );
-  // 削除処理の分岐
+  // 追加・削除処理の分岐
   switch (n) {
     // 行を追加
     // 先頭に行を追加
     case 1:
-    makingPatternArray.unshift( '0'.repeat( maxBitLength ) )
+    makingPatternArray.unshift( '0'.repeat( maxBitLength ) );
     break;
 
     // 後尾に行を追加
     case 2:
-    makingPatternArray.push('0'.repeat( maxBitLength ) )
+    makingPatternArray.push('0'.repeat( maxBitLength ) );
     break;
 
     // 左に行を追加
@@ -251,7 +251,7 @@ function touchingLine( n = 0 ) {
 
     // 行を削除
     case 5: case 6:
-    // 1なら最初の行を、2なら最後の行を削除
+    // 5なら最初の行を、6なら最後の行を削除
     n == 5 ? makingPatternArray.shift() : makingPatternArray.pop();
     break;
 
@@ -260,7 +260,7 @@ function touchingLine( n = 0 ) {
     makingPatternArray = makingPatternArray.map( function( bitString ) {
       // 最長でないビット列については処理を実行しない
       if ( bitString.length == maxBitLength ) {
-        // 3なら最初のセルを、4なら最後のセルを削除
+        // 7なら最初のセルを、8なら最後のセルを削除
         return n == 7 ? bitString.slice(1) : bitString.slice(0, -1);
       }
       return bitString;
@@ -276,16 +276,71 @@ function touchingLine( n = 0 ) {
   applyMakingPattern( makingPatternArray );
 }
 
+
+/*
+* =============================
+* パターン合成処理まとめ
+* =============================
+*/
 function changeCouplingMode(state) {
-  function startCouplingMode() {
-  let pattern_id = $("#coupler").val();
-  console.log( pattern_id);
-    patternData.setCoupler([ "010", "001", "111" ]);
-    $(".patterns__show--lifeGameDisplay").html(patternData.couplingPreview());
+  // ===== coupler選択時処理 ===============
+  function selectCoupler() { // 'select'の処理
+    let pattern_id = $("#coupler_selection").val();
+    // promptの値は無効
+    if ( ! pattern_id ) return false;
+    // IDからPatternデータを取得
+    $.ajax({
+      url: `/patterns/${ pattern_id }`,
+      type: 'get',
+      dataType : 'json'
+    }).then(
+
+      // 通信成功時のコールバック
+      function(data) {
+        console.log("通信成功");
+
+        // 合成するパターンの入力 => 入力結果を取得
+        let settingTest = patternData.setCoupler( data.couplerPattern );
+        // 合成の可否によってボタンの状態を変化させる
+        $(".makings__edit--startCoupling").prop( "disabled", ! settingTest );
+        // couplerのプレビューを表示
+        $(".makings__edit--couplerPreview").html( patternData.coupler.getPatternText );
+      },
+
+      // 通信失敗時のコールバック
+      function() {
+        alert("通信失敗");
+
+        // 合成の可否によってボタンの状態を変化させる
+        $(".makings__edit--startCoupling").prop( "disabled", true);
+        // couplerのプレビューを表示
+        $(".makings__edit--couplerPreview").text("");
+      }
+    );
+  }
+
+  // ===== 合成モード起動時処理 ===============
+  function startUpCouplingMode() {
+    // 手順１から手順２へ表示を切り替え
+    $(".makings__edit--couplingDiv1").fadeOut( function(){
+      $(".makings__edit--couplingDiv2").fadeIn();
+    });
+
+    // 母体パターンの表示切り替え処理
+    $(".patterns__show--lifeGameDisplay").fadeOut( function() {
+      // プレビュー状態へ切替
+      changePreviewMode();
+      // 合成プレビューを表示
+      $(this).html( patternData.couplingPreview() ).fadeIn();
+    });
+
+    // couplerの十字キー操作の移動効果付与
     $(window).off().on('keydown', function(e) {
+      // 十字キーでのスクロール無効
       e.preventDefault();
+      // 合成するパターンの移動方向検出・移動
       switch (e.keyCode) {
-        case 37: //←
+        case 37: // ←
         patternData.movePutPosition([0,-1]);
         break;
         case 38: // ↑
@@ -297,23 +352,41 @@ function changeCouplingMode(state) {
         case 40: // ↓
         patternData.movePutPosition([1,0]);
         break;
-        default:
       }
+      // 処理後の合成プレビューを表示
       $(".patterns__show--lifeGameDisplay").html(patternData.couplingPreview());
     });
   }
 
+
+  // ===== 合成モード修了時処理 ===============
   function finishCoupulingMode() {
-    $(".patterns__show--lifeGameDisplay").html(patternData.couplingPreview({ finishCoupling: true }));
+    // 合成するパターンの十字キー操作解除
     $(window).off();
+    // 母体パターンに合成パターンの反映実行
+    patternData.couplingPreview({ finishCoupling: true });
+    // テキストエリアへの反映
+    applyMakingPattern( patternData.patternInitial );
+    // 合成パターン選択ウィンドウ選択許可（連続操作の場合のみOKとしたいため）
+    $("#coupler_selection").prop( "disabled", false );
+    // 合成パターン決定ボタン押下許可（連続操作の場合のみOKとしたいため）
+    $(".makings__edit--startCoupling").prop( "disabled", false );
+    // 手順２から手順１へ表示を切り替え
+    $(".makings__edit--couplingDiv2").fadeOut( function(){
+      $(".makings__edit--couplingDiv1").fadeIn();
+    });
   }
 
+  // ===== 合成モード分岐処理 ===============
   switch (state) {
-    case 'start':
-    startCouplingMode()
+    case 'select': // coupler選択処理
+    selectCoupler();
     break;
-    case 'finish':
-    finishCoupulingMode()
+    case 'start': // 起動処理
+    startUpCouplingMode();
+    break;
+    case 'finish': // 修了処理
+    finishCoupulingMode();
     break;
   }
 }

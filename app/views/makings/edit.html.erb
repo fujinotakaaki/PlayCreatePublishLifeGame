@@ -3,8 +3,10 @@
 <!--ページ上部-->
 <div class="makings__edit--top">
   <%= form_with( model: @making, url: making_path, method: "patch", class: "form-horizontal" ) do | f | %>
+  <%= f.hidden_field :display_format_id %>
   <!--ページ上部のタイトル-->
   <h3>
+    <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
     パターン編集機能
     <%= render 'makings/edit_helper', f: f %>
   </h3>
@@ -20,8 +22,12 @@
     </div>
   </div>
 
+
   <!--作成中パターンの編集エリア-->
-  <h3>パターン編集エリア</h3>
+  <h3>
+    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+    パターン編集エリア
+  </h3>
   <h6>編集エリアは右下のつまみにて高さの調整が可能です。</h6>
   <%= f.text_area :making_text, value: build_up_bit_strings_from( @making ).join( "\n" ), class: "makings__edit--textarea", type: 'number' %>
   <% end %>

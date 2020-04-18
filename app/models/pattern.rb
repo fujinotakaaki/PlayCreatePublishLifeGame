@@ -25,6 +25,19 @@ class Pattern < ApplicationRecord
     favorites.where( user_id: user.id ).exists?
   end
 
+  def as_coupler
+    # カンマ区切りの16進数文字列を分割・数値化
+    coupler_pattern_rows =  self.normalized_rows_sequence.split( ?, ).map(&:hex)
+    # 最も大きい自然数のビット列数を算出
+    largest_number_bit_length = coupler_pattern_rows.max.bit_length
+    # 各数値をビット列に変換
+    coupler_pattern = coupler_pattern_rows.map do | decimal_number |
+      "%0#{ largest_number_bit_length }b" % decimal_number
+    end
+    # カップリングに使用するパターンを返す
+    { couplerPattern: coupler_pattern }
+  end
+
   class << self
     # Topページのウェルカムメッセージ
     WELCOM_MESSAGE_PATTERN = {

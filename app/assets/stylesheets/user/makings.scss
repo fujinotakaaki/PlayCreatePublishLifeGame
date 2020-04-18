@@ -100,19 +100,13 @@
       }
     }
     &--destroyTab {
+      color: black;
       background-color: rgba( 255, 0, 0, 0.5);
       padding: 20px;
       text-align: center;
       &:hover {
         font-weight: bold;
         background-color: red;
-      }
-      a {
-        color: #222;
-        text-shadow: yellow 1px 1px 0px, yellow -1px 1px 0px, yellow 1px -1px 0px, yellow -1px -1px 0px;
-        &:hover {
-          color: black;
-        }
       }
     }
     &--tabNav {
@@ -132,6 +126,24 @@
       background-color: white;
       padding: 20px;
       border-bottom: 1px solid #ddd;
+    }
+    &--couplerPreview {
+      text-align: center;
+      color: magenta;
+      background-color: black;
+      padding: 1em;
+      line-height: 0.6em;
+      white-space: nowrap;
+    }
+    &--couplingButtonPosition {
+      padding: 10px 10px 0;
+      text-align: right;
+    }
+    &--couplingDiv2 {
+      display: none;
+    }
+    &--couplingDiv3 {
+      display: none;
     }
   }
 }
