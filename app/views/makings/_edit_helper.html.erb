@@ -108,7 +108,7 @@
 	<div class="tab-pane makings__edit--tabCommon" id="sampleContentE">
 		<h4>
 			<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-			画像からパターン作成
+			画像からパターン作成メニュー
 		</h4>
 		<!--画像から作成ページへ移動-->
 		<%= link_to 'Go', new_making_path, class: 'btn btn-originRainbow' %>
@@ -131,7 +131,7 @@
 		<!--パターン合成タイトル-->
 		<h4>
 			<i class="fas fa-object-group"></i>
-			パターン合成
+			パターン合成メニュー
 		</h4>
 
 		<!-- 手順１：投稿済みパターンから選択 -->
@@ -142,6 +142,7 @@
 			</h5>
 			<%= select_tag( 'coupler_selection', options_for_select( Pattern.get_index ), class: "form-control", onchange: "changeCouplingMode('select');", prompt: " --- 選択してください --- " ) %>
 			<p class="makings__edit--couplingButtonPosition">
+				<span class="makings__edit--couplerAvailable"></span>
 				<button type="button" name="button" onclick="changeCouplingMode('start');" class="btn btn-originPink makings__edit--startCoupling" disabled>
 					開始
 				</button>
@@ -155,13 +156,18 @@
 				<i class="fas fa-arrows-alt"></i>
 				手順２：合成するパターンの設置場所決定
 			</h5>
-			<h6>
-				十字キーでパターンのおきたい場所に移動してください。<br>
-				置き場所が決まったら「決定」ボタンを押してください。
-			</h6>
+			<ul>
+				<li>「方向キー」で移動できます。</li>
+				<li>「shiftキー」＋「方向キー」でその方向に反転できます。</li>
+				<li>「"r"キー」で反時計回りに９０°回転ができます。</li>
+				<li>置き場所が決まったら「完了」ボタンを押してください。</li>
+			</ul>
 			<p class="makings__edit--couplingButtonPosition">
+				<button type="button" name="button" onclick="changeCouplingMode('finish', true);" class="btn btn-warning">
+					中止
+				</button>
 				<button type="button" name="button" onclick="changeCouplingMode('finish');" class="btn btn-primary">
-					決定
+					完了
 				</button>
 			</p>
 		</div>

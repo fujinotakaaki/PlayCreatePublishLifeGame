@@ -225,9 +225,28 @@ class LifeGame {
   }
 
   /* =============================
+  @ coupler回転処理
+  ============================= */
+  get couplerRotate() {
+    if ( ! this.coupleable ) return false;
+    // 回転可能なサイズか判定
+    let rotateable = this.height >= this.coupler.width && this.width >= this.coupler.height;
+    // 判定結果を返す
+    if ( ! rotateable ) return false;
+    // couplerを反時計回りに90°回転
+    this.coupler.rotateCounterClockwise;
+    // 回転した際にはみ出す場合は、はみ出ない位置まで移動
+    if ( this.coupler.height + this.rowIndex > this.height ) this.rowIndex = this.height - this.coupler.height;
+    if ( this.coupler.width + this.columnIndex > this.width ) this.columnIndex = this.width - this.coupler.width;
+    // 判定結果を返す
+    return true;
+  }
+
+
+  /* =============================
   @ coupler位置移動処理
   ============================= */
-  movePutPosition(move = [0,0]) {
+  moveCouplerPosition(move = [0,0]) {
     if ( ! this.coupleable ) return false;
     let [ y, x ] = [ this.rowIndex + move[0], this.columnIndex + move[1] ];
     if ( y + 1 && y - ( this.height - this.coupler.height + 1 ) ) this.rowIndex = y;
@@ -238,25 +257,23 @@ class LifeGame {
   /* =============================
   @ 合成状態の盤面プレビュー取得処理
   ============================= */
-  couplingPreview( state = { finishCoupling: false } ) {
+  couplingPreview( action = { finishCoupling: false } ) {
     if ( ! this.coupleable ) return false;
     let [ yd, xd ] = [ this.rowIndex, this.columnIndex ];
     let [ yu, xu ] = [ yd + this.coupler.height, xd + this.coupler.width ];
     let result = this.patternInitial;
     result = result.map( function(bitString,idx) {
       if ( yd <= idx && idx < yu) {
-        let couplerSection  = state.finishCoupling ? this[idx-yd] : `<span style="color: magenta;">${this[idx-yd]}</span>`;
+        let couplerSection  = action.finishCoupling ? this[idx-yd] : `<span style="color: magenta;">${this[idx-yd]}</span>`;
         return bitString.slice(0,xd) + `${couplerSection}` + bitString.slice(xu);
       }
       return bitString;
     }, this.coupler.patternInitial );
-    if ( state.finishCoupling ) {
+    if ( action.finishCoupling ) {
       // 初期盤面の更新
       this.patternInitial = result;
       // 盤面の初期化
       this.patternRefresh;
-      // 合成可能判定の初期化
-      // this.coupleable = false;
     }
     return result.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
   }

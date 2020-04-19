@@ -282,7 +282,7 @@ function touchingLine( n = 0 ) {
 * パターン合成処理まとめ
 * =============================
 */
-function changeCouplingMode(state) {
+function changeCouplingMode( state, option ) {
   // ===== coupler選択時処理 ===============
   function selectCoupler() { // 'select'の処理
     let pattern_id = $("#coupler_selection").val();
@@ -303,17 +303,24 @@ function changeCouplingMode(state) {
         let settingTest = patternData.setCoupler( data.couplerPattern );
         // 合成の可否によってボタンの状態を変化させる
         $(".makings__edit--startCoupling").prop( "disabled", ! settingTest );
+        // 通知メッセージの選択
+        let msg = settingTest ? "このパターンは使用可能です" : "このパターンは使用できません"
+        // パターンが使用可能かの通知
+        $(".makings__edit--couplerAvailable").css({
+          'display': 'inline-block',
+          'color': settingTest && 'black' || ''
+        }).text(msg);
         // couplerのプレビューを表示
         $(".makings__edit--couplerPreview").html( patternData.coupler.getPatternText );
       },
 
       // 通信失敗時のコールバック
       function() {
-        alert("通信失敗");
+        alert("パターンの取得に失敗しました");
 
-        // 合成の可否によってボタンの状態を変化させる
+        // 合成開始ボタンの無効化
         $(".makings__edit--startCoupling").prop( "disabled", true);
-        // couplerのプレビューを表示
+        // couplerのプレビューを消去
         $(".makings__edit--couplerPreview").text("");
       }
     );
@@ -336,35 +343,53 @@ function changeCouplingMode(state) {
 
     // couplerの十字キー操作の移動効果付与
     $(window).off().on('keydown', function(e) {
-      // 十字キーでのスクロール無効
+      // 十字キーでのスクロール無効（その他も無効になるけど、特に問題なし）
       e.preventDefault();
       // 合成するパターンの移動方向検出・移動
-      switch (e.keyCode) {
+      // Shiftと同時押しでその方向に反転する
+      switch ( e.keyCode ) {
+        case 82: // r
+        if ( ! patternData.couplerRotate ) alert('このパターンは回転できません。');
+        break;
+
         case 37: // ←
-        patternData.movePutPosition([0,-1]);
+        if ( e.shiftKey ) patternData.coupler.flipHorizontal;
+        else patternData.moveCouplerPosition([0,-1]);
         break;
+
         case 38: // ↑
-        patternData.movePutPosition([-1,0]);
+        if ( e.shiftKey ) patternData.coupler.flipVertical;
+        else patternData.moveCouplerPosition([-1,0]);
         break;
+
         case 39: // →
-        patternData.movePutPosition([0,1]);
+        if ( e.shiftKey ) patternData.coupler.flipHorizontal;
+        else patternData.moveCouplerPosition([0,1]);
         break;
+
         case 40: // ↓
-        patternData.movePutPosition([1,0]);
+        if ( e.shiftKey ) patternData.coupler.flipVertical;
+        else patternData.moveCouplerPosition([1,0]);
         break;
       }
       // 処理後の合成プレビューを表示
-      $(".patterns__show--lifeGameDisplay").html(patternData.couplingPreview());
+      $(".patterns__show--lifeGameDisplay").html( patternData.couplingPreview() );
     });
   }
 
 
   // ===== 合成モード修了時処理 ===============
-  function finishCoupulingMode() {
+  function finishCoupulingMode( callOffCoupling = false ) { // callOffCoupling = trueの場合は合成処理の中止
     // 合成するパターンの十字キー操作解除
     $(window).off();
-    // 母体パターンに合成パターンの反映実行
-    patternData.couplingPreview({ finishCoupling: true });
+    // 母体パターンへの合成処理判定
+    if ( ! callOffCoupling ) {
+      // 合成実行
+      patternData.couplingPreview({ finishCoupling: true });
+    }else {
+      // 中止の場合はリフレッシュ処理を実行（couplerの位置リセットのため）
+      patternData.patternRefresh;
+    }
     // テキストエリアへの反映
     applyMakingPattern( patternData.patternInitial );
     // 合成パターン選択ウィンドウ選択許可（連続操作の場合のみOKとしたいため）
@@ -385,8 +410,8 @@ function changeCouplingMode(state) {
     case 'start': // 起動処理
     startUpCouplingMode();
     break;
-    case 'finish': // 修了処理
-    finishCoupulingMode();
+    case 'finish': // 終了処理
+    finishCoupulingMode( option );
     break;
   }
 }

@@ -141,6 +141,17 @@
     }
     &--couplingDiv2 {
       display: none;
+      ul {
+        li {
+          font-size: 14px;
+          margin-left: 30px;
+        }
+      }
+    }
+    &--couplerAvailable {
+      display: none;
+      font-size: 14px;
+      color: red;
     }
     &--couplingDiv3 {
       display: none;
