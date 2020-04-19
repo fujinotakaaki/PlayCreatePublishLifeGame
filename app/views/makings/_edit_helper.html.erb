@@ -2,7 +2,7 @@
 
 <!-- タブ・メニュー -->
 <ul class="nav nav-tabs makings__edit--tabNav">
-	<li class="makings__edit--tabLi active"><a href="#sampleContentA" data-toggle="tab">パターンの検証</a></li>
+	<li class="makings__edit--tabLi active"><a href="#sampleContentA" data-toggle="tab">基本操作</a></li>
 	<li class="makings__edit--tabLi"><a href="#sampleContentB" data-toggle="tab">一斉操作</a></li>
 	<li class="makings__edit--tabLi"><a href="#sampleContentC" data-toggle="tab">補完処理</a></li>
 	<li class="makings__edit--tabLi"><a href="#sampleContentD" data-toggle="tab">特殊処理</a></li>
@@ -21,18 +21,30 @@
 			<span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
 			保存・投稿メニュー
 		</h4>
-		<h6>「検証」を通過、一時保存したパターンは投稿・公開が可能になります。</h6>
-		<button type="button" class="btn btn-primary makings__edit--verification" onclick="verificationMakingPattern();">
-			検証
-		</button>
+		<h6>「検証」を通過し、一時保存したパターンは投稿が可能になります。</h6>
+		<p>
+			<button type="button" class="btn btn-primary makings__edit--verification" onclick="verificationMakingPattern();">
+				検証
+			</button>
 
-		<!--「変更を保存」ボタンはdisplay: none;がデフォルト設定-->
-		<%= f.submit '変更を保存', id: "makings__edit--update", class: "btn btn-success" %>
+			<!--「変更を保存」ボタンはdisplay: none;がデフォルト設定-->
+			<%= f.submit '変更を保存', id: "makings__edit--update", class: "btn btn-success" %>
 
-		<!--パターン新規作成画面への移動アクション-->
-		<%= link_to new_pattern_path, id: "patterns__new--jump", class: "btn btn-default" do %>
-		<%= content_tag :span, ' このパターンを投稿する（パターン情報入力ページへ）', class: "glyphicon glyphicon-pencil", aria: { hidden: true } %>
-		<% end %>
+			<!--パターン新規作成画面への移動アクション-->
+			<%= link_to new_pattern_path, id: "patterns__new--jump", class: "btn btn-default" do %>
+			<%= content_tag :span, ' このパターンを投稿する（パターン情報入力ページへ）', class: "glyphicon glyphicon-pencil", aria: { hidden: true } %>
+			<% end %>
+		</p>
+		<h6>無地の盤面の作成</h6>
+		<table class="makings__edit--createBlankPattern">
+			<tr>
+				<th>高さ：</th>
+				<td><%= number_field_tag "blank_pattern_height", nil, { in: (1..500), class: "form-control" } %></td>
+				<th>幅：</th>
+				<td><%= number_field_tag "blank_pattern_width", nil, { in: (1..500), class: "form-control" } %></td>
+				<td><button type="button" name="button" class="btn btn-default" onclick="createBlankPattern();">新規作成</button></td>
+			</tr>
+		</table>
 	</div>
 
 

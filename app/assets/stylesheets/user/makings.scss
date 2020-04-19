@@ -139,6 +139,13 @@
       padding: 10px 10px 0;
       text-align: right;
     }
+    &--createBlankPattern {
+      font-size: 14px;
+      tr {
+        td {padding-right: 10px}
+        th {padding-right: 10px}
+      }
+    }
     &--couplingDiv2 {
       display: none;
       ul {

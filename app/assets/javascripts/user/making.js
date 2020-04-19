@@ -392,7 +392,7 @@ function changeCouplingMode( state, option ) {
     }
     // テキストエリアへの反映
     applyMakingPattern( patternData.patternInitial );
-    // 合成パターン選択ウィンドウ選択許可（連続操作の場合のみOKとしたいため）
+    // 合成パターン選択許可（連続操作の場合のみOKとしたいため）
     $("#coupler_selection").prop( "disabled", false );
     // 合成パターン決定ボタン押下許可（連続操作の場合のみOKとしたいため）
     $(".makings__edit--startCoupling").prop( "disabled", false );
@@ -414,4 +414,37 @@ function changeCouplingMode( state, option ) {
     finishCoupulingMode( option );
     break;
   }
+}
+
+
+/*
+* =============================
+* 空のパターン作成メソッド
+* =============================
+*/
+function createBlankPattern() {
+  // 盤面サイズ取得
+  let height = ~~$("#blank_pattern_height").val();
+  let width = ~~$("#blank_pattern_width").val();
+  // サイズが有効範囲か判定
+  let pretest = 0 < Math.min(height, width) && Math.max(height, width) < 501;
+  if ( ! pretest ) { // サイズが有効範囲でない場合は終了させる
+    alert("入力サイズが不適切です。");
+    return false;
+  }
+  // 無地盤面の生成確認メッセージ
+  let result = window.confirm("編集中の内容は消えますがよろしいですか？\nこの操作で一時保存データの更新は行われません。")
+  // キャンセルの場合は終了
+  if ( ! result ) return false;
+  // 空の盤面作成
+  let bitString = "0".repeat(width);
+  let blankPattern = Array(height).fill(bitString);
+  // 検証を通過したパターンの反映（lifegame/environments.js）
+  initializeLifeGame( blankPattern );
+  // エミュレーション画面をプレビュー画面へ切替
+  changePreviewMode();
+  // 空のパターン表示への反映
+  applyMakingPattern( blankPattern );
+  // 合成パターン選択許可
+  $("#coupler_selection").prop( "disabled", false );
 }
