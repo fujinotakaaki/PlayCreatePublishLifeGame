@@ -22,7 +22,7 @@
 <div class="form-group">
   <%= f.label :display_format_id, ' セルの表示形式', class: "fas fa-th-large col-sm-2 control-label" %>
   <div class="col-sm-10">
-    <%= f.select :display_format_id, DisplayFormat.pluck( :name, :id ).to_h %>
+    <%= f.select :display_format_id, options_for_select( DisplayFormat.get_index ), {}, onchange: "previewDisplayFormatAtPatternsNew(this.value);" %>
   </div>
 </div>
 
@@ -38,7 +38,10 @@
 <div class="form-group">
   <%= f.label :image_id, " イメージ画像", class: "fas fa-image col-sm-2 control-label" %>
   <div class="col-sm-10">
-    <%= f.attachment_field :image %>
+    <label class="application__common--imgLabel">
+      画像をアップロード
+      <%= f.attachment_field :image, style: "display: none;", onchange: "displayUploadImage(this);" %>
+    </label>
   </div>
 </div>
 
@@ -46,9 +49,9 @@
 <div class="form-group">
   <%= f.label :is_torus, " トーラス面設定", class: "fas fa-globe-asia col-sm-2 control-label" %>
   <div class="col-sm-10">
-    <%= f.radio_button :is_torus, true %>
+    <%= f.radio_button :is_torus, true, onchange: "patternData.changeTorusFlag(this.value);" %>
     <%= f.label :is_torus, '有効' %>
-    <%= f.radio_button :is_torus, false %>
+    <%= f.radio_button :is_torus, false, onchange: "patternData.changeTorusFlag(this.value);" %>
     <%= f.label :is_torus, '無効' %>
   </div>
 </div>
@@ -107,23 +110,3 @@
 <% end %>
 
 <% end %>
-
-
-<script type="text/javascript">
-  /*
-  * =============================
-  * リアルタイムでライフゲームの書式変更適用処理
-  * =============================
-  */
-  $( function() {
-    // 画像アップロード時にサムネイルを表示するメソッド
-    $("#pattern_image").change( displayUploadPatternImage );
-
-    // 表示形式のリアルタイム変更メソッド
-    $("#pattern_display_format_id").change( previewDisplayFormatAtPatternsNew );
-
-    // トーラス面フラグのリアルタイム反映メソッド
-    $("#pattern_is_torus_true").change( () => patternData.changeTorusFlag( true ) );
-    $("#pattern_is_torus_false").change( () => patternData.changeTorusFlag( false ) );
-  });
-</script>

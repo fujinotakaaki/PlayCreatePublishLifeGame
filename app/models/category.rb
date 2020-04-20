@@ -14,7 +14,7 @@ class Category < ApplicationRecord
   class << self
     # カテゴリ一覧取得
     def get_index
-      $categries ||= all.pluck( :id, :name )
+      $categries ||= pluck( :name, :id )
     end
   end
 end

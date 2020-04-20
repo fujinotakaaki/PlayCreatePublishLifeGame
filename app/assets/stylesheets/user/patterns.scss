@@ -5,10 +5,6 @@
 .patterns {
   &__new {
     margin-bottom: 50px;
-    &--img {
-      max-height: 150px;
-      max-width: 150px;
-    }
     &--submit {
       text-align: right;
     }
@@ -71,7 +67,7 @@
       color: limegreen;
       background-color: black;
       line-height: 0.6em;
-      white-space: nowrap; 
+      white-space: nowrap;
       transform-origin: top left;
     }
     &--lifeGameInterface {

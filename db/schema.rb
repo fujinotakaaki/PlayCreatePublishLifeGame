@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_09_152308) do
+ActiveRecord::Schema.define(version: 2020_04_20_095422) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 2020_04_09_152308) do
     t.datetime "updated_at", null: false
     t.text "normalized_rows_sequence"
     t.integer "display_format_id", default: 1, null: false
+    t.integer "transform_scale_rate", default: 100
   end
 
   create_table "patterns", force: :cascade do |t|

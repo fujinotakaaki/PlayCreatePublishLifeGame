@@ -14,7 +14,7 @@
   <ul>
     <li class="categories__index--li">
       <%= content_tag :span, '', class: "glyphicon glyphicon-tag",aria: { hidden: true } %>
-      <%= link_to category.second, patterns_path( "search[category]" => category.first ) %>
+      <%= link_to category.first, patterns_path( "search[category]" => category.second ) %>
     </li>
   </ul>
   <% end %>

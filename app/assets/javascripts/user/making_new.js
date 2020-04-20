@@ -69,8 +69,8 @@ function changeBinarizationMode(self) {
     // 画像の２値化処理画面表示
     $(".makings__new--sectionC").fadeIn('slow');
   });
-  // 画像の２値化実行（判別法による閾値の決定実行）
-  imageBinarization( true )
+  // 画像の２値化実行
+  imageBinarization('auto')
   return false;
 }
 
@@ -80,9 +80,9 @@ function changeBinarizationMode(self) {
 * 画像２値化処理
 * =============================
 */
-function imageBinarization( autoThreshold = false ) {
+function imageBinarization( threshold = 'auto' ) {
   // ===== 本処理 ====================
-  function main( autoThreshold ) {
+  function main( threshold ) {
     // グレースケール変換式の定義（0.5000は四捨五入を考慮）
     // const grayscale = (r, g, b) => 0.2126 * r + 0.7152 * g + 0.0722 * b
     const grayscale = (r, g, b) => ( 0.500 + 0.299 * r + 0.587 * g + 0.114 * b ) | 0;
@@ -99,8 +99,8 @@ function imageBinarization( autoThreshold = false ) {
     ctx.drawImage(croppedImage, 0, 0, croppedImage.width, croppedImage.height);
     // Uint8ClampedArrayを取得
     let dst = ctx.getImageData( 0, 0, croppedImage.width, croppedImage.height );
-    // 閾値の取得（true: 判別法, false: 入力フォームの値）
-    let threshold = autoThreshold ? thresholdOtsu( croppedImage ) : Number( $("#threshold_form").val() );
+    // 閾値の設定（'auto': 判別分析法から決定 or 入力フォームの値から）
+    threshold = ( threshold == 'auto' ? thresholdOtsu( croppedImage ) : threshold | 0 );
     // 入力フォームへ値の上書き
     $("#threshold_form").val( threshold );
     // 画像２値化処理
@@ -187,7 +187,7 @@ function imageBinarization( autoThreshold = false ) {
     return search( image );
   }
 
-  main( autoThreshold );
+  main( threshold );
 }
 
 

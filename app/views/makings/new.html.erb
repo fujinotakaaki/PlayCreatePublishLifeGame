@@ -16,7 +16,7 @@
   <div id="crop_area_box">
     <div class="makings__new--labelBox">
       <label>
-        <%= file_field_tag '', id: "crop_image", style: "display: none;"%>
+        <%= file_field_tag '', id: "crop_image", style: "display: none;" %>
         <div class="makings__new--inputLabel">画像をアップロード</div>
       </label>
     </div>
@@ -45,7 +45,7 @@
   <canvas id="crop_preview_binarization"></canvas>
   <p>
     <label for="threshold_label">閾値：</label>
-    <%= number_field_tag "threshold_form", 0, {size: 50, in: 0..256} %><br>
+    <%= number_field_tag "threshold_form", 0, { size: 50, in: 0..256, onchange: "imageBinarization(this.value);"} %><br>
 
     <label for="cells_condition_label">「生」セルの領域：</label>
     <%= select_tag "cells_condition_form", options_for_select( {"白": 255, "黒": 0 } ) %>
@@ -108,12 +108,9 @@
       // 手順表示の切り替え
       $(".makings__new--infoH3").fadeOut(function(){
         $(this).text("手順２：画像のトリミング").fadeIn();
-        $(".makings__new--infoH6").text("トリミング画像は縦横最大150pxまでになります。");
+        $(".makings__new--infoH6").text("トリミング画像は縦横最大500pxまでになります。");
       });
       return;
     });
-
-    // ===== フォームの閾値が変化した際に画像２値化処理実行 ===============
-    $("#threshold_form").on( 'change', () => imageBinarization() );
   });
 </script>

@@ -77,7 +77,7 @@ class Pattern < ApplicationRecord
 
     # パターン一覧取得
     def get_index
-      $patterns ||= all.pluck( :name, :id ).to_h
+      $patterns ||= pluck( :name, :id ).to_h
     end
   end
 end

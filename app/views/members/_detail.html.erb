@@ -8,8 +8,11 @@
 <%= f.hidden_field :id, value: current_user.id, readonly: true %>
 <!--プロフィール画像-->
 <div class="members__show--divLeft">
-  <%= attachment_image_tag user, :profile_image, fallback: asset_path( "no_image.jpg" ), class: "members__show--img" %><br>
-  <%= f.attachment_field :profile_image %>
+  <%= attachment_image_tag user, :profile_image, fallback: asset_path( "no_image.jpg" ), class: "application__common--imgPreview members__show--img" %><br>
+  <label class="application__common--imgLabel">
+      画像をアップロード
+      <%= f.attachment_field :profile_image, style: "display: none;", onchange: "displayUploadImage(this);" %>
+    </label>
 </div>
 
 <!--ユーザ紹介テンプレート-->
@@ -53,9 +56,11 @@
     <%= user.name %>
   </h4>
   <!--自己紹介文表示-->
+  <h4 class="members__show--headline">
   <%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %>
   自己紹介文
   <%= content_tag :span, '', class: "glyphicon glyphicon-th-large", aria: { hidden: true } %><br>
+</h4>
   <%= user.introduction.blank? ? '本文がありません' : user.introduction %><br>
 </div>
 

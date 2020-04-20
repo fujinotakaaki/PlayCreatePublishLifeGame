@@ -9,7 +9,7 @@ class MakingsController < ApplicationController
     # 画像から作成したパターンデータに更新する
     update{ | making_params | making_params.merge!( { display_format_id: 2 } ) }
     # パターン投稿ページへ
-    redirect_to new_pattern_path
+    redirect_to edit_making_path
   end
 
   def edit
@@ -51,7 +51,7 @@ class MakingsController < ApplicationController
 
   def update_params
     # 送信されてきたデータから必要なパラメータを抽出
-    raw_params = params.require( :making ).permit( :display_format_id, :is_torus, :making_text )
+    raw_params = params.require( :making ).permit( :display_format_id, :transform_scale_rate, :is_torus, :making_text )
     # :making_textデータから、:margin_XXXと:normalized_rows_sequenceに変換・取得する。
     # パラメータ（Hash）orエラーメッセージ(String)を受け取る
     convert_params = build_up_pattern_params_from( raw_params.delete( :making_text ) )
