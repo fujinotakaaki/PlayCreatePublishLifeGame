@@ -72,6 +72,7 @@
    margin-top: 30px;
  }
 
+
  #menue-parent {
    position: relative;
    text-align: left;
@@ -179,18 +180,18 @@
  #crop{
    &_preview {
      img {
-       max-width: 150px;
-       max-height: 150px;
+       max-width: 300px;
+       max-height: 300px;
      }
    }
    &_area_box {
-   width: 100%;
-   min-height: 50vh;
-   /* Ensure the size of the image fit the container perfectly */
-   img {
-     display: block;
-     /* This rule is very important, please don't ignore this */
-     max-width: 100%;
+     width: 100%;
+     min-height: 50vh;
+     /* Ensure the size of the image fit the container perfectly */
+     img {
+       display: block;
+       /* This rule is very important, please don't ignore this */
+       max-width: 100%;
+     }
    }
  }
-}

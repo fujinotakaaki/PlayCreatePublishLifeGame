@@ -71,7 +71,8 @@
       color: limegreen;
       background-color: black;
       line-height: 0.6em;
-      white-space: nowrap;
+      white-space: nowrap; 
+      transform-origin: top left;
     }
     &--lifeGameInterface {
       padding: 0 20px;

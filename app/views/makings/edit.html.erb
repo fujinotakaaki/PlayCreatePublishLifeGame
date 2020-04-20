@@ -31,6 +31,16 @@
   <h6>編集エリアは右下のつまみにて高さの調整が可能です。</h6>
   <%= f.text_area :making_text, value: build_up_bit_strings_from( @making ).join( "\n" ), class: "makings__edit--textarea", type: 'number' %>
   <% end %>
+  <table class="makings__edit--transformScaleTable">
+    <tr>
+      <th>セルの縮尺：</th>
+      <th>0%</th>
+      <td>
+        <%= range_field_tag :cell_size, 100, { in: (0..100), onchange: "$('.patterns__show--lifeGameDisplay').css({'transform': `scale(${this.value/100})`});" } %>
+      </td>
+      <th>100%</th>
+    </tr>
+  </table>
 </div>
 
 <!--ページ下部-->

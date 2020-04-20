@@ -246,11 +246,11 @@ class LifeGame {
   /* =============================
   @ coupler位置移動処理
   ============================= */
-  moveCouplerPosition(move = [0,0]) {
+  moveCouplerPosition( move = [0,0], skipLength = 1 ) {
     if ( ! this.coupleable ) return false;
-    let [ y, x ] = [ this.rowIndex + move[0], this.columnIndex + move[1] ];
-    if ( y + 1 && y - ( this.height - this.coupler.height + 1 ) ) this.rowIndex = y;
-    if ( x + 1 && x - ( this.width - this.coupler.width + 1 ) ) this.columnIndex = x;
+    let [ y, x ] = [ this.rowIndex + move[0] * skipLength, this.columnIndex + move[1] * skipLength ];
+    if ( 0 <= y && y < this.height - this.coupler.height + 1 ) this.rowIndex = y;
+    if ( 0 <= x && x < this.width - this.coupler.width + 1 ) this.columnIndex = x;
   }
 
 

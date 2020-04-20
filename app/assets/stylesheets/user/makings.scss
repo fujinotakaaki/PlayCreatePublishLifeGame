@@ -70,7 +70,7 @@
     &--textarea {
       width: 100%;
       margin: 20px 0;
-      resize: vertical;
+      // resize: vertical;
     }
     &--body {
       word-wrap: break-word;
@@ -162,6 +162,16 @@
     }
     &--couplingDiv3 {
       display: none;
+    }
+    &--transformScaleTable {
+      width: 100%;
+      th {
+        text-align: center;
+        font-weight: bold;
+      }
+      td {
+        width: 50%;
+      }
     }
   }
 }

@@ -132,7 +132,7 @@ function stopProcess() {
 
 /*
 * =============================
-* ボタン押下可否の切り替え
+* LifeGame操作ボタン押下可否の切り替え
 * =============================
 */
 function buttonsFreezeOrRelease( bool = true ) {
