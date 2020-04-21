@@ -27,6 +27,18 @@
     &--sectionC {
       display: none;
     }
+    &--thresholdFormTable {
+      th {
+        text-align: center;
+        font-weight: bold;
+        &:first-child {
+          text-align: right;
+        }
+      }
+      td {
+        padding: 0 10px;
+      }
+    }
     &--infoH3 {
       font-weight: bold;
       line-height: 1.3em;
@@ -138,8 +150,12 @@
     &--createBlankPattern {
       font-size: 14px;
       tr {
-        td {padding-right: 10px}
-        th {padding-right: 10px}
+        td {
+          padding-right: 10px;
+        }
+        th {
+          padding-right: 10px;
+        }
       }
     }
     &--couplingDiv2 {
@@ -160,13 +176,13 @@
       display: none;
     }
     &--transformScaleTable {
-      width: 100%;
       th {
+        padding: 0 10px;
         text-align: center;
         font-weight: bold;
-      }
-      td {
-        width: 50%;
+        &:first-child {
+          text-align: right;
+        }
       }
     }
   }

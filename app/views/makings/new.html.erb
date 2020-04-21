@@ -43,14 +43,22 @@
     <!-- ２値化画像 -->
     <canvas id="crop_preview_binarization"></canvas>
 
-    <table>
+    <table class="makings__new--thresholdFormTable">
       <tr>
-        <th>閾値：</th>
-        <td><%= number_field_tag "threshold_form", 0, { size: 50, in: 0..256, onchange: "imageBinarization(this.value);"} %></td>
+        <th>輝度の閾値：</th>
+        <th>0</th>
+        <td>
+          <%= range_field_tag 'threshold_form', 0, { in: (0..256), onchange: "imageBinarization(this.value);" } %>
+        </td>
+        <th>256</th>
       </tr>
       <tr>
         <th>「生」セルの領域：</th>
-        <td><%= select_tag "cells_condition_form", options_for_select( {"白": 255, "黒": 0 } ) %></td>
+        <th></th>
+        <td>
+          <%= select_tag "cells_condition_form", options_for_select( { "白": 255, "黒": 0 } ) %>
+        </td>
+        <th></th>
       </tr>
     </table>
 

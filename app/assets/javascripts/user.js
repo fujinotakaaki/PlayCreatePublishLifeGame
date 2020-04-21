@@ -53,7 +53,7 @@ const validateImageFile = function( element, finishOnLoad ) {
   // 画像でない場合はそのファイルを削除・強制終了
   if ( ! /image/.test( upLoadFile.type ) ) {
     $(element).val(""); // クリア
-    callMessageWindow( 'danger', '画像以外のファイルは投稿できません。' )
+    callMessageWindow( 'danger', '画像データ以外は使用できません。' )
     // バリデーション結果を返す
     return false;
   }

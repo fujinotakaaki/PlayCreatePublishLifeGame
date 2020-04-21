@@ -111,9 +111,6 @@ function changeBinarizationMode(self) {
 function imageBinarization( threshold = 'auto' ) {
   // ===== 本処理 ====================
   function main( threshold ) {
-    // グレースケール変換式の定義（0.5000は四捨五入を考慮）
-    // const grayscale = (r, g, b) => 0.2126 * r + 0.7152 * g + 0.0722 * b
-    const grayscale = (r, g, b) => ( 0.500 + 0.299 * r + 0.587 * g + 0.114 * b ) | 0;
     // クロッピング画像のimg要素取得
     let croppedImage = $("#crop_preview").find("img").get(0);
     // 新規canvas要素生成（画像の伸縮がこの作成方法で防げる）
@@ -152,9 +149,6 @@ function imageBinarization( threshold = 'auto' ) {
   function thresholdOtsu( image ) {
     // ===== 判別分析法の本処理 ===============
     function search( image ) {
-      // グレースケール変換式の定義（0.5000は四捨五入を考慮）
-      const grayscale = (r, g, b) => ( 0.5000 + 0.2126 * r + 0.7152 * g + 0.0722 * b ) | 0;
-
       let cvs = $('<canvas/>').attr('width', image.width).attr('height', image.height).get(0);
       // キャンパス要素から二次元グラフィックスのコンテキストを取得
       let ctx = cvs.getContext("2d");
@@ -214,6 +208,10 @@ function imageBinarization( threshold = 'auto' ) {
 
     return search( image );
   }
+
+  // グレースケール変換式の定義（0.5000は四捨五入を考慮）
+  // const grayscale = (r, g, b) => 0.2126 * r + 0.7152 * g + 0.0722 * b
+  const grayscale = (r, g, b) => ( 0.500 + 0.299 * r + 0.587 * g + 0.114 * b ) | 0;
 
   main( threshold );
 }
