@@ -1,52 +1,80 @@
-// グローバル変数3
+// （グローバル変数3）
 var cropper;
+
 /*
 * =============================
 * Cropperjs初期設定
 * =============================
 */
-function initCrop() {
-  // オプションの定義
-  let options = {
-    viewMode: 1,
-    // 画像の移動の許可
-    dragMode: 'move',
-    // ガイド線非表示
-    guides: false,
-    // トリミング枠のトぐるドラッグリサイズ
-    toggleDragModeOnDblclick: false,
-    // 回転操作
-    rotatable: false,
-    // 最小高さ
-    minCropBoxHeight: 10,
-    // 最小幅
-    minCropBoxWidth: 10
+function startUpCropping(self) {
+  // ===== Cropperjs開始時処理 ===============
+  function main(self) {
+    // アップロードしたファイルが画像か結果を受け取る（user.js）
+    let result = validateImageFile( self, finishOnLoad );
+    // 画像でない場合は処理中止
+    if ( ! result ) return false;
+
+    // クロッピング作業完了用ボタン表示
+    $(".makings__new--changeButton").fadeIn();
+    // 手順表示の切り替え
+    $(".makings__new--infoH3").fadeOut(function(){
+      $(this).text("手順２：画像のトリミング").fadeIn();
+      $(".makings__new--infoH6").text("トリミング画像は縦横最大300pxまでになります。");
+    })
+  }
+
+  // ===== 画像の読み込みが完了した際の処理、クロッピング画像の挿入 ===============
+  const finishOnLoad = function( element, src_data ) {
+    // アップロード画像の<img>タグ生成
+    let currentCroppingImage = $('<img>').attr({
+      "src": src_data,
+      "id": "crop_image"
+    });
+    // アップロード画像の挿入
+    $('#crop_area_box').html( currentCroppingImage );
+
+    // Cropperオプションの設定
+    let options = {
+      viewMode: 1,
+      // 画像の移動を許可
+      dragMode: 'move',
+      // ガイド線非表示
+      guides: false,
+      // トリミング枠のトぐるドラッグリサイズ
+      toggleDragModeOnDblclick: false,
+      // 回転操作
+      rotatable: false,
+      // 最小高さ
+      minCropBoxHeight: 10,
+      // 最小幅
+      minCropBoxWidth: 10
+    };
+    // Cropperオブジェクト生成
+    cropper = new Cropper( crop_image, options );
+    // 各処理時のプレビュー反映効果付与
+    $("#crop_image").on({
+      // 初期表示
+      ready: () => cropPreviewDraw(),
+      // 画像をドラッグ時
+      cropend: () => cropPreviewDraw(),
+      // 画像を拡大・縮小時
+      zoom: () => cropPreviewDraw()
+    });
   };
-  cropper = new Cropper( crop_image, options );
-  // 各処理時のプレビュー反映効果付与
-  // 初期表示
-  $("#crop_image").on( 'ready', () => cropPreviewDraw() );
-  // 画像をドラッグ時
-  $("#crop_image").on( 'cropend', () => cropPreviewDraw() );
-  // 画像を拡大・縮小時
-  $("#crop_image").on( 'zoom', () => cropPreviewDraw() );
-}
 
+  // ===== プレビュー反映処理 ===============
+  const cropPreviewDraw = function() {
+    // クロッピング画像の取得
+    let croppedCanvas = cropper.getCroppedCanvas();
+    // クロップ処理後の画像の<img>タグ生成
+    let croppedImage = $('<img>').attr({
+      src: croppedCanvas.toDataURL()
+    });
+    // クロップ画像の<img>タグ挿入（上書き）
+    $("#crop_preview").html(croppedImage);
+  }
 
-/*
-* =============================
-* プレビュー反映処理
-* =============================
-*/
-function cropPreviewDraw() {
-  // クロッピング画像の取得
-  let croppedCanvas = cropper.getCroppedCanvas();
-  // クロップ処理後の画像の<img>タグ生成
-  let croppedImage = $('<img>').attr({
-    src: croppedCanvas.toDataURL()
-  });
-  // クロップ画像の<img>タグ挿入（上書き）
-  $("#crop_preview").html(croppedImage);
+  main(self);
 }
 
 
@@ -193,13 +221,12 @@ function imageBinarization( threshold = 'auto' ) {
 
 /*
 * =============================
-* 全ての操作終了後の処理
-* 終了ボタン押下 => Patterns#newへ遷移処理
+* submitボタン押下時の処理
 * =============================
 */
-function convertCanvasToMakingPattern(self) {
+function convertCanvasToMakingPattern() {
   // 「生」セルの領域の輝度取得
-  let alive = Number( $("#cells_condition_form").val() );
+  let alive = $("#cells_condition_form").val();
   // canvas要素取得
   let cvs = $("#crop_preview_binarization").get(0);
   // canvas寸法取得
@@ -222,5 +249,6 @@ function convertCanvasToMakingPattern(self) {
   }, "");
   // フォームに値を挿入
   $("#making_making_text").val(binarizedImageBitStrings);
-  $(self).closest("form").submit();
+  // 送信の許可
+  return true;
 }

@@ -22,9 +22,7 @@
 
 .makings {
   &__new {
-    &--sectionA {
-      display: none;
-    }
+    &--sectionA {}
     &--sectionB {}
     &--sectionC {
       display: none;
@@ -37,9 +35,7 @@
     &--infoH6 {
       text-align: center;
     }
-    &--headline {
-      display: none;
-    }
+    &--headline {}
     &--changeButton {
       display: none;
     }

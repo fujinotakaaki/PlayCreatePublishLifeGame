@@ -1,116 +1,62 @@
 <div class="row">
   <div class="col-lg-10">
     <h3 class="makings__new--infoH3">
-      この表示が出る場合は
-      リロードしてください。
+      手順１：画像のアップロード
     </h3>
     <h6 class="makings__new--infoH6">ライフゲームのパターン化したい画像をアップしてください。</h6>
   </div>
 </div>
 
 <div class="row">
-<!--アップロード画像-->
-<div class="col-sm-6 makings__new--sectionA">
-  <h3 class="makings__new--headline">オリジナル画像</h3>
+  <!--アップロード画像-->
+  <div class="col-sm-6 makings__new--sectionA">
+    <h3 class="makings__new--headline">オリジナル画像</h3>
 
-  <div id="crop_area_box">
-    <div class="makings__new--labelBox">
-      <label>
-        <%= file_field_tag '', id: "crop_image", style: "display: none;" %>
-        <div class="makings__new--inputLabel">画像をアップロード</div>
-      </label>
+    <div id="crop_area_box">
+      <div class="makings__new--labelBox">
+        <label>
+          <%= file_field_tag '', id: "crop_image", style: "display: none;", onchange: "startUpCropping(this);"  %>
+          <div class="makings__new--inputLabel">画像をアップロード</div>
+        </label>
+      </div>
     </div>
   </div>
-</div>
 
 
-<!--プレビュー画面-->
-<div class="col-sm-6 makings__new--sectionB">
-  <h3 class="makings__new--headline">プレビュー表示</h3>
+  <!--プレビュー画面-->
+  <div class="col-sm-6 makings__new--sectionB">
+    <h3 class="makings__new--headline">プレビュー表示</h3>
 
-  <div id="crop_preview" overflow="hidden"></div>
+    <div id="crop_preview" overflow="hidden"></div>
 
-  <div class="makings__new--changeButton">
-    <button type="button" name="button" onclick="changeBinarizationMode(this);" class="btn btn-info">
-      次へ
-    </button>
+    <div class="makings__new--changeButton">
+      <button type="button" name="button" onclick="changeBinarizationMode(this);" class="btn btn-info">
+        次へ
+      </button>
+    </div>
+  </div>
+
+  <!-- キャンバスサイズの初期設定必須 -->
+  <div class="col-sm-6 makings__new--sectionC">
+    <h3>２値化処理</h3>
+
+    <!-- ２値化画像 -->
+    <canvas id="crop_preview_binarization"></canvas>
+
+    <table>
+      <tr>
+        <th>閾値：</th>
+        <td><%= number_field_tag "threshold_form", 0, { size: 50, in: 0..256, onchange: "imageBinarization(this.value);"} %></td>
+      </tr>
+      <tr>
+        <th>「生」セルの領域：</th>
+        <td><%= select_tag "cells_condition_form", options_for_select( {"白": 255, "黒": 0 } ) %></td>
+      </tr>
+    </table>
+
+    <%= form_with( model: Making, url: making_path ) do | f | %>
+    <%= f.hidden_field :making_text %>
+    <%= f.submit "終了", class: "btn btn-success",  onclick: "return convertCanvasToMakingPattern();" %>
+    <% end %>
   </div>
 </div>
-
-<!-- キャンバスサイズの初期設定必須 -->
-<div class="col-sm-6 makings__new--sectionC">
-  <h3>２値化処理</h3>
-
-  <!-- ２値化画像 -->
-  <canvas id="crop_preview_binarization"></canvas>
-  <p>
-    <label for="threshold_label">閾値：</label>
-    <%= number_field_tag "threshold_form", 0, { size: 50, in: 0..256, onchange: "imageBinarization(this.value);"} %><br>
-
-    <label for="cells_condition_label">「生」セルの領域：</label>
-    <%= select_tag "cells_condition_form", options_for_select( {"白": 255, "黒": 0 } ) %>
-
-
-  </p>
-  <%= form_with( model: Making, url: making_path ) do | f | %>
-  <%= f.hidden_field :making_text %>
-  <input type="button" value="終了" onClick="convertCanvasToMakingPattern(this);" class="btn btn-success" >
-  <% end %>
-</div>
-</div>
-
-
-<script type="text/javascript">
-  /*
-  * =============================
-  * Makings#new遷移時処理
-  * =============================
-  */
-  $( function() {
-    // リロード促進メッセージの削除 => 手順１表示
-    $(".makings__new--infoH3").text("手順１：画像のアップロード");
-    // アップロードボタンの表示
-    $(".makings__new--sectionA").css({"display": "block"});
-    // プレビュー見出しの表示
-    $(".makings__new--headline").css({"display": "block"});
-    // パターン表示を画面最大に
-    $(".application__layouts--rightSection").removeClass().addClass("col-lg-10");
-
-    var fileName;
-    // ===== 画像ファイルアップロード時の処理 ===============
-    $("#crop_image").on( 'change', function(event) {
-      // アップロードしたファイルの取得
-      let file = event.target.files[0];
-      // 画像ファイル以外の場合は何もしない
-      if ( file.type.indexOf('image') < 0 ) return false;
-      // ファイル名取得
-      fileName = file.name;
-      let reader = new FileReader();
-      // ファイル読み込みが完了した際のイベント登録
-      reader.onload = ( function(file) {
-        return function(event) {
-          // クロッピングする画像の<img>タグ生成
-          let currentCroppingImage = $('<img>').attr({
-            src: event.target.result,
-            id: "crop_image",
-            title: fileName
-          });
-          $('#crop_area_box').html( currentCroppingImage );
-          // 初期設定
-          initCrop();
-        };
-      })(file);
-
-      reader.readAsDataURL(file);
-
-      // 画像加工（クロッピング）の完了ボタン（次へ）表示
-      $(".makings__new--changeButton").fadeIn();
-      // 手順表示の切り替え
-      $(".makings__new--infoH3").fadeOut(function(){
-        $(this).text("手順２：画像のトリミング").fadeIn();
-        $(".makings__new--infoH6").text("トリミング画像は縦横最大300pxまでになります。");
-      });
-      return;
-    });
-  });
-</script>
