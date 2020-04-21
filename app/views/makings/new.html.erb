@@ -82,7 +82,7 @@
       // アップロードしたファイルの取得
       let file = event.target.files[0];
       // 画像ファイル以外の場合は何もしない
-      if ( file.type.indexOf('image') < 0 ) { return false; }
+      if ( file.type.indexOf('image') < 0 ) return false;
       // ファイル名取得
       fileName = file.name;
       let reader = new FileReader();
@@ -108,7 +108,7 @@
       // 手順表示の切り替え
       $(".makings__new--infoH3").fadeOut(function(){
         $(this).text("手順２：画像のトリミング").fadeIn();
-        $(".makings__new--infoH6").text("トリミング画像は縦横最大500pxまでになります。");
+        $(".makings__new--infoH6").text("トリミング画像は縦横最大300pxまでになります。");
       });
       return;
     });

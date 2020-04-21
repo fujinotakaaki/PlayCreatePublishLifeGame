@@ -2,32 +2,31 @@
 
 /*
 * =============================
-* "0", "1", "Enter"以外の入力を阻害するメソッド
+* キー入力の許可・阻害処理
 * =============================
 */
-$(document).on( 'keypress', '.makings__edit--textarea', function(e) {
-  // 押下したキーの種類で処理分岐
-  switch ( e.which ) {
-
-    case 13: // "Enter"キー
-    // 行数を計算
-    // let row_count = $(this).val().split("\n").length;
-    // テキストエリアの高さ調整（動くのが煩わしいと考え、一時無効）
-    // $( this ).css({ 'height': `${ 5 + ( row_count + 1) * 20 }px` });
-    break;
-
-    case 48: case 49: // 0 or 1キー => 入力を許可
-    break;
-
-    default: // その他 =>入力を阻害
-    return false;
-  }
-}).on('keyup', '.makings__edit--textarea', function() {
+function checkInputKey(e) {
   // エミュレーション画面をプレビュー画面へ切替
   changePreviewMode();
-  // テキストエリアの整形とパターン表示への反映
-  applyMakingPattern();
-});
+  // 押下したキーの種類で処理分岐
+  switch ( e.which ) {
+    // 許可項目
+    case 8: // BackSpace
+    case 13: // Enter
+    case 37: // ←
+    case 38: // ↑
+    case 39: // →
+    case 40: // ↓
+    case 46: // Delete
+    case 48: case 96: // 0
+    case 49: case 97: // 1
+    break;
+
+    // 禁止項目
+    default: //その他
+    return false;
+  }
+}
 
 
 /*
@@ -63,7 +62,7 @@ function displayInterface( displaying = false, displayPatternJumpButton = false 
   // 合成パターン選択ウィンドウ
   $("#coupler_selection").prop( "disabled", ! displaying );
   // 合成パターン決定ボタン
-  $(".makings__edit--startCoupling").prop( "disabled", ! patternData.coupleable );
+  $(".makings__edit--startCoupling").prop( "disabled", true );
   // パターン表示を左寄せ
   $(".patterns__show--lifeGameDisplay").css({ "text-align": ! displaying && "left" || "" });
   // パターンの「新規投稿」ボタンは変更があれば常に非表示（※デフォルトは非表示）
