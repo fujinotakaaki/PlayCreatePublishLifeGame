@@ -448,7 +448,7 @@ function createBlankPattern() {
   let height = ~~$("#blank_pattern_height").val();
   let width = ~~$("#blank_pattern_width").val();
   // サイズが有効範囲か判定
-  let pretest = 0 < Math.min(height, width) && Math.max(height, width) < 501;
+  let pretest = 0 < Math.min(height, width) && Math.max(height, width) < 301;
   if ( ! pretest ) { // サイズが有効範囲でない場合は終了させる
     alert("入力サイズが不適切です。");
     return false;

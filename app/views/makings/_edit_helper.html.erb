@@ -28,7 +28,9 @@
 			</button>
 
 			<!--「変更を保存」ボタンはdisplay: none;がデフォルト設定-->
-			<%= f.submit '変更を保存', id: "makings__edit--update", class: "btn btn-success" %>
+			<button type="submit"  id="makings__edit--update" class="btn btn-success" onclick="return verificationMakingPattern();">
+				変更を保存
+			</button>
 
 			<!--パターン新規作成画面への移動アクション-->
 			<%= link_to new_pattern_path, id: "patterns__new--jump", class: "btn btn-default" do %>
@@ -39,9 +41,9 @@
 		<table class="makings__edit--createBlankPattern">
 			<tr>
 				<th>高さ：</th>
-				<td><%= number_field_tag "blank_pattern_height", nil, { in: (1..500), class: "form-control" } %></td>
+				<td><%= number_field_tag "blank_pattern_height", nil, { in: (1..300), class: "form-control" } %></td>
 				<th>幅：</th>
-				<td><%= number_field_tag "blank_pattern_width", nil, { in: (1..500), class: "form-control" } %></td>
+				<td><%= number_field_tag "blank_pattern_width", nil, { in: (1..300), class: "form-control" } %></td>
 				<td><button type="button" name="button" class="btn btn-default" onclick="createBlankPattern();">新規作成</button></td>
 			</tr>
 		</table>
