@@ -5,8 +5,6 @@
   </h2>
 
   <%= form_for(resource, as: resource_name, url: user_confirmation_path, html: { method: :post, local: :ja }) do |f| %>
-  <%= render "users/shared/error_messages", resource: resource %>
-
 
   <div class="form-group">
     <%= f.label :email, 'Eメール', class: "col-sm-2" %>

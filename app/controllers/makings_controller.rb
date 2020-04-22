@@ -15,6 +15,8 @@ class MakingsController < ApplicationController
   def edit
     # 作成中のパターン取得or新規盤面の作成
     @making = Making.find_or_create_by( user_id: current_user.id )
+    # 全パターンのパターン名とIDを取得（ログインしている間は再取得しない）
+    @patterns_list = session[:patterns_list] ||= Pattern.pluck( :name, :id ).to_h
     # ライフゲームのエミュレーション準備（作成中のパターンを使用）
     set_to_gon( @making )
   end

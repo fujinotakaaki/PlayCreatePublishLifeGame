@@ -3,7 +3,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   # +++++ deviseの設定 ++++++++++++++++++++
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable
+         :recoverable, :rememberable, :validatable,
+         :confirmable, :timeoutable
 
   # +++++ refileの設定 ++++++++++++++++++++
   attachment :profile_image

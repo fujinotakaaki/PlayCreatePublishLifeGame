@@ -3,7 +3,6 @@
   <p>アカウントのメールアドレスを入力して「パスワードを変更する」を押してください。</p>
 
   <%= form_for( resource, as: resource_name, url: user_password_path, html: { method: :post, local: :ja  } ) do |f| %>
-  <%= render "users/shared/error_messages", resource: resource %>
 
   <div class="form-group">
     <%= f.label :email, 'Eメール', class: "col-sm-2" %>

@@ -17,6 +17,8 @@ class PatternsController < ApplicationController
     @pattern = current_user.patterns.build( create_pattern_params )
     # エラーが発生すれば強制終了
     return unless @pattern.save
+    # セッションのパターンリストの削除
+    session.delete(:patterns_list)
     # 初期化するデータをピックアップ
     making = current_user.making
     # データを削除
@@ -81,6 +83,8 @@ class PatternsController < ApplicationController
   def destroy
     pattern = Pattern.find( params[ :id ] )
     pattern.destroy
+    # セッションのパターンリストの削除
+    session.delete(:patterns_list)
     # マイページへ遷移
     redirect_to member_path( current_user )
   end

@@ -154,7 +154,7 @@
 				<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 				手順１：投稿済みパターンから選択
 			</h5>
-			<%= select_tag( 'coupler_selection', options_for_select( Pattern.get_index ), class: "form-control", onchange: "changeCouplingMode('select', this.value);", prompt: " --- 選択してください --- " ) %>
+			<%= select_tag( 'coupler_selection', options_for_select( patterns_list ), class: "form-control", onchange: "changeCouplingMode('select', this.value);", prompt: " --- 選択してください --- " ) %>
 			<p class="makings__edit--couplingButtonPosition">
 				<span class="makings__edit--couplerAvailable"></span>
 				<button type="button" name="button" onclick="changeCouplingMode('start');" class="btn btn-originPink makings__edit--startCoupling" disabled>

@@ -10,11 +10,11 @@
   </h4>
 
   <!-- 一覧 -->
-  <% Category.get_index.each do | category | %>
+  <% Category.list.each do | name, category_id | %>
   <ul>
     <li class="categories__index--li">
       <%= content_tag :span, '', class: "glyphicon glyphicon-tag",aria: { hidden: true } %>
-      <%= link_to category.first, patterns_path( "search[category]" => category.second ) %>
+      <%= link_to name, patterns_path( "search[category]" => category_id ) %>
     </li>
   </ul>
   <% end %>

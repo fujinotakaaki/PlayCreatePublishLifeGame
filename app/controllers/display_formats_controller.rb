@@ -5,7 +5,7 @@ class DisplayFormatsController < ApplicationController
   def new
     @display_format = DisplayFormat.new
     # ログインユーザの投稿したセルの表示形式を全件取得
-    @display_formats = current_user.display_formats.pluck( :id, :name )
+    @display_formats = current_user.display_formats
     # ライフゲームのエミュレーション準備
     # 初期パターンはウェルカムメッセージのパターンとする
     set_to_gon( nil, @display_format )

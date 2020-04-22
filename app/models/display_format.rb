@@ -75,9 +75,9 @@ class DisplayFormat < ApplicationRecord
       new( WELCOM_MESSAGE_DISPLAY_FORMAT )
     end
 
-    # パターン一覧取得
-    def get_index
-      $display_formats ||= pluck( :name, :id ).to_h
+    # 表示形式一覧取得
+    def list
+      pluck( :name, :id ).to_h
     end
   end
 
