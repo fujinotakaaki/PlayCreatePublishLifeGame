@@ -16,11 +16,8 @@
 </div>
 
 
-
 <!--gonデータ受け渡し用のJSタグ生成-->
 <%= include_gon %>
-
-
 <script type="text/javascript">
   /*
   * =============================
@@ -28,6 +25,15 @@
   * =============================
   */
   $(function(){
+    // トップページの場合の処理
+    if ( gon.page == "top" ) {
+      $("body").css({
+        'background-color': 'black',
+        'color': 'black'
+      });
+      // ライフゲーム操作用のインターフェース削除
+      $(".patterns__show--lifeGameInterface").remove();
+    }
     // カテゴリ欄の削除
     $(".application__layouts--leftSection").remove();
     // パターン表示を画面最大に

@@ -1,6 +1,8 @@
 class HomesController < ApplicationController
 
   def top
+    # 現在のページ情報を追記
+    gon.page = "top"
     # ライフゲームのエミュレーション準備
     set_to_gon
   end
