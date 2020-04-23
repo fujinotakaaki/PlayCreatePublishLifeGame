@@ -37,7 +37,7 @@ module MakingsHelper
     margin_right = get_minimum_exponent_base2( each_row_number.select(&:positive?) )
     # 各整数を右側マージンだけ右にビットシフトし、16進数に変換
     normalized_rows_sequence_array = each_row_number.map do | decimal_number |
-      decimal_number.zero? ? 0 : ( decimal_number >> margin_right ).to_s(16)
+      decimal_number.zero? ? ?0 : ( decimal_number >> margin_right ).to_s(16)
     end
     # Making, Patternモデルに合わせたパラメータの構築
     {
@@ -55,14 +55,14 @@ module MakingsHelper
     rows.each_with_index do | row, idx |
       # 0じゃないビット列が見つかれば終了
       # index番号がmargin_top(bottom)に対応する
-      return idx if /[^0]/.match?( row )
+      return idx unless  /0/.match?( row ) # => ベンチマークテスト（１）
     end
     # 全てのビット列が0の場合は配列がそのまま返る、エラー回避のため行数が返るようにする
     rows.size
   end
 
   # パターンの右側マージンを計算
-  def get_minimum_exponent_base2( positive_numbers )
+  def get_minimum_exponent_base2( positive_numbers ) # => ベンチマークテスト（２）
     # 各整数の2を基数とする指数に変換する
     positive_numbers.inject( positive_numbers.first ) do | minimum_exponent, positive_number |
       # 初期値はpositive_numbers.min以上の値であればなんでも良い
@@ -80,3 +80,22 @@ module MakingsHelper
     end
   end
 end
+
+
+# ベンチマークテスト（１）
+# 0でないビット列の判定 <= get_top_marginメソッド
+# ( ?0 * rand(9000) + ?1 + ?0 * rand(9000) )を5000回判定
+#                               user       system           total        real
+# /0/.match?( row )      0.001374   0.000001   0.001375 (  0.001376) => Best
+# ! /[^0]/.match?( row ) 0.373430   0.000210   0.373640 (  0.373854)
+# row.to_i.positive?      0.435102   0.001887   0.436989 (  0.437375)
+# ! row.to_i.zero?         0.433337   0.000542   0.433879 (  0.434102)
+
+
+# ベンチマークテスト（２）
+# 右側余白の最小値を計算 <= get_minimum_exponent_base2メソッド
+# rand(1_000_000)を50_000回計算
+#                                                         user       system           total        real
+# 奇数になるまでビットシフト 0.005919   0.000013   0.005932 (  0.005955) ... best
+# n.gcd(2**20)                            0.008808   0.000035   0.008843 (  0.008846) ... 右側余白が20より多いとNG
+# Prime.prime_division(n)          0.572263   0.000308   0.572571 (  0.572868)

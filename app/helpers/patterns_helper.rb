@@ -1,6 +1,7 @@
 module PatternsHelper
-  FIRST_MESSAGE = "ようこそ！！
-  パターンを作成するには、ここにセルの状態を直接入力・配置してください。
+  WELCOME_MESSAGE = <<-'CONTENT'
+  〜パターン作成の説明〜
+  パターンを作成するには、ここにセルの状態を直接入力してください。
   セルの状態は「生」が「１」、「死」が「０」となっています。
   ※入力は半角の「０」と「１」、改行が有効です。
   例）「グライダー」の場合
@@ -8,8 +9,9 @@ module PatternsHelper
   ００１００
   ０００１０
   ０１１１０
-  ０００００"
-  
+  ０００００
+  CONTENT
+
   # ===== gonにデータを格納するメソッド ===============
   def  set_to_gon( pattern = nil, display_format = nil )
     # パターンデータが存在しない場合はwelcomeデータを使用
@@ -34,11 +36,11 @@ module PatternsHelper
   def build_up_bit_strings_from( pattern )
     # 行データがない場合はウェルカムメッセージを配置（なんでもいい）
     # パターンを初めて作る（行データがないため）場合に発生する
-    return [ FIRST_MESSAGE ] if pattern.normalized_rows_sequence.blank?
+    return [ WELCOME_MESSAGE ] if pattern.normalized_rows_sequence.blank?
     # カンマ区切りの16進数文字列を分割・数値化
     pattern_rows = pattern.normalized_rows_sequence.split( ?, ).map(&:hex)
     # 最も大きい自然数のビット列数を算出
-    largest_number_bit_length = pattern_rows.max.bit_length
+    largest_number_bit_length = pattern_rows.max.bit_length # => ベンチマークテスト（３）
     # 左右の余白を含めたマップ幅を計算
     pattern_bit_length = pattern.margin_left + largest_number_bit_length + pattern.margin_right
     # +++++ パターン構築 +++++
@@ -74,3 +76,11 @@ module PatternsHelper
     # ]
   end
 end
+
+# ベンチマークテスト（３）
+# ビット列の長さ判定 <= largest_number_bit_length
+# (1 + rand(10_000_000))を1_000_000回計算
+#                                                  user     system      total        real
+# n.to_s(2).length                0.300310   0.000212   0.300522 (  0.300727)
+# ( Math.log2( n ) + 1 ).to_i  0.098100   0.000067   0.098167 (  0.098252) ...ほんとは↓と大差無いはず
+# n.bit_length                       0.053654   0.000063   0.053717 (  0.053861) ... best

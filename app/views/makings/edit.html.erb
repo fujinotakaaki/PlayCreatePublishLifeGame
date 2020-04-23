@@ -29,7 +29,7 @@
     パターン編集エリア
   </h3>
   <h6>編集エリアは右下のつまみにて高さの調整が可能です。</h6>
-  <%= f.text_area :making_text, value: build_up_bit_strings_from( @making ).join( "\n" ), class: "makings__edit--textarea", onkeydown: "return checkInputKey(event);", onkeyup: "applyMakingPattern();" %>
+  <%= f.text_area :making_text, value: build_up_bit_strings_from( @making ).join( "\n" ), rows: 10, class: "makings__edit--textarea", onkeydown: "return checkInputKey(event);", onkeyup: "applyMakingPattern();" %>
   <table class="makings__edit--transformScaleTable">
     <tr>
       <th>セルの縮尺：</th>
