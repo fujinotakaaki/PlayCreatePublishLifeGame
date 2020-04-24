@@ -31,6 +31,12 @@
    clear: both;
  }
 
+
+ body {
+   background-color: #eee;
+ }
+
+
  header {
    color: white;
    background-color: black;
@@ -59,8 +65,9 @@
    }
  }
 
- body {
-   background-color: #eee;
+
+ main {
+   background-color: inherit;
  }
 
 

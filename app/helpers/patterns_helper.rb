@@ -29,6 +29,8 @@ module PatternsHelper
       cellConditions: display_format.as_json_cell_conditions,
       # トーラス面設定
       isTorus: pattern.is_torus,
+      # アクション情報を追記
+      action: action_name,
     })
   end
 

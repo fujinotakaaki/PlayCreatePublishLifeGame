@@ -9,37 +9,43 @@
   <%= javascript_include_tag "user", "data-turbolinks-track": "reload" %>
   <script src="https://kit.fontawesome.com/<%= ENV['FONT_AWESOME_API'] %>.js" crossorigin="anonymous"></script>
 </head>
-
-<!--ヘッダーセクション-->
-<header>
-  <h1>Play!Create!Publish! LifeGame</h1>
-  <%= render 'layouts/header_menue' %>
-</header>
-
 <body>
-  <div class="container">
-    <% if include_alert?( request.fullpath ) then %>
-    <!--ページURLからアラートセクションが必要か判定-->
-    <%= render 'layouts/alert' %>
-    <% end %>
+  <!--turbolinks導入による更新がページ遷移ごとに必要なため、<body>に配置-->
+  <!--gonデータ受け渡し用のJSタグ生成-->
+  <%= include_gon %>
 
-    <!--メインセクション-->
-    <div class="row">
-      <!--メインセクション（左側：カテゴリ一覧）-->
-      <% if include_category_index?( request.fullpath, controller_name ) then %>
-      <div class="col-md-2 application__layouts--leftSection">
-        <%= render 'categories/index' %>
-      </div>
+
+  <!--ヘッダーセクション-->
+  <header>
+    <h1>Play!Create!Publish! LifeGame</h1>
+    <%= render 'layouts/header_menue' %>
+  </header>
+
+  <main>
+    <div class="container">
+      <% if include_alert?( request.fullpath ) then %>
+      <!--ページURLからアラートセクションが必要か判定-->
+      <%= render 'layouts/alert' %>
       <% end %>
 
-      <!--メインセクション（右側：各ページ）-->
-      <div class="col-md-10 application__layouts--rightSection">
-        <%= yield %>
+      <!--メインセクション-->
+      <div class="row">
+        <!--メインセクション（左側：カテゴリ一覧）-->
+        <% if include_category_index?( request.fullpath, controller_name ) then %>
+        <div class="col-md-2 application__layouts--leftSection">
+          <%= render 'categories/index' %>
+        </div>
+        <% end %>
+
+        <!--メインセクション（右側：各ページ）-->
+        <div class="col-md-10 application__layouts--rightSection">
+          <%= yield %>
+        </div>
       </div>
     </div>
-  </div>
-</body>
+  </main>
 
-<!--フッターセクション-->
-<footer></footer>
+  <!--フッターセクション-->
+  <footer></footer>
+</body>
 </html>

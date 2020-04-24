@@ -433,7 +433,7 @@ function alertCouplingAvailable( couplerSettingTestResult, initialize = false ) 
     'color': couplerSettingTestResult && 'black' || ''
   }).text(msg);
   // couplerのプレビューを表示
-  coupler = ! initialize && patternData.coupler ? patternData.coupler.getPatternText : '';
+  coupler = ( ! initialize ) && patternData.coupler ? patternData.coupler.getPatternText : '';
   $(".makings__edit--couplerPreview").html( coupler );
 }
 

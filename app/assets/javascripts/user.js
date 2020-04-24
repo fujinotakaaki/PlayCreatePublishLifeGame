@@ -20,6 +20,36 @@
 //= require_tree ./lifegame
 //= require_tree ./user
 
+
+/*
+* =============================
+* ライフゲームエミュレータ画面整形処理
+* =============================
+*/
+$(document).on('turbolinks:load', function() {
+  // アクション名が定義されていなければ強制終了
+  if ( ! gon.action ) return;
+  // トップページの場合の処理
+  if ( gon.action == "top" ) {
+    // 背景色を変更
+    $("body").css({
+      'background-color': 'black',
+      'color': 'black'
+    });
+    // ライフゲーム操作用のインターフェース削除
+    $(".patterns__show--lifeGameInterface").remove();
+  }
+  // カテゴリ欄の削除
+  $(".application__layouts--leftSection").remove();
+  // パターン表示を画面最大に
+  $(".application__layouts--rightSection").removeClass().addClass("col-lg-12");
+  // ライフゲームの表示初期化（lifegame/environment.js参照）
+  initializeLifeGame();
+  // アクション名リセット（ページ遷移後のにも値が引き継がれるためリセットする）
+  gon.action = "";
+});
+
+
 /*
 * =============================
 * 画像アップロード時のサムネイル表示処理

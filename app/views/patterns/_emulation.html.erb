@@ -14,34 +14,3 @@
     (ここにライフゲームが表示されます)
   </p>
 </div>
-
-
-<!--gonデータ受け渡し用のJSタグ生成-->
-<%= include_gon %>
-<script type="text/javascript">
-  /*
-  * =============================
-  * 呼び出し時の画面整形処理
-  * =============================
-  */
-  $(function(){
-    // トップページの場合の処理
-    if ( gon.page == "top" ) {
-      $("body").css({
-        'background-color': 'black',
-        'color': 'black'
-      });
-      // ライフゲーム操作用のインターフェース削除
-      $(".patterns__show--lifeGameInterface").remove();
-    }
-    // カテゴリ欄の削除
-    $(".application__layouts--leftSection").remove();
-    // パターン表示を画面最大に
-    $(".application__layouts--rightSection").removeClass().addClass("col-lg-12");
-    // ライフゲームの表示初期化（lifegame/environment.js参照）
-    initializeLifeGame();
-  });
-  // turbolinksのせいで２回実行されるが、
-  // タイマー処理の初期化を実施するだけなので
-  // 問題なしと判断
-</script>
