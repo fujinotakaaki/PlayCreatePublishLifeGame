@@ -98,7 +98,7 @@ function showCurrentGeneration() {
 */
 function startProcess( intervalTime = 300 ) {
   // 繰り返し処理の開始・再開
-  intervalProcessingID = setInterval( 'upDate()', intervalTime );
+  intervalProcessingID = setInterval( upDate, intervalTime );
   // ボタン押下可否の切り替え
   buttonsFreezeOrRelease( true );
 }
@@ -113,7 +113,7 @@ function upDate() {
   // パターンの世代交代実行
   patternData.generationChange;
   // 画面表示を更新
-  showCurrentGeneration()
+  showCurrentGeneration();
 }
 
 
