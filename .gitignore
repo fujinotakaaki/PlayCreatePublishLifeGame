@@ -5,16 +5,16 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore seed data
-db/seeds.rb
-db/pattern_library.csv
+# db/seeds.rb
+# db/pattern_library.csv
 
 # Ignore environments variable
 /.env
 
 # Ignore image
-!app/assets/images/no_image.jpg
-!app/assets/images/no_pattern_image.jpg
-!app/assets/images/.keep
+# !app/assets/images/no_image.jpg
+# !app/assets/images/no_pattern_image.jpg
+# !app/assets/images/.keep
 
 # Ignore bundler config.
 /.bundle
@@ -38,6 +38,7 @@ db/pattern_library.csv
 
 /public/assets
 .byebug_history
+.DS_Store
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
