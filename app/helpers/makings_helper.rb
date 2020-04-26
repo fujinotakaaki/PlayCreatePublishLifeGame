@@ -55,7 +55,7 @@ module MakingsHelper
     rows.each_with_index do | row, idx |
       # 0じゃないビット列が見つかれば終了
       # index番号がmargin_top(bottom)に対応する
-      return idx unless  /0/.match?( row ) # => ベンチマークテスト（１）
+      return idx if  /1/.match?( row ) # => ベンチマークテスト（１）
     end
     # 全てのビット列が0の場合は配列がそのまま返る、エラー回避のため行数が返るようにする
     rows.size
@@ -84,12 +84,12 @@ end
 
 # ベンチマークテスト（１）
 # 0でないビット列の判定 <= get_top_marginメソッド
-# ( ?0 * rand(9000) + ?1 + ?0 * rand(9000) )を5000回判定
-#                               user       system           total        real
-# /0/.match?( row )      0.001374   0.000001   0.001375 (  0.001376) => Best
-# ! /[^0]/.match?( row ) 0.373430   0.000210   0.373640 (  0.373854)
-# row.to_i.positive?      0.435102   0.001887   0.436989 (  0.437375)
-# ! row.to_i.zero?         0.433337   0.000542   0.433879 (  0.434102)
+# "#{?0 * rand(10_000)}#{rand(2)}#{?0 * rand(10_000)}"を100_000回判定
+#                                          user       system           total        real
+# /1/.match?( row )       0.611729   0.000693   0.612422 (  0.612904) ... best
+# ! /[^0]/.match?( row ) 12.208441   0.010258  12.218699 ( 12.230491)
+# row.to_i.positive?       5.199805   0.006691   5.206496 (  5.210905)
+# ! row.to_i.zero?          5.268039   0.009504   5.277543 (  5.294374)
 
 
 # ベンチマークテスト（２）
