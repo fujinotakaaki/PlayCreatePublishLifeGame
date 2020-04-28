@@ -1,15 +1,16 @@
 class DisplayFormat < ApplicationRecord
   # ===== バリデーションの設定 =========================
-  # 1) 表示形式名は定義する
+  # 1) 表示形式名（入力必須）
   validates :name, presence: true
-  # 2) cssのline-height負の値ではいけない（css上は問題ないはず）
+
+  # 2) line-heightの値（負の値ではいけない）
   validates :line_height_rate, :numericality => { greater_than_or_equal_to: 0, message: "0未満は無効です。" }
 
-  # 3) セル状態に関するバリデーション
+  # 3) セル状態
   # 3-1) 「生」のセルは「0」の使用を許可しない
   validates :alive, format: { with: /[^0]/, message: "は「0」を使用できません。" }
 
-  # 3-2) 「生」のセル状態に関するバリデーション
+  # 3-2) 「生」のセル状態は「死」と被らないこと
   validates_each :alive do | record, attr, value |
     # 1文字でないならNG
     record.errors.add( attr, "は1文字で定義してください" ) unless value.length == 1
@@ -17,8 +18,8 @@ class DisplayFormat < ApplicationRecord
     record.errors.add( attr, "は「死」セルと同じ文字を使用できません" ) unless record.alive != record.dead
   end
 
-  # 3-3) 「死」のセル状態に関するバリデーション
-  validates_each :alive do | record, attr, value |
+  # 3-3) 「死」のセル状態は「生」と被らないこと
+  validates_each :dead do | record, attr, value |
     # 1文字でないならNG
     record.errors.add( attr, "は1文字で定義してください" ) unless value.length == 1
     # 「生」と「死」のセル状態が同じならNG
@@ -26,7 +27,7 @@ class DisplayFormat < ApplicationRecord
   end
 
 
-  # 4) 表示色に関するバリデーション
+  # 4) 表示色
   # 4-1) セルの色（文字の色）
   validates_each :font_color do | record, attr, value |
     record.errors.add( attr, "は背景色と同じにできません" ) unless record.font_color != record.background_color
@@ -36,6 +37,12 @@ class DisplayFormat < ApplicationRecord
   validates_each :background_color do | record, attr, value |
     record.errors.add( attr, "はセルの色と同じにできません" ) unless record.font_color != record.background_color
   end
+
+  # 5) セルの横間隔（presence: trueも補える）
+  validates :letter_spacing, numericality: true
+
+  # 6) フォントサイズ（presence: trueも補える）
+  validates :font_size, :numericality => { greater_than_or_equal_to: 0, message: "0未満は無効です。" }
   # ================================================
 
   # ===== アソシエーションの設定 =======================
