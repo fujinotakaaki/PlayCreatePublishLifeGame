@@ -5,7 +5,7 @@ RSpec.describe 'Userモデルのバリデーションテスト', type: :model do
 
   context 'nameカラム' do
     it '空欄でないこと' do
-      user.name = String.new
+      user.name = ""
       expect(user.valid?).to eq false;
     end
   end

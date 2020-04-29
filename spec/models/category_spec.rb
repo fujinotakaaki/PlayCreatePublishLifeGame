@@ -5,14 +5,14 @@ RSpec.describe 'Categoryモデルのバリデーションテスト', type: :mode
 
   context 'nameカラム' do
     it '空欄でないこと' do
-      category.name = String.new
+      category.name = ""
       expect(category.valid?).to eq false;
     end
   end
 
   context 'explanationカラム' do
     it '空欄でないこと' do
-      category.explanation = String.new
+      category.explanation = ""
       expect(category.valid?).to eq false;
     end
     it '512文字未満であること' do
