@@ -7,12 +7,20 @@ RSpec.describe 'DisplayFormatモデルのバリデーションテスト', type: 
     it '空欄でないこと' do
       display_format.name = ""
       expect(display_format.valid?).to eq false;
+      display_format.name = " "
+      expect(display_format.valid?).to eq false;
+      display_format.name = "　"
+      expect(display_format.valid?).to eq false;
     end
   end
 
   context 'line_height_rateカラム' do
     it '空欄でないこと' do
       display_format.line_height_rate = ""
+      expect(display_format.valid?).to eq false;
+      display_format.line_height_rate = " "
+      expect(display_format.valid?).to eq false;
+      display_format.line_height_rate = "　"
       expect(display_format.valid?).to eq false;
     end
 

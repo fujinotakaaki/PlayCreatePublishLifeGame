@@ -7,6 +7,10 @@ RSpec.describe 'Userモデルのバリデーションテスト', type: :model do
     it '空欄でないこと' do
       user.name = ""
       expect(user.valid?).to eq false;
+      user.name = " "
+      expect(user.valid?).to eq false;
+      user.name = "　"
+      expect(user.valid?).to eq false;
     end
   end
 
