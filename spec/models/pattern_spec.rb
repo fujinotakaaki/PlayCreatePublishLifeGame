@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Patternモデルのバリデーションテスト', type: :model do
-  include PatternsHelper
-  let(:pattern_block){ create(:block) }
+  let(:pattern_block){ create(:pattern_block) }
 
   context 'nameカラム' do
     it '空欄でないこと' do
