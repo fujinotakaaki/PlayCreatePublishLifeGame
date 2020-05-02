@@ -6,16 +6,16 @@ RSpec.describe 'PostCommentモデルのバリデーションテスト', type: :m
   context 'bodyカラム' do
     it '空欄でないこと' do
       post_comment.body = ""
-      expect(post_comment.valid?).to eq false;
+      expect(post_comment.valid?).to eq false
       post_comment.body = " "
-      expect(post_comment.valid?).to eq false;
+      expect(post_comment.valid?).to eq false
       post_comment.body = "　"
-      expect(post_comment.valid?).to eq false;
+      expect(post_comment.valid?).to eq false
     end
 
     it '512文字未満であること' do
       post_comment.body = ?a * 512
-      expect(post_comment.valid?).to eq false;
+      expect(post_comment.valid?).to eq false
     end
   end
 

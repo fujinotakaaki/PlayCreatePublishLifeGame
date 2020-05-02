@@ -6,18 +6,18 @@ RSpec.describe 'Categoryモデルのバリデーションテスト', type: :mode
   context 'nameカラム' do
     it '空欄でないこと' do
       category.name = ""
-      expect(category.valid?).to eq false;
+      expect(category.valid?).to eq false
     end
   end
 
   context 'explanationカラム' do
     it '空欄でないこと' do
       category.explanation = ""
-      expect(category.valid?).to eq false;
+      expect(category.valid?).to eq false
     end
     it '512文字未満であること' do
       category.explanation = ?a * 512
-      expect(category.valid?).to eq false;
+      expect(category.valid?).to eq false
     end
   end
 
