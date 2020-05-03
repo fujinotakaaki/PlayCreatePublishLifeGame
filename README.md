@@ -53,8 +53,15 @@ Play!Create!Publish! LifeGame!は「<em>ライフゲーム</em>」をブラウ�
 </div>
 
 
-### 機能一覧
+### 設計
+-機能一覧
 https://docs.google.com/spreadsheets/d/1THA7St5KWVXG3m5_0csY30HWZ9mJq7_NR9KPX5ndgLE/edit?usp=sharing
+-テーブル定義書
+https://drive.google.com/open?id=1YG1a6p3OY6-hDkKxYb5HljlQVNQTHuywoRdpJ1an_pE
+-ER図
+https://drive.google.com/file/d/1avzDUQm0l6AX0wzsUN05yMIIa9o2nBJp/view?usp=sharing
 
----
-[デモGIF](https://drive.google.com/file/d/1UmGmBX0fgOJniyhrB3qhuBKhb1Pufayp/view?usp=sharing)
+### ライフゲームのデモGIF（八角形）
+<div align="center">
+  <img src="http://drive.google.com/uc?export=view&id=1UmGmBX0fgOJniyhrB3qhuBKhb1Pufayp" alt="八角形のアニメーション">
+</div>
