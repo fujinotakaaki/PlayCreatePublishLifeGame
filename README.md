@@ -63,5 +63,5 @@ https://drive.google.com/file/d/1avzDUQm0l6AX0wzsUN05yMIIa9o2nBJp/view?usp=shari
 
 ### ライフゲームのデモGIF（八角形）
 <div align="center">
-  ![LGTM](http://drive.google.com/uc?export=view&id=1UmGmBX0fgOJniyhrB3qhuBKhb1Pufayp "LGTM")
+  ![demo](http://drive.google.com/uc?export=view&id=1UmGmBX0fgOJniyhrB3qhuBKhb1Pufayp)
 </div>
