@@ -7,7 +7,7 @@ function callMessageWindow( kind = "", messages = false ) {
   // 表示されている全てのアラートを非表示にする（元々の設定に戻す）
   $(".application__alert--common").css({ "display": "" });
   // メッセージを表示しないのであれば終了
-  if ( ! kind ) { return false; }
+  if ( ! kind ) return;
   // ページトップへ遷移
   movePageTop();
   // 第１引数にアラートの種類が指定されていればその種類のアラートを表示する
@@ -24,7 +24,6 @@ function callMessageWindow( kind = "", messages = false ) {
     selectDivAlert.children("ul").html( `<li>${ messages .join( "</li><li>" )}</li>` );
     break;
   }
-  return false;
 }
 
 
@@ -38,5 +37,4 @@ function movePageTop() {
     // 移動する座標
     scrollTop: 0
   }, 'fast' );
-  return false;
 }
