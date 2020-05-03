@@ -62,6 +62,4 @@ https://drive.google.com/open?id=1YG1a6p3OY6-hDkKxYb5HljlQVNQTHuywoRdpJ1an_pE
 https://drive.google.com/file/d/1avzDUQm0l6AX0wzsUN05yMIIa9o2nBJp/view?usp=sharing
 
 ### ライフゲームのデモGIF（八角形）
-<div align="center">
-  ![demo](http://drive.google.com/uc?export=view&id=1UmGmBX0fgOJniyhrB3qhuBKhb1Pufayp)
-</div>
+![demo](http://drive.google.com/uc?export=view&id=1UmGmBX0fgOJniyhrB3qhuBKhb1Pufayp)
