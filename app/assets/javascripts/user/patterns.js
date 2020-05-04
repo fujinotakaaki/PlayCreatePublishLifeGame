@@ -8,7 +8,7 @@ function previewDisplayFormatAtPatternsNew( display_format_id ) {
   // ajax通信に成功した場合の処理
   const success_callback = data => initializeLifeGame( false, false, data );
   // IDから選択したDisplayFormatのデータを取得できる
-  let url = `/display_formats/${ display_format_id }`
+  let url = `/display_formats/${ display_format_id }`;
   // ajax通信(user.js)
-  ajaxForGet( url, success_callback )
+  ajaxForGet( url, success_callback );
 }

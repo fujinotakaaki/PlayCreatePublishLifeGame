@@ -288,36 +288,33 @@ function touchingLine( n = 0 ) {
 * =============================
 */
 function changeCouplingMode( state, option ) {
+
   // ===== coupler選択時処理 ===============
   function selectCoupler( pattern_id  ) { // 'select'の処理
-    // promptの値は無効
+    // ajax通信に成功した場合の処理
+    const success_callback = data => {
+      // 合成するパターンの入力 => 入力結果を取得
+      let settingTest = patternData.setCoupler( data.couplerPattern );
+      // couplerが使用可能か通知
+      alertCouplingAvailable( settingTest );
+    }
+
+    // ajax通信失敗時のコールバック
+    const fail_callback = () => {
+      console.error("パターンの取得に失敗しました");
+      // couplerが使用可能か通知
+      alertCouplingAvailable( false );
+    }
+
+    // promptの値は無効（undefined）=> 処理中断
     if ( ! pattern_id ) return;
+
     // IDからPatternデータを取得
-    $.ajax({
-      url: `/patterns/${ pattern_id }`,
-      type: 'get',
-      dataType : 'json'
-    }).then(
-
-      // 通信成功時のコールバック
-      function(data) {
-        console.log("通信成功");
-
-        // 合成するパターンの入力 => 入力結果を取得
-        let settingTest = patternData.setCoupler( data.couplerPattern );
-        // couplerが使用可能か通知
-        alertCouplingAvailable( settingTest );
-      },
-
-      // 通信失敗時のコールバック
-      function() {
-        alert("パターンの取得に失敗しました");
-
-        // couplerが使用可能か通知
-        alertCouplingAvailable( false );
-      }
-    );
+    let url = `/patterns/${ pattern_id }`;
+    // ajax通信(user.js)
+    ajaxForGet( url, success_callback, fail_callback );
   }
+
 
   // ===== 合成モード起動時処理 ===============
   function startUpCouplingMode() {
