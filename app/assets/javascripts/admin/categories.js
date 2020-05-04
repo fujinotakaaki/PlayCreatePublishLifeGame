@@ -8,5 +8,4 @@ function moveToEditTag( className ) {
     // 移動する座標
     scrollTop: $(`.${className}`).offset().top
   }, 'fast' );
-  return false;
 }

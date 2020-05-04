@@ -160,17 +160,17 @@ class LifeGame {
 
     // (2) 世代更新後の中心座標のセルの生死状態判定
     // ひとまず次世代では「死」と仮定
-    let nextCondition = 0;
+    let nextCondition = '0';
     // 次世代で「生」になる可能性があるか判定
     if ( /0/.test( this.pattern[y][x] ) ) {
       // 元々「死」の状態だった場合 => 誕生するか判定
-      if ( /3/.test( aliveCellsCount ) ) nextCondition = 1;
+      if ( /3/.test( aliveCellsCount ) ) nextCondition = '1';
     } else {
       // 元々「生」の状態だった場合 => 生存するか判定
-      if ( /2|3/.test( aliveCellsCount ) ) nextCondition = 1;
+      if ( /2|3/.test( aliveCellsCount ) ) nextCondition = '1';
     }
     // 次世代での状態を返す => "0" or "1"
-    return String( nextCondition );
+    return nextCondition;
   }
 
 
@@ -268,8 +268,10 @@ class LifeGame {
   @ coupler位置移動処理
   ============================= */
   moveCouplerPosition( move = [0,0], skipLength = 1 ) {
-    if ( ! this.coupleable ) return false;
+    if ( ! this.coupleable ) return;
+    // 移動後の座標を計算
     let [ y, x ] = [ this.rowIndex + move[0] * skipLength, this.columnIndex + move[1] * skipLength ];
+    // 盤面内であればそこへ移動
     if ( 0 <= y && y < this.height - this.coupler.height + 1 ) this.rowIndex = y;
     if ( 0 <= x && x < this.width - this.coupler.width + 1 ) this.columnIndex = x;
   }
@@ -279,23 +281,27 @@ class LifeGame {
   @ 合成状態の盤面プレビュー取得処理
   ============================= */
   couplingPreview( action = { finishCoupling: false } ) {
-    if ( ! this.coupleable ) return false;
+    if ( ! this.coupleable ) return;
+    // 母体パターンにおけるcouplerの左上の座標を計算
     let [ yd, xd ] = [ this.rowIndex, this.columnIndex ];
+    // 母体パターンにおけるcouplerの右下の座標を計算
     let [ yu, xu ] = [ yd + this.coupler.height, xd + this.coupler.width ];
-    let result = this.patternInitial;
-    result = result.map( function(bitString,idx) {
+    // 母体とcouplerの合成盤面を形成
+    let result = this.patternInitial.map( function(bitString,idx) {
       if ( yd <= idx && idx < yu) {
         let couplerSection  = action.finishCoupling ? this[idx-yd] : `<span style="color: magenta;">${this[idx-yd]}</span>`;
         return bitString.slice(0,xd) + `${couplerSection}` + bitString.slice(xu);
       }
       return bitString;
     }, this.coupler.patternInitial );
+    // 合成操作を修了する場合は初期パターンを合成したものに置き換える
     if ( action.finishCoupling ) {
       // 初期盤面の更新
       this.patternInitial = result;
       // 盤面の初期化
       this.patternRefresh;
     }
+    // 合成結果を返す
     return result.map( str => str.replace( /1/g, this.alive ).replace( /0/g, this.dead ) ).join( '<br>' );
   }
 } // class

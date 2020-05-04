@@ -12,7 +12,7 @@ function startUpCropping(self) {
     // アップロードしたファイルが画像か結果を受け取る（user.js）
     let result = validateImageFile( self, finishOnLoad );
     // 画像でない場合は処理中止
-    if ( ! result ) return false;
+    if ( ! result ) return;
 
     // クロッピング作業完了用ボタン表示
     $(".makings__new--changeButton").fadeIn();
@@ -99,7 +99,6 @@ function changeBinarizationMode(self) {
   });
   // 画像の２値化実行
   imageBinarization('auto')
-  return false;
 }
 
 
@@ -131,8 +130,8 @@ function imageBinarization( threshold = 'auto' ) {
     // 画像２値化処理
     for ( let i = 0; i < dst.data.length; i += 4 ) {
       let y = grayscale( dst.data[i], dst.data[i + 1], dst.data[i + 2] );
-      let ret = ( y < threshold ) ? 0 : 255;
-      dst.data[i] = dst.data[i+1] = dst.data[i+2] = ret;
+      let lightness = ( y < threshold ) ? 0 : 255;
+      dst.data[i] = dst.data[i+1] = dst.data[i+2] = lightness;
       dst.data[i+3] = 255; // 不透明にする
     }
     // ２値化画像反映
@@ -195,14 +194,14 @@ function imageBinarization( threshold = 'auto' ) {
         return acc;
       }, [ 0, 0 ] );
 
-      // 1クラスの度数と輝度総和
+      // 1クラスの度数と輝度総和を計算
       let [ w2, sum2 ] = [ w - w1, s - sum1 ];
 
-      // 各クラスの輝度平均値
+      // 各クラスの輝度平均値を計算
       let m1 = w1==0 ? 0 : sum1 / w1;
       let m2 = w2==0 ? 0 : sum2 / w2;
 
-      // クラス間分散
+      // クラス間分散を計算して返す
       return w1 * w2 * (m1 - m2)**2;
     }
 

@@ -1,19 +1,22 @@
 module MakingsHelper
-  CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE = {
+  BUILDING_ERROR_MESSAGE = {
     length: 'パターンの幅が不揃いです。',
     no_alive_cells: '「生」状態のセルがありません。',
+    no_any_cells: 'セルがありません。',
   }
 
   # concated_bit_stringsから、
   # 上下左右のマージンとパターンの核となるnormalized_rows_sequenceについて、
   # 各行を16進数に変換した配列を、カンマ区切りの文字列として生成
   def build_up_pattern_params_from( concated_bit_strings )
+    # 文字列がからであるか検証
+    return BUILDING_ERROR_MESSAGE[ :no_any_cells ] if concated_bit_strings.blank?
     # セパレータを基に配列に分割
     rows = concated_bit_strings.split( /[^01]/ )
     # パターンの幅が揃っているか検証
     unless rows.map(&:length).uniq.one? then
       # 列数が一致しないため処理を中断（01とセパレータ以外の文字が含まれる場合もこのエラーとなる）
-      return CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE[ :length ]
+      return BUILDING_ERROR_MESSAGE[ :length ]
     end
     # パターンの幅を取得
     pattern_width = rows.first.length
@@ -25,7 +28,7 @@ module MakingsHelper
     # 空白の行数の合算が元々の行数を超えていないか判定
     unless margin_top + margin_bottom < rows.size then
       # 全部の行が0のため処理中断
-      return CONVERT_TEXT_FOR_DB_DATA_ERROR_MESSAGE[ :no_alive_cells ]
+      return BUILDING_ERROR_MESSAGE[ :no_alive_cells ]
     end
     # セルが存在する要素について、最初〜最後の位置を表す範囲オブジェクトの作成
     present_alive_cells_range = ( margin_top .. ( -1 - margin_bottom ) )

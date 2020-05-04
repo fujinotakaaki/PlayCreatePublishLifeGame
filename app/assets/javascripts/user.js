@@ -59,14 +59,14 @@ function displayUploadImage( self ) {
   // 画像の読み込みが完了した際の処理
   const finishOnLoad = function( element, src_data ) {
     // imgタグに必要な情報を追加
-    var img_src = $("<img>").attr({
+    let img_src = $("<img>").attr({
       "src": src_data,
       "class": "application__common--imgPreview"
     });
     // 投稿済みの画像があった場合は除く
     $(".application__common--imgPreview").remove();
     // 画像の挿入
-    $(element).parent().before(img_src);
+    $(element).parent().before( img_src );
   }
   // アップロードファイルのバリデーション実行
   validateImageFile( self, finishOnLoad );
@@ -79,11 +79,12 @@ function displayUploadImage( self ) {
 * =============================
 */
 const validateImageFile = function( element, finishOnLoad ) {
-  upLoadFile = $(element).prop('files')[0];
+  let upLoadFile = $(element).prop('files')[0];
+  let regexp = /image/;
   // 画像でない場合はそのファイルを削除・強制終了
-  if ( ! /image/.test( upLoadFile.type ) ) {
+  if ( ! regexp.test( upLoadFile.type ) ) {
     $(element).val(""); // クリア
-    callMessageWindow( 'danger', '画像データ以外は使用できません。' )
+    callMessageWindow( 'danger', '画像データ以外は使用できません。' );
     // バリデーション結果を返す
     return false;
   }

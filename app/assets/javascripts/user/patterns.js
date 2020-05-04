@@ -20,5 +20,4 @@ function previewDisplayFormatAtPatternsNew( display_format_id ) {
     // 失敗した場合
     alert('選択された表示形式の取得に失敗しました。');
   });
-  return false;
 }
