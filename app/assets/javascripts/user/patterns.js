@@ -4,20 +4,11 @@
 * =============================
 */
 function previewDisplayFormatAtPatternsNew( display_format_id ) {
-  // IDからDisplayFormatのデータを取得
-  $.ajax({
-    url: `/display_formats/${ display_format_id }`,
-    type: 'get',
-    dataType : 'json'
-
-  }).done( function(data){
-    // 成功した場合
-    console.log('通信成功');
-    //セルの状態表示反映（lifegame/environments.js参照）
-    initializeLifeGame( false, false, data );
-
-  }).fail( function(data) {
-    // 失敗した場合
-    alert('選択された表示形式の取得に失敗しました。');
-  });
+  //セルの状態表示反映（lifegame/environments.js参照）
+  // ajax通信に成功した場合の処理
+  const success_callback = data => initializeLifeGame( false, false, data );
+  // IDから選択したDisplayFormatのデータを取得できる
+  let url = `/display_formats/${ display_format_id }`
+  // ajax通信(user.js)
+  ajaxForGet( url, success_callback )
 }

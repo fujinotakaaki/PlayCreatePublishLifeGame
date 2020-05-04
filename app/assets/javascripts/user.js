@@ -95,3 +95,21 @@ const validateImageFile = function( element, finishOnLoad ) {
   // バリデーション結果を返す
   return true;
 }
+
+
+/*
+* =============================
+* ajax通信（getメソッドのみ対応）
+* =============================
+*/
+const ajaxForGet = function( url, success_callback, fail_callback = () => console.error("通信に失敗しました") ) {
+  $.ajax({
+    url: url,
+    type: 'get',
+    dataType : 'json'
+  }).done( data =>
+    success_callback(data)
+  ).fail( () =>
+  fail_callback()
+);
+}
