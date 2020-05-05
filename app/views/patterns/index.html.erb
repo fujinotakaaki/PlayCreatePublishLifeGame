@@ -6,7 +6,7 @@
 </h2>
 
 <!--カテゴリ検索が行われた場合の処理-->
-<% if @sub_title then %>
+<% if @title_detail then %>
 <div class="categories__show--main">
 
   <!--カテゴリ説明文タイトル-->
@@ -17,7 +17,7 @@
   <!--カテゴリ説明文-->
   <p class="categories__show--body">
     <%= content_tag :span, '', class: "glyphicon glyphicon-tag", aria: { hidden: true } %>
-    <%= @sub_title %>
+    <%= @title_detail %>
   </p>
 </div>
 <% end %>
