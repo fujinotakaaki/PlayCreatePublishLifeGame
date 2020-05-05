@@ -2,22 +2,22 @@
 
 <!--一覧のタイトル-->
 <h2 class="patterns__index">
-  <%= @title.first %>一覧
+  <%= @title %>一覧
 </h2>
 
 <!--カテゴリ検索が行われた場合の処理-->
-<% unless @title.one? then %>
+<% if @sub_title then %>
 <div class="categories__show--main">
 
   <!--カテゴリ説明文タイトル-->
   <h4 class="categories__show--headline">
     このカテゴリについて
   </h4>
-  
+
   <!--カテゴリ説明文-->
   <p class="categories__show--body">
     <%= content_tag :span, '', class: "glyphicon glyphicon-tag", aria: { hidden: true } %>
-    <%= @title.second %>
+    <%= @sub_title %>
   </p>
 </div>
 <% end %>

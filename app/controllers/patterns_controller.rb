@@ -26,33 +26,10 @@ class PatternsController < ApplicationController
   end
 
   def index
-    # 一覧画面に表示する項目の条件の取得
-    key, value = search_params
-    # 一覧画面に表示する項目の取得
-    @patterns, *@title = begin
-      case key
-        # 検索条件で分岐
-      when 'category'
-        # カテゴリー検索の場合
-        category = Category.find(value)
-        [
-          category.patterns.page( params[ :page ] ).includes( :user ).reverse_order,
-          "カテゴリ：「#{category.name}」", "「#{category.explanation}」"
-        ]
-      when search_keyword?( value )
-        # キーワード検索の場合
-        [
-          Pattern.where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" ).page( params[ :page ] ).includes( :user, :category ).reverse_order,
-          "「#{value}」の検索結果"
-        ]
-      else
-        # 全投稿表示の場合
-        [
-          Pattern.page( params[ :page ] ).includes( :user, :category ).reverse_order,
-          "全投稿"
-        ]
-      end
-    end
+    # 一覧画面に表示する投稿の取得（カテゴリー検索、キーワード検索含む）
+    @patterns = Pattern.search_by( *search_params ).page( params[ :page ] ).includes( :user, :category ).reverse_order
+    # 投稿一覧に表示する内容の取得
+    @title, @title_detail = title_content( *search_params )
   end
 
   def edit
@@ -67,8 +44,8 @@ class PatternsController < ApplicationController
     set_to_gon( @pattern )
     # このパターンに対し最近投稿されたコメント5件をピックアップ
     @latest_comments = @pattern.post_comments.reverse_order.limit(5)
-    # 最近投稿されたカテゴリが同じパターン2件をピックアップ（自分を除く）
-    @sampling_patterns = Pattern.where( 'category_id = ? and id != ?', @pattern.category_id, @pattern.id ).includes( :user, :category ).reverse_order.limit(2)
+    # 最近投稿されたカテゴリが同じパターン2件をピックアップ（ただし、自身は含まない）
+    @sampling_patterns = @pattern.same_category_patterns(2)
     respond_to do |format|
       format.html
       format.json { render :json => @pattern.as_coupler }
@@ -117,12 +94,25 @@ class PatternsController < ApplicationController
   def search_params
     # カテゴリorキーワード検索の場合処理
     if params.has_key?( :search ) then
-      params.require( :search ).permit( :category, :keyword ).to_hash.flatten
+      params.require( :search ).permit( :category, :keyword ).to_h.shift
     end
   end
 
   # キーワード検索か判定（空文字の場合はfalse）
-  def search_keyword?( value )
-    -> key { value.present? && key&.match?( 'keyword' ) }
+  def title_content( key = nil, value = nil )
+    case key
+      # 検索条件で分岐
+    when 'category'
+      # カテゴリー検索の場合
+      category = Category.find(value)
+      ["カテゴリ：「#{category.name}」", "「#{category.explanation}」"]
+    when 'keyword'
+      # キーワード検索の場合
+      "「#{value}」の検索結果"
+    else
+      # 検索条件なしの場合
+      "全投稿"
+    end
   end
+
 end # class
