@@ -57,16 +57,16 @@ $(document).on('turbolinks:load', function() {
 */
 function displayUploadImage( self ) {
   // 画像の読み込みが完了した際の処理
-  const finishOnLoad = function( element, src_data ) {
+  const finishOnLoad = function( element, srcData ) {
     // imgタグに必要な情報を追加
-    let img_src = $("<img>").attr({
-      "src": src_data,
+    let imgSrc = $("<img>").attr({
+      "src": srcData,
       "class": "application__common--imgPreview"
     });
     // 投稿済みの画像があった場合は除く
     $(".application__common--imgPreview").remove();
     // 画像の挿入
-    $(element).parent().before( img_src );
+    $(element).parent().before( imgSrc );
   }
   // アップロードファイルのバリデーション実行
   validateImageFile( self, finishOnLoad );
@@ -80,10 +80,10 @@ function displayUploadImage( self ) {
 */
 const validateImageFile = function( element, finishOnLoad ) {
   let upLoadFile = $(element).prop('files')[0];
-  let regexp = /image/;
   // 画像でない場合はそのファイルを削除・強制終了
-  if ( ! regexp.test( upLoadFile.type ) ) {
-    $(element).val(""); // クリア
+  if ( ! upLoadFile.type.includes('image') ) {
+    // アップロードファイルを削除
+    $(element).val("");
     callMessageWindow( 'danger', '画像データ以外は使用できません。' );
     // バリデーション結果を返す
     return false;
@@ -102,14 +102,14 @@ const validateImageFile = function( element, finishOnLoad ) {
 * ajax通信（getメソッドのみ対応）
 * =============================
 */
-const ajaxForGet = function( url, success_callback, fail_callback = () => console.error("通信に失敗しました") ) {
+const ajaxForGet = function( url, successCallback, failCallback = () => console.error("通信に失敗しました") ) {
   $.ajax({
     url: url,
     type: 'get',
     dataType : 'json'
   }).done( data =>
-    success_callback(data)
+    successCallback(data)
   ).fail( () =>
-  fail_callback()
+  failCallback()
 );
 }

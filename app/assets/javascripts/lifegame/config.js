@@ -162,12 +162,12 @@ class LifeGame {
     // ひとまず次世代では「死」と仮定
     let nextCondition = '0';
     // 次世代で「生」になる可能性があるか判定
-    if ( /0/.test( this.pattern[y][x] ) ) {
+    if ( this.pattern[y][x] === '0' ) {
       // 元々「死」の状態だった場合 => 誕生するか判定
-      if ( /3/.test( aliveCellsCount ) ) nextCondition = '1';
+      if ( aliveCellsCount === 3 ) nextCondition = '1';
     } else {
       // 元々「生」の状態だった場合 => 生存するか判定
-      if ( /2|3/.test( aliveCellsCount ) ) nextCondition = '1';
+      if ( aliveCellsCount === 2 || aliveCellsCount === 3 ) nextCondition = '1';
     }
     // 次世代での状態を返す => "0" or "1"
     return nextCondition;

@@ -11,7 +11,7 @@ function modalOpen() {
     let formText = $(this).val();
     let machingText = $(".members__confirm--machingText").text();
     // フォームの値確認
-    let judge =( formText == machingText);
+    let judge = ( formText === machingText );
     // 一致すれば退会ボタンを使用可能にする
     $(".members__confirm--submit").css({
       'pointer-events': judge && 'auto' || '',

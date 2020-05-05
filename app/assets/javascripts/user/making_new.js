@@ -24,10 +24,10 @@ function startUpCropping(self) {
   }
 
   // ===== 画像の読み込みが完了した際の処理、クロッピング画像の挿入 ===============
-  const finishOnLoad = function( element, src_data ) {
+  const finishOnLoad = function( element, srcData ) {
     // アップロード画像の<img>タグ生成
     let currentCroppingImage = $('<img>').attr({
-      "src": src_data,
+      "src": srcData,
       "id": "crop_image"
     });
     // アップロード画像の挿入

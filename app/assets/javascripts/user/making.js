@@ -125,18 +125,18 @@ function getMakingPatternTextareaInfo( normalization = true ) {
 */
 function autoComplement( side ) {
   // 右側に補完するか判定（falseなら左側に補完）
-  let autoCompleteToRightSide = /right/.test( side );
+  let autoCompleteToRightSide = side === 'right';
   // 作成中パターンの「各ビット列の配列」と「最長のビット列の長さ」を取得
   let [ makingPatternArray, maxBitLength ] = getMakingPatternTextareaInfo( true );
-  let dead_cell = "0";
+  let deadCell = "0";
   // 横方向に対するビットの補完処理（0で補完）
   let autoComplementMakingPatternArray = makingPatternArray.map( function( bitString ) {
     if ( autoCompleteToRightSide ) {
       // 右側に補完する場合の処理
-      return bitString.concat( dead_cell.repeat( maxBitLength - bitString.length ) );
+      return bitString.concat( deadCell.repeat( maxBitLength - bitString.length ) );
     }else {
       // 左側に補完する場合の処理
-      return dead_cell.repeat( maxBitLength - bitString.length ).concat( bitString );
+      return deadCell.repeat( maxBitLength - bitString.length ).concat( bitString );
     }
   });
   // エミュレーション画面をプレビュー画面へ切替
@@ -157,17 +157,17 @@ function verificationMakingPattern() {
   // ### バリデーション処理 #####################
   let errorMessages = new Array;
   // (1) 最長のビット列の長さが1以上か
-  let test1 = ! maxBitLength;
-  if ( test1 ) errorMessages.push("セルがありません。");
+  let test1 = !! maxBitLength;
+  if ( ! test1 ) errorMessages.push("セルがありません。");
   // (2) 各ビット列の長さが等しいか
-  let test2 = ! makingPatternArray.every( bitString => bitString.length == maxBitLength );
-  if ( test2 ) errorMessages.push("パターンが不揃いです。");
+  let test2 = makingPatternArray.every( bitString => bitString.length === maxBitLength );
+  if ( ! test2 ) errorMessages.push("パターンが不揃いです。");
   // (3) "0"または"1"以外の文字が含まれていないか
-  let test3 = ! makingPatternArray.every( bitString => ! /[^01]/.test( bitString ) );
-  if ( test3 ) errorMessages.push("不適切な文字が混入してます。");
-  // (4) 「生」セルは存在するか（最初のテストが不通過なら実行しない）
-  let test4 = ! test1 && makingPatternArray.every( bitString => ! /1/.test( bitString ) );
-  if ( test4 ) errorMessages.push("「生」セルがありません。");
+  let test3 = makingPatternArray.every( bitString => ! /[^01]/.test( bitString ) );
+  if ( ! test3 ) errorMessages.push("不適切な文字が混入してます。");
+  // (4) 「生」セルは存在するか
+  let test4 = ! makingPatternArray.every( bitString => ! /1/.test( bitString ) );
+  if ( ! test4 ) errorMessages.push("「生」セルがありません。");
   // #########################################
 
   // エラーが存在したか判定
@@ -213,7 +213,7 @@ function touchingMmakingPattern( n = 0 ) {
     break;
 
     default:
-    return false;
+    return;
   }
   // テキストエリアへの反映
   applyMakingPattern( patternData.patternInitial );
@@ -228,7 +228,7 @@ function touchingMmakingPattern( n = 0 ) {
 * =============================
 */
 function touchingLine( n = 0 ) {
-  let dead_cell = "0";
+  let deadCell = "0";
   // 作成中パターンの「各ビット列の配列」と「最長のビット列の長さ」を取得
   let [ makingPatternArray, maxBitLength ] = getMakingPatternTextareaInfo( false );
   // 追加・削除処理の分岐
@@ -236,22 +236,22 @@ function touchingLine( n = 0 ) {
     // 行を追加
     // 先頭に行を追加
     case 1:
-    makingPatternArray.unshift( dead_cell.repeat( maxBitLength ) );
+    makingPatternArray.unshift( deadCell.repeat( maxBitLength ) );
     break;
 
     // 後尾に行を追加
     case 2:
-    makingPatternArray.push( dead_cell.repeat( maxBitLength ) );
+    makingPatternArray.push( deadCell.repeat( maxBitLength ) );
     break;
 
     // 左に行を追加
     case 3:
-    makingPatternArray = makingPatternArray.map( ( bitString ) => dead_cell + bitString );
+    makingPatternArray = makingPatternArray.map( ( bitString ) => deadCell + bitString );
     break;
 
     // 右に行を追加
     case 4:
-    makingPatternArray = makingPatternArray.map( ( bitString ) => bitString + dead_cell );
+    makingPatternArray = makingPatternArray.map( ( bitString ) => bitString + deadCell );
     break;
 
     // 行を削除
@@ -290,9 +290,9 @@ function touchingLine( n = 0 ) {
 function changeCouplingMode( state, option ) {
 
   // ===== coupler選択時処理 ===============
-  function selectCoupler( pattern_id  ) { // 'select'の処理
+  function selectCoupler( patternId  ) { // 'select'の処理
     // ajax通信に成功した場合の処理
-    const success_callback = data => {
+    const successCallback = data => {
       // 合成するパターンの入力 => 入力結果を取得
       let settingTest = patternData.setCoupler( data.couplerPattern );
       // couplerが使用可能か通知
@@ -300,19 +300,19 @@ function changeCouplingMode( state, option ) {
     }
 
     // ajax通信失敗時のコールバック
-    const fail_callback = () => {
+    const failCallback = () => {
       console.error("パターンの取得に失敗しました");
       // couplerが使用可能か通知
       alertCouplingAvailable( false );
     }
 
     // promptの値は無効（undefined）=> 処理中断
-    if ( ! pattern_id ) return;
+    if ( ! patternId ) return;
 
     // IDからPatternデータを取得
-    let url = `/patterns/${ pattern_id }`;
+    let url = `/patterns/${ patternId }`;
     // ajax通信(user.js)
-    ajaxForGet( url, success_callback, fail_callback );
+    ajaxForGet( url, successCallback, failCallback );
   }
 
 
@@ -404,9 +404,11 @@ function changeCouplingMode( state, option ) {
     case 'select': // coupler選択処理
     selectCoupler( option );
     break;
+
     case 'start': // 起動処理
     startUpCouplingMode();
     break;
+
     case 'finish': // 終了処理
     finishCoupulingMode( option );
     break;
@@ -434,7 +436,7 @@ function alertCouplingAvailable( couplerSettingTestResult, initialize = false ) 
     'color': couplerSettingTestResult && 'black' || ''
   }).text(msg);
   // couplerのプレビューを表示
-  coupler = ( ! initialize ) && patternData.coupler ? patternData.coupler.getPatternText : '';
+  let coupler = ( ! initialize ) && patternData.coupler ? patternData.coupler.getPatternText : '';
   $(".makings__edit--couplerPreview").html( coupler );
 }
 
@@ -459,7 +461,8 @@ function createBlankPattern() {
   // キャンセルの場合は終了
   if ( ! result ) return;
   // 空の盤面作成
-  let bitString = "0".repeat(width);
+  let deadCell = '0'
+  let bitString = deadCell.repeat(width);
   let blankPattern = Array(height).fill(bitString);
   // 検証を通過したパターンの反映（lifegame/environments.js）
   initializeLifeGame( blankPattern );
