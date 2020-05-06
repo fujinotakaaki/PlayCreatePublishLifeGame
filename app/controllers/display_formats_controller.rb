@@ -19,15 +19,8 @@ class DisplayFormatsController < ApplicationController
   # 非同期通信（Patterns#new, #editで使用）
   def show
     display_format = DisplayFormat.find( params[ :id ] )
-    # 所定のデータ形式に変換
-    display_format_as_json = {
-      # cssの設定
-      cssOptions:   display_format.as_json_css_options,
-      # セルの表示定義設定
-      cellConditions: display_format.as_json_cell_conditions,
-    }
     # jsonデータを返す
-    render json: display_format_as_json
+    render json: display_format.as_pattern
   end
 
   def edit

@@ -56,17 +56,16 @@ class DisplayFormat < ApplicationRecord
     patterns.exists?
   end
 
-  # cssの設定情報をjson形式に変換
-  def as_json_css_options
-    # css設定に関するカラムの選択
-    convert_key_to_life_game( :font_color, :background_color, :font_size, :line_height_rate, :letter_spacing )
+  # 所定のjson用データに変換
+  def as_pattern
+    {
+      # cssの設定
+      cssOptions:   as_json_css_options,
+      # セルの表示定義設定
+      cellConditions: as_json_cell_conditions,
+    }
   end
 
-  # セルの表示定義情報をjson形式に変換
-  def as_json_cell_conditions
-    # セルの表示定義に関するカラムの選択
-    convert_key_to_life_game( :alive, :dead )
-  end
 
   class << self
     WELCOM_MESSAGE_DISPLAY_FORMAT = {
@@ -90,8 +89,20 @@ class DisplayFormat < ApplicationRecord
 
   private
 
+  # cssの設定情報をjson形式に変換
+  def as_json_css_options
+    # css設定に関するカラムの選択
+    as_json_with_translate_case_style( :font_color, :background_color, :font_size, :line_height_rate, :letter_spacing )
+  end
+
+  # セルの表示定義情報をjson形式に変換
+  def as_json_cell_conditions
+    # セルの表示定義に関するカラムの選択
+    as_json_with_translate_case_style( :alive, :dead )
+  end
+
   # カラムと値の連想配列作成（キーはJSで取り扱えるように適宜変換）
-  def convert_key_to_life_game( *pick_up_keys )
+  def as_json_with_translate_case_style( *pick_up_keys )
     as_json( only: pick_up_keys ).transform_keys{ | key | key.camelize( :lower ).to_sym }
   end
 end

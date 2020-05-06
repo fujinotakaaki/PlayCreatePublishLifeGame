@@ -23,14 +23,12 @@ module PatternsHelper
     gon.push({
       # パターンを１次元配列に変換したものを格納
       pattern: build_up_bit_strings_from( pattern ),
-      # cssの設定
-      cssOptions: display_format.as_json_css_options,
-      # セルの表示定義設定
-      cellConditions: display_format.as_json_cell_conditions,
       # トーラス面設定
       isTorus: pattern.is_torus,
       # アクション情報を追記
       action: action_name,
+      # セルの表示定義及びcssの設定
+      **display_format.as_pattern,
     })
   end
 
