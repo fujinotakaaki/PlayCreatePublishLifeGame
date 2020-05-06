@@ -9,8 +9,8 @@
 </nav>
 <% end %>
 
-<h3 class="categories__index--headline">カテゴリ<%= category.id.nil? ? "追加" : "修正" %></h3>
-<%= form_with( model: category, url: ( category.id.nil? ? admin_categories_path : admin_category_path ), class: "form-horizontal" ) do | f | %>
+<h3 class="categories__index--headline">カテゴリ<%= category.new_record? ? "追加" : "修正" %></h3>
+<%= form_with( model: category, url: ( category.new_record? ? admin_categories_path : admin_category_path ), class: "form-horizontal" ) do | f | %>
 <!--カテゴリ名（入力必須）-->
 <div class="form-group">
   <%= f.label :name, ' カテゴリ名', class: "fas fa-pencil-alt col-sm-2 control-label" %>
@@ -33,6 +33,6 @@
   <% unless category.id.nil? then %>
   <%= link_to "このカテゴリを削除", admin_category_path( category ), method: :delete,  class: "btn btn-danger", remote: true, data: { confirm: "本当に削除しますか？" } %>
   <% end %>
-  <%= f.submit ( category.id.nil? ? "追加" : "修正完了" ), class: "btn btn-primary" %>
+  <%= f.submit ( category.new_record? ? "追加" : "修正完了" ), class: "btn btn-primary" %>
 </p>
 <% end %>

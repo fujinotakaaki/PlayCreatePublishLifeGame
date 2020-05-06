@@ -8,14 +8,12 @@ $("#category_<%= column %>").addClass("application__errors--textField");
 <% end %>
 <% else %>
 // 編集に成功した場合
-// 更新成功の通知
-alert("カテゴリ「<%= @category.name %>」\nの情報を更新しました。");
 // フォームのリセット
 $(".categories___article--form").html("<%= escape_javascript( render 'admin/categories/form', category: Category.new ) %>");
-// 編集したカテゴリに対応するクラス名の作成
-let className = '<%= "categories___article--#{@category.id}" %>';
 // 編集項目の表示更新
-$(`.${className}`).html("<%=  escape_javascript( render 'admin/categories/article', category: @category ) %>");
+$('<%= ".categories___article--#{@category.id}" %>').replaceWith("<%=  escape_javascript( render 'admin/categories/article', category: @category ) %>");
 // 編集た項目まで移動(admin/categories.js)
-moveToEditTag( className );
+moveToEditTag( <%= @category.id %> );
+// 更新成功の通知
+alert("カテゴリ「<%= @category.name %>」\nの情報を更新しました。");
 <% end %>

@@ -51,9 +51,9 @@ class DisplayFormat < ApplicationRecord
   has_many :makings
   # ================================================
 
-  # 特定のフォーマットを使用しているパターンがあるか判定
-  def used?
-    patterns.exists?
+  # 特定のフォーマットを使用しているパターンがあるか判定（未登録のレコードは除外）
+  def destroyable?
+    persisted? && ! patterns.exists?
   end
 
   # 所定のjson用データに変換

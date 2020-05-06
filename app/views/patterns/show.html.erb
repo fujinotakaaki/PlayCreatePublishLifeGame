@@ -42,8 +42,7 @@
 
     <!--コメント一覧タイトル-->
     <h4 class="comments__index--headline">
-      <%= content_tag :i, '', class: "fas fa-comments" %>
-      <%= @pattern.comments_count %>件のコメント
+      <%= content_tag :i, "#{@pattern.comments_count}件のコメント", class: "fas fa-comments" %>
     </h4>
     <!--コメント一覧-->
     <div class="comments__index">
@@ -57,7 +56,7 @@
       <!--最新のコメント5件まで表示-->
       <%= render 'post_comments/index', post_comments: @latest_comments %>
 
-      <!--コメント6件目移行の表示アクション-->
+      <!--コメント6件目以降の取得アクション-->
       <% if @pattern.comments_count > 5 then %>
       <%= link_to pattern_post_comment_path( @pattern ), class: "btn btn-default comments__index--more", remote: true do %>
       <%= content_tag :i, '', class: "fas fa-comment-dots" %>

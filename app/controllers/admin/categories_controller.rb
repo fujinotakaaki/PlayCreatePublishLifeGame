@@ -3,7 +3,6 @@ class Admin::CategoriesController < Admin::ApplicationController
   def index
     # カテゴリ一覧取得
     @categories = Category.all
-    @category = Category.new
   end
 
   def create

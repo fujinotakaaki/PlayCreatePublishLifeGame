@@ -31,8 +31,10 @@
         by <%= link_to pattern.user.name.truncate( 10 ), member_path( pattern.user_id ) %>さん
       </span>
 
-      <!--投稿者情報（showページでは表示しない）-->
-      <%= render 'patterns/property', pattern: pattern if action_name != 'show' %>
+      <!--投稿者情報（Patterns#showでは表示しない）-->
+      <% unless controller_path == 'patterns' && action_name == 'show' %>
+      <%= render 'patterns/property', pattern: pattern %>
+      <% end %>
     </p>
   </div>
 </div>

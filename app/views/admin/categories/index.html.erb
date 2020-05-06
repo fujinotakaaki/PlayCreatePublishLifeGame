@@ -3,7 +3,7 @@
 <!--新規投稿フォーム-->
 <div class="row">
   <div class="categories___article--form">
-    <%= render 'admin/categories/form', category: @category %>
+    <%= render 'admin/categories/form', category: Category.new %>
   </div>
 </div>
 
@@ -17,9 +17,7 @@
       <th class="col-sm-2"></th>
     </tr>
     <% @categories.each do | category | %>
-    <tr class='categories__index--tableTr <%= "categories___article--#{category.id}" %>'>
-      <%= render 'admin/categories/article', category: category %>
-    </tr>
+    <%= render 'admin/categories/article', category: category %>
     <% end %>
   </table>
 </div>

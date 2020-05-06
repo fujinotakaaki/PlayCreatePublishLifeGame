@@ -5,10 +5,10 @@
 alert("このカテゴリは使用されているため、\n削除できませんでした。");
 <% else %>
 // 未使用の場合
-// 削除実行の通知
-alert("カテゴリ「<%= @category.name %>」を\n削除しました。");
 // 編集項目の削除
 $('<%= ".categories___article--#{@category.id}" %>').remove();
 // フォームの更新
 $(".categories___article--form").html("<%= escape_javascript( render 'admin/categories/form', category: Category.new ) %>");
+// 削除実行の通知
+alert("カテゴリ「<%= @category.name %>」を\n削除しました。");
 <% end %>

@@ -3,9 +3,9 @@
 * 編集したカテゴリの項目までアニメーション移動するメソッド
 * =============================
 */
-function moveToEditTag( className ) {
+function moveToEditTag( categoryId ) {
   $('html, body').animate({
     // 移動する座標
-    scrollTop: $(`.${className}`).offset().top
+    scrollTop: $(`.categories___article--${categoryId}`).offset().top
   }, 'fast' );
 }
