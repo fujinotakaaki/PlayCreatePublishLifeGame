@@ -39,6 +39,11 @@
           <%= link_to "　マイページ", member_path( current_user ) %>
         </li>
         <li>
+          <!--お気に入り一覧ページへのリンク-->
+          <%= content_tag :span, '', class: "glyphicon glyphicon-star", aria: { hidden: true } %>
+          <%= link_to "　お気に入り一覧", member_path( current_user, 'favorite' => true ) %>
+        </li>
+        <li>
           <!--パターン新規作成ページへのリンク-->
           <%= content_tag :span, '', class: "glyphicon glyphicon-plus", aria: { hidden: true } %>
           <%= link_to "　パターン作成", edit_making_path %>

@@ -22,6 +22,7 @@ class User < ApplicationRecord
   has_many :display_formats, dependent: :destroy
   has_many :post_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
+  has_many :favorite_patterns, through: :favorites, source: :pattern
   # ================================================
 
   # アカウント削除の際に入力するワードの生成

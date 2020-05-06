@@ -88,8 +88,6 @@ class Pattern < ApplicationRecord
       when 'category'
         # カテゴリー検索の場合
         where( category_id: value )
-      # when 'favorite'
-        # お気に入り検索の場合
       when 'keyword'
         # キーワード検索の場合
         where( 'name LIKE ? or introduction LIKE ?', "%#{value}%", "%#{value}%" )

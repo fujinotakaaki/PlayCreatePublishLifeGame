@@ -1,9 +1,13 @@
 <!--ユーザ詳細ページ-->
 
+<h2><%= "「#{@user.name}」さん" %></h2>
+
 <!--ユーザ情報-->
 <div class="clearfix members__show--profile">
   <%= render 'members/detail', user: @user %>
 </div>
+
+<h3><%= "#{@title}一覧" %></h3>
 
 <!--投稿パターン一覧-->
 <div class='members__show'>

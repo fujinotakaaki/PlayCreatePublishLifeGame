@@ -5,7 +5,17 @@ class MembersController < ApplicationController
   def show
     # ユーザ情報取得
     @user = User.find( params[ :id ] )
-    @patterns = @user.patterns.page( params[ :page ] ).includes( :category ).reverse_order
+    # 一覧表示内容の選定
+    @patterns = begin
+      if params[:favorite] then
+        # お気に入り一覧の場合
+        @user.favorite_patterns.page( params[ :page ] ).includes( :category ).reverse_order
+      else
+        # 該当ユーザの投稿一覧の場合
+        @user.patterns.page( params[ :page ] ).includes( :category ).reverse_order
+      end
+    end
+    @title = params[:favorite] ? 'お気に入り' : 'ユーザ投稿'
   end
 
   def edit

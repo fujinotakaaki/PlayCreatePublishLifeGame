@@ -106,9 +106,6 @@ class PatternsController < ApplicationController
       # カテゴリー検索の場合
       category = Category.find(value)
       [ "カテゴリ：「#{category.name}」", category.explanation ]
-    when 'favorite'
-      # お気に入り検索の場合
-      "お気に入り"
     when 'keyword'
       # キーワード検索の場合
       "「#{value}」の検索結果"
