@@ -13,25 +13,27 @@
       <%= content_tag :i, '', class: "fas fa-comment" %>
       コメント: <%= pattern.comments_count %>
     </li>
-    <li>
+    <!--お気に入り項目-->
+    <li class="favorites__li favorites__li--patternId=<%= pattern.id %>">
+      <!--クリップのアイコン-->
       <%= content_tag :span, '', class: "glyphicon glyphicon-paperclip", aria: { hidden: true } %>
-      <!--お気に入り項目-->
-      <% if action_name == 'show' && !! current_user then %>
-      <!--ログイン中のユーザの場合-->
-      <!--お気に入り登録・削除の表示-->
-      <% if pattern.is_favorite_by?( current_user ) then %>
-      <!--登録済の場合-->
-      <%= render 'favorites/destroy', pattern_id: pattern.id %>
+
+      <!--Patterns#showかつログインユーザの場合-->
+      <% if user_signed_in? && current_page?( pattern_path( pattern ) ) then %>
+        <!--お気に入り登録・削除の表示-->
+        <% if pattern.is_favorite_by?( current_user ) then %>
+          <!--登録済の場合-->
+          <%= render 'favorites/destroy', pattern_id: pattern.id %>
+        <% else %>
+          <!--未登録の場合-->
+          <%= render 'favorites/create', pattern_id: pattern.id %>
+        <% end %>
       <% else %>
-      <!--未登録の場合-->
-      <%= render 'favorites/create', pattern_id: pattern.id %>
+        お気に入り数
       <% end %>
-      <% else %>
-      <!--非ログインユーザの場合-->
-      お気に入り数
-      <% end %>
+
       <!--お気に入り登録ユーザ数-->
-      <%= ": #{ pattern.favorites_count }" %>
+      <%= content_tag :span, ": #{ pattern.favorites_count }", class: "favorites__common--count" %>
     </li>
   </ul>
 </nav>

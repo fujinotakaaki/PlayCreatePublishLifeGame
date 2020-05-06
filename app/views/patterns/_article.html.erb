@@ -32,7 +32,7 @@
       </span>
 
       <!--投稿者情報（Patterns#showでは表示しない）-->
-      <% unless controller_path == 'patterns' && action_name == 'show' %>
+      <% unless current_page?( pattern_path( pattern ) ) %>
       <%= render 'patterns/property', pattern: pattern %>
       <% end %>
     </p>

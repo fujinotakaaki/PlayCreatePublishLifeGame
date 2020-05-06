@@ -1,13 +1,5 @@
 .favorites {
-  &__create {
-    color: inherit;
-    &:hover {
-      color: inherit;
-      font-weight: bold;
-      text-decoration: none;
-    }
-  }
-  &__destroy {
+  &__li {
     color: inherit;
     &:hover {
       color: inherit;

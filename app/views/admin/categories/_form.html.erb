@@ -30,7 +30,7 @@
 <!---Submit項目-->
 <p class="col-sm-5 col-sm-offset-5 categories __form--submitField">
   <!--登録済みカテゴリである場合は削除ボタン表示-->
-  <% unless category.id.nil? then %>
+  <% unless category.new_record? then %>
   <%= link_to "このカテゴリを削除", admin_category_path( category ), method: :delete,  class: "btn btn-danger", remote: true, data: { confirm: "本当に削除しますか？" } %>
   <% end %>
   <%= f.submit ( category.new_record? ? "追加" : "修正完了" ), class: "btn btn-primary" %>

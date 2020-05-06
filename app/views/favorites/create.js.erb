@@ -1,10 +1,18 @@
 // 「お気に入り登録」後の処理 => 「お気に入り解除」表示に変更
-// liタグ中のグリフアイコンの追加
-spanTag = $(".favorites__create").closest('li').find("span").clone(true)
-// お気に入り数の抽出
-var liTagInfo = /(\d+)/.exec( $(".favorites__create").closest('li').text() );
-// 1) liタグの中身を空にする
-// 2) グリフアイコンの追加
-// 3) お気に入り登録ボタンの追加
-// 4) お気に入り数のカウントアップ
-$(".favorites__create").closest('li').text('').html( spanTag ).append( " <%= escape_javascript( render 'favorites/destroy', pattern_id: @pattern_id ) %>" ).append( `: ${ Number( liTagInfo[1] ) + 1 }` );
+(function() {
+  // お気に入り情報の<li>タグを捕捉
+  let targetLi = $("[class$='favorites__li--patternId=<%= @pattern_id %>']");
+
+  // お気に入り情報の<a>タグを捕捉
+  let targetRegistration = targetLi.find(".favorites__common--registration");
+  // お気に入り解除アクションに置換
+  targetRegistration.replaceWith( " <%= escape_javascript( render 'favorites/destroy', pattern_id: @pattern_id ) %>" );
+
+  // お気に入りカウント数を保持する<span>タグを捕捉
+  let targetCount = targetLi.find(".favorites__common--count");
+  // お気に入りカウントの抽出
+  let regexp = /\d+$/;
+  let favoritesCount = regexp.exec( targetCount.text() )[0];
+  // お気に入り数のカウントアップ＆置換
+  targetCount.text(`: ${~~favoritesCount+1}`)
+})();

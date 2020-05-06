@@ -30,6 +30,13 @@
    display: block;
    clear: both;
  }
+ a {
+   color: inherit;
+   &:hover {
+     text-decoration: none;
+     color: inherit;
+   }
+ }
 
 
  body {
