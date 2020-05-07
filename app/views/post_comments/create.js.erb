@@ -3,14 +3,15 @@
 // バリデーション内容をアラートで表示
 alert( "<%= @comment.errors.full_messages.join('\n') %>" );
 <% else %>
-// コメント数のカウントアップ処理（let再定義によるエラー回避のため）
+// コメント数のカウントアップ処理
 (function() {
   let regexp = /\d+/;
-  let target = $(".comments__index--count");
+  // 同要素複数あり
+  let targets = $(".comments__index--patternId\\\=<%= @comment.pattern_id %>");
   // コメント数を取得
-  let commentsCount = regexp.exec( target.text() )[0];
-  // コメント数のカウントアップ＆置換
-  target.text(`${~~commentsCount+1}件のコメント`)
+  let commentsCount = regexp.exec( targets.eq(0).text() )[0];
+  // 全要素にコメント数のカウントアップ＆置換
+  targets.text(`${~~commentsCount+1}`);
 })();
 // 投稿内容をindexのトップに反映
 $(".comments__index").prepend( "<%= escape_javascript( render 'post_comments/article', post_comment: @comment ) %>" );

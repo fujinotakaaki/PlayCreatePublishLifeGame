@@ -43,7 +43,8 @@
     <!--コメント一覧タイトル-->
     <h4 class="comments__index--headline">
       <%= content_tag :i, "", class: "fas fa-comments" %>
-      <%= content_tag :span, "#{@pattern.comments_count}件のコメント", class: "comments__index--count" %>
+      <%= content_tag :span, @pattern.comments_count, class: "comments__index--patternId=#{@pattern.id}" %>
+      件のコメント
     </h4>
     <!--コメント一覧-->
     <div class="comments__index">
