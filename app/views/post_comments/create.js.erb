@@ -7,7 +7,7 @@ alert( "<%= @comment.errors.full_messages.join('\n') %>" );
 (function() {
   let regexp = /\d+/;
   // 同要素複数あり
-  let targets = $(".comments__index--patternId\\\=<%= @comment.pattern_id %>");
+  let targets = $(".comments__index--patternId\\=<%= @comment.pattern_id %>");
   // コメント数を取得
   let commentsCount = regexp.exec( targets.eq(0).text() )[0];
   // 全要素にコメント数のカウントアップ＆置換

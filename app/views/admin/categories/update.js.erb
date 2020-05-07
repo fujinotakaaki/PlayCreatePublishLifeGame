@@ -11,7 +11,7 @@ $("#category_<%= column %>").addClass("application__errors--textField");
 // フォームのリセット
 $(".categories___article--form").html("<%= escape_javascript( render 'admin/categories/form', category: Category.new ) %>");
 // 編集項目の表示更新
-$('<%= ".categories___article--#{@category.id}" %>').replaceWith("<%=  escape_javascript( render 'admin/categories/article', category: @category ) %>");
+$(".categories___article--categoryId\\=<%= @category.id %>").replaceWith("<%=  escape_javascript( render 'admin/categories/article', category: @category ) %>");
 // 編集た項目まで移動(admin/categories.js)
 moveToEditTag( <%= @category.id %> );
 // 更新成功の通知

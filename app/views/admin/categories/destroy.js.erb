@@ -6,7 +6,7 @@ alert("このカテゴリは使用されているため、\n削除できませ�
 <% else %>
 // 未使用の場合
 // 編集項目の削除
-$('<%= ".categories___article--#{@category.id}" %>').remove();
+$(".categories___article--categoryId\\=<%= @category.id %>").remove();
 // フォームの更新
 $(".categories___article--form").html("<%= escape_javascript( render 'admin/categories/form', category: Category.new ) %>");
 // 削除実行の通知

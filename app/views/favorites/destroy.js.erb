@@ -1,7 +1,7 @@
 // 「お気に入り解除」後の処理 => 「お気に入り登録」表示に変更
 (function() {
   // お気に入り情報の<li>タグを捕捉
-  let targetLi = $("[class$='favorites__li--patternId=<%= @pattern_id %>']");
+  let targetLi = $(".favorites__li--patternId\\=<%= @pattern_id %>");
 
   // お気に入り情報の<a>タグを捕捉
   let targetRegistration = targetLi.find(".favorites__common--registration");

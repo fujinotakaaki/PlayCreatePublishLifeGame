@@ -6,6 +6,6 @@
 function moveToEditTag( categoryId ) {
   $('html, body').animate({
     // 移動する座標
-    scrollTop: $(`.categories___article--${categoryId}`).offset().top
+    scrollTop: $(`.categories___article--categoryId\\=${categoryId}`).offset().top
   }, 'fast' );
 }
