@@ -1,7 +1,7 @@
 <!--ヘッダー用部分テンプレート-->
 
 <nav>
-  <!--各リンク-->
+  <!-- 検索フォーム -->
   <ul class="application__header--searchForm">
     <%= form_with( url: patterns_path, local: true, method: :get ) do | f | %>
     <li>
@@ -12,6 +12,8 @@
     </li>
     <% end %>
   </ul>
+
+  <!-- 各種リンク -->
   <ul class="application__header--interface">
     <li><%= link_to "トップ", root_path %></li>
     <li><%= link_to "ライフゲームとは？", about_path %></li>
@@ -22,44 +24,14 @@
 
     <!--プロフィール画像-->
     <li><%= attachment_image_tag current_user, :profile_image, size:"30x30", format: "jpeg", fallback: asset_path( "no_image.jpg" ), size:"30x30" %></li>
-    <!--ドロップダウンリスト（トップ表記）-->
-    <li id="menue-parent">
+    <!--ユーザ情報-->
+    <li style="text-align: left;" onmouseover="showDropdownMenue(this);">
       こんにちは、<br>
       <%= current_user.name.truncate( 10 ) %>さん▼
-      <!--ドロップダウンリスト-->
-      <ul id="menue-child">
-        <li>
-          <!--タイトル-->
-          <%= content_tag :span, '', class: "glyphicon glyphicon-list", aria: { hidden: true }, style: "color: rgba(0,0,0,0);" %>
-          　メニュー
-        </li>
-        <li>
-          <!--ログインユーザ中のページへのリンク-->
-          <%= content_tag :span, '', class: "glyphicon glyphicon-user", aria: { hidden: true } %>
-          <%= link_to "　マイページ", member_path( current_user ) %>
-        </li>
-        <li>
-          <!--お気に入り一覧ページへのリンク-->
-          <%= content_tag :span, '', class: "glyphicon glyphicon-star", aria: { hidden: true } %>
-          <%= link_to "　お気に入り一覧", member_path( current_user, 'favorite' => true ) %>
-        </li>
-        <li>
-          <!--パターン新規作成ページへのリンク-->
-          <%= content_tag :span, '', class: "glyphicon glyphicon-plus", aria: { hidden: true } %>
-          <%= link_to "　パターン作成", edit_making_path %>
-        </li>
-        <li>
-          <!--セルの表示形式編集用リンク-->
-          <%= content_tag :i, "", class: "fas fa-th-large" %>
-          <%= link_to "　セルの表示編集", new_display_format_path %>
-        </li>
-        <li>
-          <!--ログアウト用リンク-->
-          <%= content_tag :span, '', class: "glyphicon glyphicon-share", aria: { hidden: true } %>
-          <%= link_to "　ログアウト", destroy_user_session_path, method: :delete, data: { confirm: "ログアウトしてよろしいですか？" } %>
-        </li>
-      </ul>
     </li>
+
+    <!--ドロップダウンリスト-->
+    <%= render 'layouts/dropdown_menue' %>
 
     <% else %>
     <!--非ログインユーザ用インターフェース-->

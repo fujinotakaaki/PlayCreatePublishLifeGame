@@ -19,19 +19,24 @@
   <header>
     <h1>Play!Create!Publish! LifeGame</h1>
     <%= render 'layouts/header_menue' %>
+
+    <!-- flashメッセージ -->
+    <% if flash.any? && ! is_devise_controller?( controller_name ) then %>
+    <% flash.each do |key, message| %>
+    <p class="application__flash application__flash--<%= key %>"><%= message %></p>
+    <% end %>
+    <% end %>
   </header>
 
-  <main>
-    <div class="container">
-      <% if include_alert?( request.fullpath ) then %>
-      <!--ページURLからアラートセクションが必要か判定-->
-      <%= render 'layouts/alert' %>
-      <% end %>
+  <!--アラートウィンドウ-->
+  <%= render 'layouts/alert' %>
 
-      <!--メインセクション-->
+  <main>
+    <!--メインセクション-->
+    <div class="container">
       <div class="row">
         <!--メインセクション（左側：カテゴリ一覧）-->
-        <% if include_category_index?( request.fullpath, controller_name ) then %>
+        <% if include_category_index?( controller_name, action_name ) then %>
         <div class="col-md-2 application__layouts--leftSection">
           <%= render 'categories/index' %>
         </div>

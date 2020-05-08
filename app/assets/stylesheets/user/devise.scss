@@ -1,0 +1,18 @@
+.devise {
+  &__common {
+    padding: 10px 30px;
+    background: radial-gradient( white, silver );
+    border: medium solid #888;
+    border-radius: 20px;
+    &--headline {
+      margin: 1em 20px;
+    }
+    &--guide {
+      text-decoration: underline;
+      &:hover {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+    }
+  }
+}

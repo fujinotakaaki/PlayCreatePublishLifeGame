@@ -27,8 +27,14 @@
 * =============================
 */
 $(document).on('turbolinks:load', function() {
-  // アクション名が定義されていなければ強制終了
-  if ( ! gon.action ) return;
+  try {
+    // アクション名が定義されていなければ強制終了
+    if ( ! gon.action ) throw new UserException('InvalidGon');
+  } catch(e) {
+    // console.error(e.message);
+    return;
+  }
+
   // トップページの場合の処理
   if ( gon.action == "top" ) {
     // 背景色を変更
@@ -39,15 +45,35 @@ $(document).on('turbolinks:load', function() {
     // ライフゲーム操作用のインターフェース削除
     $(".patterns__show--lifeGameInterface").remove();
   }
-  // カテゴリ欄の削除
-  $(".application__layouts--leftSection").remove();
-  // パターン表示を画面最大に
-  $(".application__layouts--rightSection").removeClass().addClass("col-lg-12");
   // ライフゲームの表示初期化（lifegame/environment.js参照）
   initializeLifeGame();
   // アクション名リセット（ページ遷移後のにも値が引き継がれるためリセットする）
   gon.action = "";
 });
+
+
+/*
+* =============================
+* ドロップダウンメニューの表示切り替え
+* =============================
+*/
+function showDropdownMenue(self) {
+  // ドロップダウンメニューの本体の捕捉
+  let target = $(".application__header--dropdownMenue");
+  // 閉じるボタンの操作
+  if ( ! self ) {
+    // ドロップダウンメニューを非表示
+    target.hide();
+    return false;
+  }
+  // ドロップダウンメニューの基準位置となる要素の情報取得
+  let selfOffset = $(self).offset();
+  let selfWidth = $(self).width();
+  // ドロップダウンメニューの表示
+  target.css({
+    left: selfOffset.left + selfWidth - target.width()
+  }).show();
+}
 
 
 /*
