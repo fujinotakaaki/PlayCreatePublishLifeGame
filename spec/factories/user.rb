@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :user do
-    password = 'ExamplePassword'
+    password = SecureRandom.alphanumeric
     sequence(:email) { |n| "example#{n}@user.com" }
     password { password }
     password_confirmation { password }

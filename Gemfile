@@ -61,12 +61,17 @@ end
 group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
+  # gem 'capybara-screenshot'
   gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   # gem 'chromedriver-helper' # 2019/3/31で廃止
   gem 'webdrivers'
-  # テストたデータの作成支援ツール
+  # テストデータの作成支援ツール
   gem 'factory_bot_rails'
+  # テスト実行中に作成したデータの削除ツール
+  gem 'database_rewinder'
+  # ダミーデータ作成ツール
+  gem 'faker'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
