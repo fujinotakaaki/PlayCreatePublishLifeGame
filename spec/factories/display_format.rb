@@ -1,13 +1,13 @@
 FactoryBot.define do
   factory :display_format do
-    name { "sample_display_format" }
-    alive { ?■ }
-    dead { ?□ }
-    font_color { '#000000' }
-    background_color { '#123456' }
-    line_height_rate { 53 }
-    letter_spacing { -3 }
-    font_size { 40 }
+    name { Faker::String.random }
+    sequence(:alive, ?漢){|str|str.chr}
+    sequence(:dead, ?　){|str|str.chr}
+    font_color {Faker::Color.hex_color}
+    background_color { (%W(#{Faker::Color.hex_color} #114514 #364364) - [font_color]).first }
+    line_height_rate { rand(100) }
+    letter_spacing { rand(20) - 10 }
+    font_size { rand(100) }
     association :user, factory: :user
   end
 end

@@ -1,8 +1,7 @@
 FactoryBot.define do
   factory :pattern_block, class: Pattern do
-    name { 'pattern_block' }
-    introduction { 'pattern_block_introduction' }
-    is_torus { false }
+    name { 'ブロック' }
+    introduction { 'セルが４個の固定物体です。' }
     margin_top { 1 }
     margin_bottom { 1 }
     margin_left { 1 }

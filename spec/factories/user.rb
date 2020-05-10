@@ -1,10 +1,9 @@
 FactoryBot.define do
   factory :user do
-    password = SecureRandom.alphanumeric
     sequence(:email) { |n| "example#{n}@user.com" }
-    password { password }
+    password { SecureRandom.alphanumeric }
     password_confirmation { password }
     confirmed_at { Time.zone.now }
-    sequence(:name) { |n| "example_user'#{n}" }
+    name {Faker::Name.name}
   end
 end
