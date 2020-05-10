@@ -12,7 +12,8 @@ RSpec.feature 'ユーザー認証に関するテスト' do
   end
 
   LOCALE_JA = { locale: :ja }
-  let(:user){build(:user, confirmed_at: nil)}
+  let!(:user){build(:user, confirmed_at: nil)}
+  let!(:uniq_user){create(:user)}
 
 
   scenario '新規登録 => ログイン => ログアウトのテスト' do
@@ -37,8 +38,6 @@ RSpec.feature 'ユーザー認証に関するテスト' do
     fill_in 'user[password_confirmation]', with: user.password
     # アカウントの新規登録実行
     expect { click_button 'アカウント作成' }.to change { ActionMailer::Base.deliveries.size }.by(1)
-
-    # 3) 新規登録処理の実行確認
     # トップページに遷移（される）を確認
     expect(current_path).to eq root_path(LOCALE_JA)
     # 指定したセレクタ内に対してのみ検索/操作が行われる
@@ -49,13 +48,13 @@ RSpec.feature 'ユーザー認証に関するテスト' do
       # => 本人確認用のメールを送信しました。メール内のリンクからアカウントを有効化させてください。
     end
 
-    # 4) アカウントの有効化
+    # 3) アカウントの有効化
     # 認証メールからアカウントの有効化処理
     activate_email = ActionMailer::Base.deliveries.last
     activate_url = extract_confirmation_url(activate_email)
     visit activate_url
 
-    # 5) ログインの成功の確認
+    # 4) ログインの実行
     visit new_user_session_path(LOCALE_JA)
     fill_in 'user[email]', with: user.email
     fill_in 'user[password]', with: user.password
@@ -65,7 +64,7 @@ RSpec.feature 'ユーザー認証に関するテスト' do
       expect(page).to have_text('ログインしました')
     end
 
-    # 6) ログアウトの成功の確認
+    # 5) ログアウトの実行
     visit root_path(LOCALE_JA)
     click_link 'ログアウト'
     within(:css, flsh_css) do
@@ -104,16 +103,17 @@ RSpec.feature 'ユーザー認証に関するテスト' do
     end
 
     it '登録済のEメールは無効' do
-      uniq_user = create(:user)
       sign_up_test('Eメールはすでに存在します', email: uniq_user.email)
     end
 
     it 'パスワードが6文字未満は無効' do
-      sign_up_test('パスワードは6文字以上で入力してください', password: SecureRandom.alphanumeric(1+rand(5)))
+      shorter_password = SecureRandom.alphanumeric(1+rand(5))
+      sign_up_test('パスワードは6文字以上で入力してください', password: shorter_password)
     end
 
     it '再入力パスワードが異なる場合は無効' do
-      sign_up_test('パスワード（確認用）とパスワードの入力が一致しません', password_confirmation: SecureRandom.alphanumeric(15))
+      mis_spell_password = SecureRandom.alphanumeric
+      sign_up_test('パスワード（確認用）とパスワードの入力が一致しません', password_confirmation: mis_spell_password)
     end
   end # context '新規登録失敗のテスト'
 end # feature 'ユーザー認証に関するテスト'
