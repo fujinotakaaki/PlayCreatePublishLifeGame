@@ -72,6 +72,8 @@ group :test do
   gem 'database_rewinder'
   # ダミーデータ作成ツール
   gem 'faker'
+  # テストでassiignsを利用できるようにするため
+  gem 'rails-controller-testing'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
