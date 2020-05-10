@@ -11,7 +11,7 @@ RSpec.feature 'ユーザー認証に関するテスト' do
     body[/http[^"]+/]
   end
 
-  LOCALE_JA = { locale: :ja }
+  LOCALE_JA = { locale: I18n.default_locale }
   let!(:user){build(:user, confirmed_at: nil)}
   let!(:uniq_user){create(:user)}
 
