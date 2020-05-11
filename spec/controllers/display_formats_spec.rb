@@ -4,7 +4,7 @@ RSpec.describe DisplayFormatsController do
   # 自分のアカウント
   let!(:user){create(:user)}
   # 自分の作成したセル表示形式データ
-  let!(:my_display_formats){create_list(:display_format, 3, user: user)}
+  let!(:my_display_formats){create_list(:display_format, rand(2..6), user: user)}
   # 他人のセル表示形式データ
   let!(:others_display_formats){create_list(:display_format, 3)}
   # 新規作成データ

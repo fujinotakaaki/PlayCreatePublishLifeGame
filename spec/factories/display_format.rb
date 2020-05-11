@@ -6,7 +6,7 @@ FactoryBot.define do
     font_color {Faker::Color.hex_color}
     background_color { (%W(#{Faker::Color.hex_color} #114514 #364364) - [font_color]).first }
     line_height_rate { rand(100) }
-    letter_spacing { rand(20) - 10 }
+    letter_spacing { rand(-5..15) }
     font_size { rand(100) }
     association :user, factory: :user
   end
