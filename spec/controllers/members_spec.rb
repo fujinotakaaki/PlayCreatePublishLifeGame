@@ -1,64 +1,83 @@
 require 'rails_helper'
-
+# bundle exec rspec spec/controllers/members_spec.rb
 RSpec.describe MembersController do
-  amounts_per_page = Kaminari.config.default_per_page
+  # kaminariの１ページあたりのレコード取得数
+  let(:amounts_per_page){Kaminari.config.default_per_page}
   # 自分のアカウント
   let!(:user){create(:user)}
-  # 自分の投稿データ
-  let!(:my_patterns){create_list(:pattern_random, rand(3..6), user: user)}
-  # 自分のお気に入り投稿データ
-  let!(:my_favorites){create_list(:favorite, rand(3..6), user: user)}
-
   # 他人のアカウント
   let!(:another_user){create(:user)}
-  # 他人の投稿データ
-  let!(:anothers_patterns){create_list(:pattern_random, rand(3..6), user: another_user)}
   # 新規作成データ
-  let(:attributes_data){attributes_for(:user)}
+  let(:attributes_data){attributes_for(:user, :for_attributes)}
+
 
   describe '非ログインユーザの場合' do
-    context 'get #confirm' do
+    context 'GET #confirm' do
       it 'リクエストが失敗' do
-        get :confirm, params: {id: User.take}
+        get :confirm, params: {id: user}
         expect(response).to have_http_status 302
       end
     end
 
-    context 'get #edit' do
+    context 'GET #edit' do
       it 'リクエストが失敗' do
-        get :confirm, params: {id: User.take}, as: :js
+        get :edit, xhr: true, params: {id: user}, as: :js
         expect(response).to have_http_status 401
       end
     end
 
-    context 'get #show' do
-      it 'リクエストが成功' do
-        get :show, params: {id: User.take, page: rand(1..2)}
-        expect(response).to have_http_status 200
+    context 'GET #show' do
+      # ユーザの投稿一覧データ作成とページ設定
+      before do
+        # 作成するレコード数
+        # 自分の投稿
+        n1 = rand(3..20)
+        create_list(:pattern_random, n1, user: user)
+        # 自分がお気に入りした投稿
+        n2 = rand(3..20)
+        create_list(:favorite, n2, user: user)
+        # 他人がお気に入りした投稿
+        n3 = rand(3..20)
+        create_list(:favorite, n3, user: another_user)
+        # 他人の投稿
+        n4 = rand(3..20)
+        create_list(:pattern_random, n4)
+
+        # 参照するページの決定
+        # 自分の投稿一覧
+        @page_select_maker = rand(1..(n1.to_f / amounts_per_page).ceil)
+        # お気に入り一覧
+        # @page_select_favorite = rand(1..(n2.to_f / amounts_per_page).ceil)
+        # puts "ページ指定：#{@page_select}"
       end
 
-      it '適切なレコードを取得' do
-        user_sample = User.take
-        _params = {id: user_sample, page: rand(1..2)}
-        get :show, params: _params
-        expect(assigns :user).to eq user_sample
-        expect(assigns :patterns).to eq user_sample.patterns.limit(amounts_per_page).offset(amounts_per_page*(_params[:page]-1)).reverse_order
+      # it 'リクエストが成功' do
+      #   get :show, params: {id: user, page: @page_select}
+      #   expect(response).to have_http_status 200
+      # end
+
+      it 'リクエストが成功かつ適切なレコードを取得' do
+        get :show, params: {id: user, page: @page_select}
+        expect(response).to have_http_status 200
+        expect(assigns :user).to eq user
+        expect(assigns :patterns).to eq user.patterns.limit(amounts_per_page).offset(amounts_per_page*(@page_select_maker-1)).reverse_order
         expect(assigns :title).to eq 'ユーザ投稿'
       end
+
+      # ユーザのお気に入り一覧閲覧リンクは実装していない
     end
 
-    context 'patch #update' do
+    context 'PATCH #update' do
       it 'リクエストが失敗' do
-        user_sample = User.take
-        patch :update, params: {id: user_sample, user: attributes_data}, as: :js
+        patch :update, params: {id: user, user: attributes_data}, as: :js
         expect(response).to have_http_status 401
       end
 
       it 'レコードの更新に失敗' do
-        user_sample = User.take
-        expect(user_sample.name).to_not eq attributes_data[:name]
-        patch :update, params: {id: user_sample, user: attributes_data}, as: :js
-        expect(user_sample.reload.name).to_not eq attributes_data[:name]
+        expect(user.introduction).to_not eq attributes_data[:introduction]
+        patch :update, params: {id: user, user: attributes_data}, as: :js
+        user.reload
+        expect(user.introduction).to_not eq attributes_data[:introduction]
       end
     end
   end # describe '非ログインユーザの場合'
@@ -69,79 +88,105 @@ RSpec.describe MembersController do
       sign_in user
     end
 
-    context 'get #confirm' do
-      it '自分のページへのリクエストが成功' do
+    context 'GET #confirm' do
+      it '自分のレコードのリクエストが成功' do
         get :confirm, params: {id: user}
         expect(response).to have_http_status 200
       end
 
-      it '他人のページへのリクエストが失敗' do
+      it '他人のレコードのリクエストが失敗' do
         get :confirm, params: {id: another_user}
         expect(response).to have_http_status 302
       end
     end
 
-    context 'get #edit' do
-      it '自分のページへのリクエストが成功' do
-        get :confirm, params: {id: user}, as: :js
+    context 'GET #edit' do
+      it '自分のレコードのリクエストが成功' do
+        get :edit, xhr: true,  params: {id: user}, as: :js
         expect(response).to have_http_status 200
       end
 
-      it '他人のページへのリクエストが失敗' do
-        get :confirm, params: {id: another_user}, as: :js
+      it '他人のレコードのリクエストが失敗' do
+        get :edit, xhr: true, params: {id: another_user}, as: :js
         expect(response).to have_http_status 302
       end
     end
 
-    context 'get #show' do
-      context '自分の投稿一覧について' do
-        it '自分のページへのリクエストが成功' do
-          get :show, params: {id: user, page: rand(1..2)}
-          expect(response).to have_http_status 200
-        end
 
-        it '適切なレコードを取得' do
-          _params = {id: user, page: rand(1..2)}
-          get :show, params: _params
+    context 'GET #show' do
+      # ユーザの投稿一覧データ作成とページ設定
+      before do
+        # 作成するレコード数
+        # 自分の投稿
+        n1 = rand(3..20)
+        create_list(:pattern_random, n1, user: user)
+        # 自分がお気に入りした投稿
+        n2 = rand(3..20)
+        create_list(:favorite, n2, user: user)
+        # 他人がお気に入りした投稿
+        n3 = rand(3..20)
+        create_list(:favorite, n3, user: another_user)
+        # 他人の投稿
+        n4 = rand(3..20)
+        create_list(:pattern_random, n4)
+
+        # 参照するページの決定
+        # 自分の投稿一覧
+        @page_select_maker = rand(1..(n1.to_f / amounts_per_page).ceil)
+        # お気に入り一覧
+        @page_select_favorite = rand(1..(n2.to_f / amounts_per_page).ceil)
+        # puts "ページ指定：#{@page_select}"
+      end
+
+      context '投稿一覧について' do
+        # it 'リクエストが成功' do
+        #   get :show, params: {id: user, page: @page_select}
+        #   expect(response).to have_http_status 200
+        # end
+
+        it 'リクエストが成功かつ適切なレコードを取得' do
+          get :show, params: {id: user, page: @page_select_maker}
+          expect(response).to have_http_status 200
           expect(assigns :user).to eq user
-          expect(assigns :patterns).to eq user.patterns.limit(amounts_per_page).offset(amounts_per_page*(_params[:page]-1)).reverse_order
+          expect(assigns :patterns).to eq user.patterns.limit(amounts_per_page).offset(amounts_per_page*(@page_select_maker-1)).reverse_order
           expect(assigns :title).to eq 'ユーザ投稿'
         end
       end
 
-      context '自分のお気に入り一覧について' do
-        it '自分のページへのリクエストが成功' do
-          get :show, params: {id: user, favorite: true, page: rand(1..2)}
-          expect(response).to have_http_status 200
-        end
+      context 'お気に入り一覧について' do
+        # it 'リクエストが成功' do
+        #   get :show, params: {id: user, page: @page_select, favorite: true}
+        #   expect(response).to have_http_status 200
+        # end
 
-        it '適切なレコードを取得' do
-          _params = {id: user, favorite: true, page: rand(1..2)}
-          get :show, params: _params
+        it 'リクエストが成功かつ適切なレコードを取得' do
+          get :show, params: {id: user, page: @page_select_favorite, favorite: true}
+          expect(response).to have_http_status 200
           expect(assigns :user).to eq user
-          expect(assigns :patterns).to eq user.favorite_patterns.limit(amounts_per_page).offset(amounts_per_page*(_params[:page]-1)).reverse_order
+          expect(assigns :patterns).to eq user.favorite_patterns.limit(amounts_per_page).offset(amounts_per_page*(@page_select_favorite-1)).reverse_order
           expect(assigns :title).to eq 'お気に入り'
         end
       end
-    end # context 'get #show'
+    end # context 'GET #show'
 
-    context 'patch #update' do
-      it '自分のページへのリクエストが成功' do
+    context 'PATCH #update' do
+      it '自分のレコードのリクエストが成功' do
         patch :update, params: {id: user, user: attributes_data}, as: :js
         expect(response).to have_http_status 200
       end
 
       it '自分のレコードの更新に成功' do
-        expect(user.name).to_not eq attributes_data[:name]
+        expect(user.introduction).to_not eq attributes_data[:introduction]
         patch :update, params: {id: user, user: attributes_data}, as: :js
-        expect(user.reload.name).to eq attributes_data[:name]
+        user.reload
+        expect(user.introduction).to eq attributes_data[:introduction]
       end
 
       it '他人のレコードの更新に失敗' do
-        expect(another_user.name).to_not eq attributes_data[:name]
+        expect(another_user.introduction).to_not eq attributes_data[:introduction]
         patch :update, params: {id: another_user, user: attributes_data}, as: :js
-        expect(another_user.reload.name).to_not eq attributes_data[:name]
-        expect(response).to have_http_status 302
+        another_user.reload
+        expect(another_user.introduction).to_not eq attributes_data[:introduction]
       end
     end
   end # describe 'ログインユーザの場合'
