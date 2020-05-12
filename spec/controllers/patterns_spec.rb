@@ -1,13 +1,15 @@
 require 'rails_helper'
 # bundle exec rspec spec/controllers/patterns_spec.rb
 RSpec.describe PatternsController do
-  amounts_per_page = Kaminari.config.default_per_page
+  # kaminariの１ページあたりのレコード取得数
+  let(:amounts_per_page){Kaminari.config.default_per_page}
+  # 自分のレコード
   let!(:pattern){create(:pattern_random)}
+  # 他人のレコード
   let!(:anothers_pattern){create(:pattern_random)}
-  let(:patterns){create_list(:pattern_random, rand(4..6))}
 
   describe '非ログインユーザの場合' do
-    context 'get #index' do
+    context 'GET #index' do
       before do
         # 作成するレコード数
         n = rand(3..100)
@@ -33,34 +35,34 @@ RSpec.describe PatternsController do
       end
     end
 
-    context 'post #create' do
+    context 'POST #create' do
       it 'リクエストが失敗' do
         post :create, params: {pattern: pattern.attributes}, as: :js
         expect(response).to have_http_status 401
       end
 
-      it 'レコードが作成されないこと' do
+      it 'レコードの登録に失敗' do
         expect do
           post :create, params: {pattern: pattern.attributes}, as: :js
         end.to_not change(Pattern, :count)
       end
     end
 
-    context 'get #new' do
+    context 'GET #new' do
       it 'リクエストが失敗' do
         get :new
         expect(response).to have_http_status 302
       end
     end
 
-    context 'get #edit' do
+    context 'GET #edit' do
       it 'リクエストが失敗' do
         get :edit, params: {id: pattern}
         expect(response).to have_http_status 302
       end
     end
 
-    context 'get #show' do
+    context 'GET #show' do
       it 'リクエストが成功' do
         get :show, params: {id: pattern}
         expect(response).to have_http_status 200
@@ -72,26 +74,27 @@ RSpec.describe PatternsController do
       end
     end
 
-    context 'patch #update' do
+    context 'PATCH #update' do
       it 'リクエストが失敗' do
         patch :update, params: {id: pattern, pattern: anothers_pattern.attributes}, as: :js
         expect(response).to have_http_status 401
       end
 
-      it 'レコードが更新されないこと' do
+      it 'レコードの更新に失敗' do
         expect(pattern.name).to_not eq anothers_pattern.name
         patch :update, params: {id: pattern, pattern: anothers_pattern.attributes}, as: :js
-        expect(pattern.reload.name).to_not eq anothers_pattern.name
+        pattern.reload
+        expect(pattern.name).to_not eq anothers_pattern.name
       end
     end
 
-    context 'delete #destroy' do
+    context 'DELETE #destroy' do
       it 'リクエストが失敗' do
         delete :destroy, params: {id: pattern}
         expect(response).to have_http_status 302
       end
 
-      it 'レコードが減らないこと' do
+      it 'レコードの削除に失敗' do
         expect do
           delete :destroy, params: {id: pattern}
         end.to_not change(Pattern, :count)
@@ -106,7 +109,7 @@ RSpec.describe PatternsController do
       create(:making_random, user: pattern.user)
     end
 
-    context 'get #index' do
+    context 'GET #index' do
       before do
         # 作成するレコード数
         n = rand(3..100)
@@ -132,40 +135,39 @@ RSpec.describe PatternsController do
       end
     end
 
-    context 'post #create' do
+    context 'POST #create' do
       it 'リクエストが成功' do
-        post :create, params: {pattern: pattern.attributes}, as: :js
+        post :create, params: {pattern: anothers_pattern.attributes}, as: :js
         expect(response).to have_http_status 200
       end
 
-      it 'レコードが登録されること' do
+      it 'レコードの登録に成功' do
         expect do
-          post :create, params: {pattern: pattern.attributes}, as: :js
+          post :create, params: {pattern: anothers_pattern.attributes}, as: :js
         end.to change(Pattern, :count).by(1)
-        expect((assigns :pattern).id).to_not eq pattern.id
       end
     end
 
-    context 'get #new' do
+    context 'GET #new' do
       it 'リクエストが成功' do
         get :new
         expect(response).to have_http_status 200
       end
     end
 
-    context 'get #edit' do
-      it '自分のレコードへはリクエストが成功' do
+    context 'GET #edit' do
+      it '自分のレコードのリクエストが成功' do
         get :edit, params: {id: pattern}
         expect(response).to have_http_status 200
       end
 
-      it '他人のレコードへはリクエストが失敗' do
+      it '他人のレコードのリクエストが失敗' do
         get :edit, params: {id: anothers_pattern}
         expect(response).to have_http_status 302
       end
     end
 
-    context 'get #show' do
+    context 'GET #show' do
       it 'リクエストが成功' do
         get :show, params: {id: anothers_pattern}
         expect(response).to have_http_status 200
@@ -185,38 +187,40 @@ RSpec.describe PatternsController do
       end
     end
 
-    context 'patch #update' do
+    context 'PATCH #update' do
       it 'リクエストが成功' do
         patch :update, params: {id: pattern, pattern: anothers_pattern.attributes}, as: :js
         expect(response).to have_http_status 200
       end
 
-      it '自分のレコードの更新に成功すること' do
+      it '自分のレコードの更新に成功' do
         expect(pattern.name).to_not eq anothers_pattern.name
         patch :update, params: {id: pattern, pattern: anothers_pattern.attributes}, as: :js
-        expect(pattern.reload.name).to eq anothers_pattern.name
+        pattern.reload
+        expect(pattern.name).to eq anothers_pattern.name
       end
 
-      it '他人のレコードの更新に失敗すること' do
+      it '他人のレコードの更新に失敗' do
         expect(anothers_pattern.name).to_not eq pattern.name
         patch :update, params: {id: anothers_pattern, pattern: pattern.attributes}, as: :js
-        expect(anothers_pattern.reload.name).to_not eq pattern.name
+        anothers_pattern.reload
+        expect(anothers_pattern.name).to_not eq pattern.name
       end
     end
 
-    context 'delete #destroy' do
+    context 'DELETE #destroy' do
       it 'リクエストが成功' do
         delete :destroy, params: {id: pattern}
         expect(response).to redirect_to "/#{I18n.default_locale}/members/#{pattern.user_id}"
       end
 
-      it '自分のレコードの削除に成功すること' do
+      it '自分のレコードの削除に成功' do
         expect do
           delete :destroy, params: {id: pattern}
         end.to change(Pattern, :count).by(-1)
       end
 
-      it '他人のレコードの削除に失敗すること' do
+      it '他人のレコードの削除に失敗' do
         expect do
           delete :destroy, params: {id: anothers_pattern}
         end.to_not change(Pattern, :count)
