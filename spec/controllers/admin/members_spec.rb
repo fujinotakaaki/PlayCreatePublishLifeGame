@@ -31,6 +31,10 @@ RSpec.describe Admin::MembersController do
   end # describe '非ログインユーザの場合'
 
   describe '一般ユーザの場合' do
+    before do
+      sign_in user
+    end
+
     context 'GET #index' do
       before do
         n = User.count
