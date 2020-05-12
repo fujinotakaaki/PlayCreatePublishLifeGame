@@ -1,25 +1,21 @@
 require 'rails_helper'
-
+# bundle exec rspec spec/controllers/display_formats_spec.rb
 RSpec.describe DisplayFormatsController do
-  # 自分のアカウント
-  let!(:user){create(:user)}
-  # 自分の作成したセル表示形式データ
-  let!(:my_display_formats){create_list(:display_format, rand(2..6), user: user)}
-  # 他人のセル表示形式データ
-  let!(:others_display_formats){create_list(:display_format, 3)}
-  # 新規作成データ
-  let(:attributes_data){attributes_for(:display_format)}
+  # 自分のレコード
+  let!(:display_format){create(:display_format)}
+  # 他人のレコード
+  let!(:anothers_display_format){create(:display_format)}
 
   describe '非ログインユーザの場合' do
     context 'POST #create' do
       it 'リクエストが失敗' do
-        post :create, params: {display_format: attributes_data}, as: :js
+        post :create, params: {display_format: display_format.attributes}, as: :js
         expect(response).to have_http_status 401
       end
 
-      it 'レコードが登録されないこと' do
+      it 'レコードの登録に失敗' do
         expect do
-          post :create, params: {display_format: attributes_data}, as: :js
+          post :create, params: {display_format: display_format.attributes}, as: :js
         end.to_not change(DisplayFormat, :count)
       end
     end
@@ -33,42 +29,41 @@ RSpec.describe DisplayFormatsController do
 
     context 'GET #edit' do
       it 'リクエストが失敗' do
-        get :edit, params: { id: DisplayFormat.take }
+        get :edit, params: {id: display_format}
         expect(response).to have_http_status 302
       end
     end
 
     context 'GET #show' do
       it 'リクエストが失敗' do
-        get :show, params: { id: DisplayFormat.take }, as: :js
+        get :show, params: {id: display_format}, as: :js
         expect(response).to have_http_status 401
       end
     end
 
     context 'PATCH #update' do
       it 'リクエストが失敗' do
-        sample_record = DisplayFormat.take
-        patch :update, params: {id: sample_record, display_format: attributes_data}, as: :js
+        patch :update, params: {id: display_format, display_format: anothers_display_format.attributes}, as: :js
         expect(response).to have_http_status 401
       end
 
-      it 'レコードが更新されないこと' do
-        sample_record = DisplayFormat.take
-        expect(sample_record.reload.name).to_not eq attributes_data[:name]
-        patch :update, params: {id: sample_record, display_format: attributes_data}, as: :js
-        expect(sample_record.reload.name).to_not eq attributes_data[:name]
+      it 'レコードの更新に失敗' do
+        expect(display_format.name).to_not eq anothers_display_format.name
+        patch :update, params: {id: display_format, display_format: anothers_display_format.attributes}, as: :js
+        display_format.reload
+        expect(display_format.name).to_not eq anothers_display_format.name
       end
     end
 
     context 'DELETE #destroy' do
       it 'リクエストが失敗' do
-        delete :destroy, params: { id: DisplayFormat.take }
+        delete :destroy, params: {id: display_format}
         expect(response).to have_http_status 302
       end
 
-      it 'レコードが減らないこと' do
+      it 'レコードの削除に失敗' do
         expect do
-          delete :destroy, params: {id: DisplayFormat.take}
+          delete :destroy, params: {id: display_format}
         end.to_not change(DisplayFormat, :count)
       end
     end
@@ -77,24 +72,27 @@ RSpec.describe DisplayFormatsController do
 
   describe 'ログインユーザの場合' do
     before do
-      sign_in user
+      sign_in display_format.user
     end
 
-    context 'post #create' do
+    context 'POST #create' do
       it 'リクエストが成功' do
-        post :create, params: {display_format: attributes_data}, as: :js
+        post :create, params: {display_format: anothers_display_format.attributes}, as: :js
         expect(response).to have_http_status 200
       end
 
-      it 'レコードが登録できること' do
+      it 'レコードの登録に成功' do
         expect do
-          post :create, params: {display_format: attributes_data}, as: :js
+          post :create, params: {display_format: anothers_display_format.attributes}, as: :js
         end.to change(DisplayFormat, :count).by(1)
       end
     end
 
     context 'GET #new' do
-      it 'リクエストが成功' do
+      let!(:amounts){rand(2..7)}
+      let!(:my_records){create_list(:display_format, amounts, user: display_format.user)}
+
+      it '自分のレコードのリクエストが成功' do
         get :new
         expect(response).to have_http_status 200
       end
@@ -102,80 +100,77 @@ RSpec.describe DisplayFormatsController do
       it '適切なレコードを取得' do
         get :new
         # 自分の作成したレコードを受け取る
-        expect(assigns :display_formats).to eq my_display_formats
+        expect(assigns :display_formats).to eq display_format.user.display_formats
       end
     end
 
     context 'GET #edit' do
-      it 'リクエストが成功' do
-        get :edit, params: { id: my_display_formats.sample }
+      it '自分のレコードのリクエストが成功' do
+        get :edit, params: {id: display_format}
         expect(response).to have_http_status 200
       end
 
-      it '他ユーザのレコードへのリクエストが失敗' do
-        get :edit, params: { id: others_display_formats.sample }
+      it '他人のレコードのリクエストが失敗' do
+        get :edit, params: {id: anothers_display_format}
         expect(response).to have_http_status 302
       end
     end
 
     context 'GET #show' do
-      it 'リクエストが成功' do
-        get :show, params: { id: my_display_formats.sample }, as: "application/json"
+      it '自分のレコードのリクエストが失敗' do
+        get :show, params: {id: display_format}, as: "application/json"
         expect(response).to have_http_status 200
       end
 
       it '適切なデータを取得' do
-        display_format_sample = my_display_formats.sample
-        get :show, params: { id: display_format_sample }, as: "application/json"
+        get :show, params: {id: display_format}, as: "application/json"
         recieve_json = JSON.parse(response.body)
-        correct_json = display_format_sample.as_pattern.as_json
+        correct_json = display_format.as_pattern.as_json
         expect(recieve_json).to eq correct_json
       end
 
-      it '他ユーザのレコードへのリクエストが失敗' do
-        get :show, params: { id: others_display_formats.sample }, as: "application/json"
+      it '他人のレコードのリクエストが失敗' do
+        get :show, params: {id: anothers_display_format}, as: "application/json"
         expect(response).to have_http_status 302
       end
     end
 
     context 'PATCH #update' do
-      it 'リクエストが成功' do
-        my_sample_record = my_display_formats.sample
-        patch :update, params: {id: my_sample_record, display_format: attributes_data}, as: :js
+      it '自分のレコードのリクエストが成功' do
+        patch :update, params: {id: display_format, display_format: anothers_display_format.attributes}, as: :js
         expect(response).to have_http_status 200
       end
 
-      it 'レコードが更新されること' do
-        my_sample_record = my_display_formats.sample
-        expect(my_sample_record.name).to_not eq attributes_data[:name]
-        patch :update, params: {id: my_sample_record, display_format: attributes_data}, as: :js
-        expect(my_sample_record.reload.name).to eq attributes_data[:name]
+      it '自分のレコードの更新に成功' do
+        expect(display_format.name).to_not eq anothers_display_format.name
+        patch :update, params: {id: display_format, display_format: anothers_display_format.attributes}, as: :js
+        display_format.reload
+        expect(display_format.name).to eq anothers_display_format.name
       end
 
-      it '他人のレコードは更新できないこと' do
-        others_sample_record = others_display_formats.sample
-        expect(others_sample_record.name).to_not eq attributes_data[:name]
-        patch :update, params: {id: others_sample_record, display_format: attributes_data}, as: :js
-        expect(others_sample_record.reload.name).to_not eq attributes_data[:name]
+      it '他人のレコードの更新に失敗' do
+        expect(anothers_display_format.name).to_not eq display_format.name
+        patch :update, params: {id: anothers_display_format, display_format: display_format.attributes}, as: :js
+        anothers_display_format.reload
+        expect(anothers_display_format.name).to_not eq display_format.name
       end
     end
 
     context 'DELETE #destroy' do
       it 'リクエストが成功' do
-        my_sample_record = my_display_formats.sample
-        delete :destroy, params: { id: my_sample_record }
-        expect(response).to redirect_to "/#{I18n.default_locale}/members/#{my_sample_record.user_id}"
+        delete :destroy, params: { id: display_format }
+        expect(response).to redirect_to "/#{I18n.default_locale}/members/#{display_format.user_id}"
       end
 
-      it 'レコードが削除されていること' do
+      it '自分のレコードの削除に成功' do
         expect do
-          delete :destroy, params: { id: my_display_formats.sample }
+          delete :destroy, params: {id: display_format}
         end.to change(DisplayFormat, :count).by(-1)
       end
 
-      it '他人のレコードは削除できないこと' do
+      it '他人のレコードの削除に失敗' do
         expect do
-          delete :destroy, params: { id: others_display_formats.sample }
+          delete :destroy, params: {id: anothers_display_format}
         end.to_not change(DisplayFormat, :count)
       end
     end
