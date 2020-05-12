@@ -10,7 +10,6 @@ RSpec.describe MembersController do
   # 新規作成データ
   let(:attributes_data){attributes_for(:user, :for_attributes)}
 
-
   describe '非ログインユーザの場合' do
     context 'GET #confirm' do
       it 'リクエストが失敗' do
@@ -57,7 +56,7 @@ RSpec.describe MembersController do
       # end
 
       it 'リクエストが成功かつ適切なレコードを取得' do
-        get :show, params: {id: user, page: @page_select}
+        get :show, params: {id: user, page: @page_select_maker}
         expect(response).to have_http_status 200
         expect(assigns :user).to eq user
         expect(assigns :patterns).to eq user.patterns.limit(amounts_per_page).offset(amounts_per_page*(@page_select_maker-1)).reverse_order
@@ -140,7 +139,7 @@ RSpec.describe MembersController do
 
       context '投稿一覧について' do
         # it 'リクエストが成功' do
-        #   get :show, params: {id: user, page: @page_select}
+        #   get :show, params: {id: user, page: @page_select_maker}
         #   expect(response).to have_http_status 200
         # end
 
@@ -155,7 +154,7 @@ RSpec.describe MembersController do
 
       context 'お気に入り一覧について' do
         # it 'リクエストが成功' do
-        #   get :show, params: {id: user, page: @page_select, favorite: true}
+        #   get :show, params: {id: user, page: @page_select_favorite, favorite: true}
         #   expect(response).to have_http_status 200
         # end
 

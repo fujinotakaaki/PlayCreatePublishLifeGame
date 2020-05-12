@@ -118,19 +118,19 @@ RSpec.describe DisplayFormatsController do
 
     context 'GET #show' do
       it '自分のレコードのリクエストが失敗' do
-        get :show, params: {id: display_format}, as: "application/json"
+        get :show, params: {id: display_format}, as: :json
         expect(response).to have_http_status 200
       end
 
       it '適切なデータを取得' do
-        get :show, params: {id: display_format}, as: "application/json"
+        get :show, params: {id: display_format}, as: :json
         recieve_json = JSON.parse(response.body)
         correct_json = display_format.as_pattern.as_json
         expect(recieve_json).to eq correct_json
       end
 
       it '他人のレコードのリクエストが失敗' do
-        get :show, params: {id: anothers_display_format}, as: "application/json"
+        get :show, params: {id: anothers_display_format}, as: :json
         expect(response).to have_http_status 302
       end
     end

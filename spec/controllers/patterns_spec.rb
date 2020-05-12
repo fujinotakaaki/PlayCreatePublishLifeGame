@@ -15,24 +15,30 @@ RSpec.describe PatternsController do
         n = rand(3..100)
         # pattern, anothers_patternの個数を考慮
         create_list(:pattern_random, n-2)
-        puts "Patternレコード数：#{Pattern.count}, n=#{n}"
+        # puts "Patternレコード数：#{Pattern.count}, n=#{n}"
 
-        r = n / amounts_per_page
-        r += (n % amounts_per_page).zero? ? 0 : 1
         # 参照するページの決定
-        @page_select = rand(1..r)
-        puts "ページ指定：#{@page_select}"
+        @page_select = rand(1..(n.to_f / amounts_per_page).ceil)
+        # puts "ページ指定：#{@page_select}"
       end
 
-      it 'リクエストが成功' do
-        get :index, params: {page: @page_select}
-        expect(response).to have_http_status 200
+      context '全投稿の検索' do
+        # it 'リクエストが成功' do
+        #   get :index, params: {page: @page_select}
+        #   expect(response).to have_http_status 200
+        # end
+
+        it 'リクエストが成功かつ適切なレコードを取得' do
+          get :index, params: {page: @page_select}
+          expect(response).to have_http_status 200
+          expect(assigns :patterns).to eq Pattern.limit(amounts_per_page).offset(amounts_per_page*(@page_select-1)).reverse_order
+          expect(assigns :title).to eq "全投稿"
+          expect(assigns :title_detail).to be_nil
+        end
       end
 
-      it '適切なレコードを取得' do
-        get :index, params: {page: @page_select}
-        expect(assigns :patterns).to eq Pattern.limit(amounts_per_page).offset(amounts_per_page*(@page_select-1)).reverse_order
-      end
+      context 'カテゴリ検索'
+      context 'キーワード検索'
     end
 
     context 'POST #create' do
@@ -115,24 +121,30 @@ RSpec.describe PatternsController do
         n = rand(3..100)
         # pattern, anothers_patternの個数を考慮
         create_list(:pattern_random, n-2)
-        puts "Patternレコード数：#{Pattern.count}, n=#{n}"
+        # puts "Patternレコード数：#{Pattern.count}, n=#{n}"
 
-        r = n / amounts_per_page
-        r += (n % amounts_per_page).zero? ? 0 : 1
         # 参照するページの決定
-        @page_select = rand(1..r)
-        puts "ページ指定：#{@page_select}"
+        @page_select = rand(1..(n.to_f / amounts_per_page).ceil)
+        # puts "ページ指定：#{@page_select}"
       end
 
-      it 'リクエストが成功' do
-        get :index, params: {page: @page_select}
-        expect(response).to have_http_status 200
+      context '全投稿の検索' do
+        # it 'リクエストが成功' do
+        #   get :index, params: {page: @page_select}
+        #   expect(response).to have_http_status 200
+        # end
+
+        it 'リクエストが成功かつ適切なレコードを取得' do
+          get :index, params: {page: @page_select}
+          expect(response).to have_http_status 200
+          expect(assigns :patterns).to eq Pattern.limit(amounts_per_page).offset(amounts_per_page*(@page_select-1)).reverse_order
+          expect(assigns :title).to eq "全投稿"
+          expect(assigns :title_detail).to be_nil
+        end
       end
 
-      it '適切なレコードを取得' do
-        get :index, params: {page: @page_select}
-        expect(assigns :patterns).to eq Pattern.limit(amounts_per_page).offset(amounts_per_page*(@page_select-1)).reverse_order
-      end
+      context 'カテゴリ検索'
+      context 'キーワード検索'
     end
 
     context 'POST #create' do
@@ -144,7 +156,7 @@ RSpec.describe PatternsController do
       it 'レコードの登録に成功' do
         expect do
           post :create, params: {pattern: anothers_pattern.attributes}, as: :js
-        end.to change(Pattern, :count).by(1)
+        end.to change(Pattern, :count).by(1).and change(Making, :count).by(-1)
       end
     end
 
