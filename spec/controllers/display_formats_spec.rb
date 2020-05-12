@@ -10,7 +10,6 @@ RSpec.describe DisplayFormatsController do
   # 新規作成データ
   let(:attributes_data){attributes_for(:display_format)}
 
-
   describe '非ログインユーザの場合' do
     context 'POST #create' do
       it 'リクエストが失敗' do
@@ -65,6 +64,12 @@ RSpec.describe DisplayFormatsController do
       it 'リクエストが失敗' do
         delete :destroy, params: { id: DisplayFormat.take }
         expect(response).to have_http_status 302
+      end
+
+      it 'レコードが減らないこと' do
+        expect do
+          delete :destroy, params: {id: DisplayFormat.take}
+        end.to_not change(DisplayFormat, :count)
       end
     end
   end # describe '非ログインユーザの場合'

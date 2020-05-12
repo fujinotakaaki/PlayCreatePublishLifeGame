@@ -74,7 +74,7 @@ class PatternsController < ApplicationController
     # ログインユーザとオーナーが一致しているか判定
     unless Pattern.find( params[ :id ] ).user_id  == current_user.id then
       # 不一致 => マイページへ
-      redirect_to current_user
+      redirect_to member_path( current_user )
     end
   end
 
