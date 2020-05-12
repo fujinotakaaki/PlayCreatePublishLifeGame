@@ -5,10 +5,24 @@ RSpec.describe PostCommentsController do
   let(:user){create(:user)}
   # 他人の作成したパターン
   let(:pattern){create(:pattern_random)}
+  # コメントデータ
+  let(:comments){create_list(:comment, rand(6..30), pattern: pattern)}
   # 新規作成データ
   let(:attributes_data){attributes_for(:comment)}
 
   describe '非ログインユーザの場合' do
+    context 'GET #show' do
+      it 'リクエストが成功' do
+        get :show, xhr: true, params: {pattern_id: comments.sample.pattern}, as: :js
+        expect(response).to have_http_status 200
+      end
+
+      it '適切なレコードを取得' do
+        get :show, xhr: true, params: {pattern_id: comments.sample.pattern}, as: :js
+        expect(assigns :comments).to eq pattern.post_comments.reverse_order
+      end
+    end
+
     context 'POST #create' do
       it 'リクエストが失敗' do
         post :create, params: {pattern_id: pattern, post_comment: attributes_data}, as: :js
@@ -27,6 +41,18 @@ RSpec.describe PostCommentsController do
   describe 'ログインユーザの場合' do
     before do
       sign_in user
+    end
+
+    context 'GET #show' do
+      it 'リクエストが成功' do
+        get :show, xhr: true, params: {pattern_id: comments.sample.pattern}, as: :js
+        expect(response).to have_http_status 200
+      end
+
+      it '適切なレコードを取得' do
+        get :show, xhr: true, params: {pattern_id: comments.sample.pattern}, as: :js
+        expect(assigns :comments).to eq pattern.post_comments.reverse_order
+      end
     end
 
     context 'POST #create' do
