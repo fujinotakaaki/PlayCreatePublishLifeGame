@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'PostCommentモデルのバリデーションテスト', type: :model do
-  let(:post_comment){ create(:post_comment) }
+  let(:post_comment){ create(:comment) }
 
   context 'bodyカラム' do
     it '空欄でないこと' do

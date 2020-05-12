@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :post_comment do
-    sequence(:body) { |n| "post_comment_#{n}" }
+  factory :comment, class: PostComment do
+    body { Faker::String.random.truncate(500) }
     association :user, factory: :user
-    association :pattern, factory: :pattern_block # Patternレコード（ブロック）
+    association :pattern, factory: :pattern_random
   end
 end

@@ -40,6 +40,7 @@
 .byebug_history
 .DS_Store
 /db/.DS_Store
+/spec/example_spec.rb
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key

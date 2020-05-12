@@ -1,6 +1,6 @@
 class DisplayFormatsController < ApplicationController
   before_action :authenticate_user!
-  before_action :baria_user, only: [ :edit, :update, :destroy ]
+  before_action :baria_user, only: [ :show, :edit, :update, :destroy ]
 
   def new
     @display_format = DisplayFormat.new

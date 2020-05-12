@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :category do
-    name { 'category_sample' }
-    explanation { 'category_explanation' }
+    name { Faker::String.random }
+    explanation { Faker::String.random.truncate(500) }
   end
 end

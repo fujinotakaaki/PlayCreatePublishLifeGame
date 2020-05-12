@@ -13,9 +13,9 @@ Rails.application.routes.draw do
       resource :favorite, only: [ :create, :destroy ]
     end
     # 表示形式のルーティング
-    resources :display_formats
+    resources :display_formats, except: [ :index ]
     # パターン作成のルーティング
-    resource :making
+    resource :making, except: [ :show ]
     # ジャンルのルーティング
     resources :categories, only: [ :index, :show ]
     # ユーザアカウント管理の設定(devise)
