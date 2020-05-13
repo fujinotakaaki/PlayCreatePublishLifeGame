@@ -24,4 +24,18 @@ FactoryBot.define do
     association :category, factory: :category
     association :display_format, factory: :display_format
   end
+
+  factory :pattern_glider, class: Pattern do
+    name { 'グライダー' }
+    introduction { '最小の移動物体。ループします。' }
+    margin_top { 1 }
+    margin_bottom { 1 }
+    margin_left { 1 }
+    margin_right { 1 }
+    normalized_rows_sequence { '2,1,7' }
+    is_torus { true }
+    association :user, factory: :user
+    association :category, factory: :category
+    association :display_format, factory: :display_format
+  end
 end

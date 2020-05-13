@@ -1,6 +1,6 @@
 require 'rails_helper'
 # bundle exec rspec spec/features/devise_spec.rb
-RSpec.feature 'ユーザー認証に関するテスト１' do
+RSpec.feature 'ユーザー認証に関するテスト１', type: :feature do
   let!(:user){build(:user, confirmed_at: nil)}
   let!(:uniq_user){create(:user)}
   after do
@@ -116,7 +116,7 @@ RSpec.feature 'ユーザー認証に関するテスト１' do
 end # feature 'ユーザー認証に関するテスト１'
 
 
-RSpec.feature "ユーザー認証に関するテスト２", js: true do
+RSpec.feature "ユーザー認証に関するテスト２", type: :feature, js: true do
   let!(:user){create(:user)}
 
   scenario 'アカウントの削除に成功' do
