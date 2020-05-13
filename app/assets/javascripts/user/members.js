@@ -1,40 +1,29 @@
 /*
 * =============================
-* モーダルウィンドウ表示処理
+* モーダルウィンドウ操作処理
 * =============================
 */
-function modalOpen() {
-  // モーダルウィンドウを表示
-  $('.members__modal').fadeIn();
-  // 入力フォームの監視
-  $(".members__confirm--textField").keyup( function() {
-    let formText = $(this).val();
-    let machingText = $(".members__confirm--machingText").text();
-    // フォームの値確認
-    let judge = ( formText === machingText );
-    // 一致すれば退会ボタンを使用可能にする
-    $(".members__confirm--submit").css({
-      'pointer-events': judge && 'auto' || '',
-      'background-color': judge && 'red' || ''
-    });
+function modalOperation() {
+  // モーダルウィンドウを表示・非表示
+  $('.members__modal').fadeToggle(function(){
+    // 入力フォームをクリア
+    $(".members__confirm--textField").val("");
+    // ボタン押下不可能に戻す
+    checkForm(false);
   });
 }
 
 
 /*
 * =============================
-* モーダルウィンドウ非表示処理
+* 最終確認フォームの入力監視＆「退会」ボタン有効化処理
 * =============================
 */
-function modalClose() {
-  // モーダルウィンドウ非表示
-  $('.members__modal').fadeOut(function(){
-    // 入力フォームの初期化処理
-    $(".members__confirm--textField").val('').off();
-    // 退会ボタンの初期化処理
-    $(".members__confirm--submit").css({
-      'pointer-events': '',
-      'background-color': ''
-    });
-  });
+function checkForm(text) {
+  // 確認用文字列の取得
+  let machingText = $(".members__confirm--machingText").text();
+  // フォームの値と一致するか判定
+  let matchingJudge = ( text === machingText );
+  // 判定結果をボタンのdisabled属性に反映
+  $(".members__confirm--submit").prop( "disabled", ! matchingJudge );
 }
