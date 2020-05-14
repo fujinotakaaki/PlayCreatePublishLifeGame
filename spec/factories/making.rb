@@ -19,4 +19,9 @@ FactoryBot.define do
     association :user, factory: :user
     association :display_format, factory: :display_format
   end
+
+  factory :making_blank, class: Making do
+    association :user, factory: :user
+    association :display_format, factory: :display_format
+  end
 end

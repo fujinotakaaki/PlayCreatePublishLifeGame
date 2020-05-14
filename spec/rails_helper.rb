@@ -64,6 +64,7 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include FeatureMacros, type: :feature
   config.include LifeGameMacros, type: :feature
 
   # テストデータで作成したデータの削除ツールの設定
