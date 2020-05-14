@@ -107,7 +107,7 @@ RSpec.feature 'ライフゲームのエミュレーションテスト', type: :f
     end
   end
 
-  scenario 'リセットに成功すること' do
+  scenario 'リセットに成功' do
     # visit pattern_path(id: pattern)
     # 世代カウントを保持する<p>タグを捕捉
     current_generation = find(:css, '.patterns__show--lifeGameInfo')
@@ -131,5 +131,49 @@ RSpec.feature 'ライフゲームのエミュレーションテスト', type: :f
     end.to change(current_generation, :text).from('第1世代').to('第0世代')
     .and change(current_diaplay, :text).to(build_life_game_text_from glider)
     # .and change(current_diaplay, :text).to(build_life_game_text_from pattern)
+  end
+
+  scenario 'エミュレート中は一時停止ボタンのみ活性' do
+    # 操作ボタン類を保持する<div>タグに限定
+    within(:css, '.patterns__show--lifeGameInterface') do
+      # 一時停止ボタン以外のボタンを捕捉
+      interface_buttons = all('button', class: '!patterns__show--lifeGameStop')
+      expect(interface_buttons.count).to eq 5
+      # 一時停止ボタンを捕捉
+      stop_button = find(:css, '.patterns__show--lifeGameStop')
+
+      # 開始ボタンを押下 => エミュレーションが開始され、ボタンの状態が変化する
+      all(:css, '.patterns__show--lifeGameStart').sample.click
+
+      # 一時停止ボタンは押下可能な状態であることを確認
+      expect(stop_button.disabled?).to be_falsey
+      # 一時停止ボタン以外はボタンが押せないことを確認
+      interface_buttons.each do |button|
+        expect(button.disabled?).to be_truthy
+      end
+    end
+  end
+
+  scenario '一時停止中は一時停止ボタンのみ非活性' do
+    # 操作ボタン類を保持する<div>タグに限定
+    within(:css, '.patterns__show--lifeGameInterface') do
+      # 一時停止ボタン以外のボタンを捕捉
+      interface_buttons = all('button', class: '!patterns__show--lifeGameStop')
+      expect(interface_buttons.count).to eq 5
+      # 一時停止ボタンを捕捉
+      stop_button = find(:css, '.patterns__show--lifeGameStop')
+
+      # 開始ボタンを押下 => エミュレーションが開始され、ボタンの状態が変化する
+      all(:css, '.patterns__show--lifeGameStart').sample.click
+      # 一時停止ボタンを押下 => エミュレーションが停止し、ボタンの状態が変化する
+      stop_button.click
+
+      # 一時停止ボタンは押下可能な状態であることを確認
+      expect(stop_button.disabled?).to be_truthy
+      # 一時停止ボタン以外はボタンが押せないことを確認
+      interface_buttons.each do |button|
+        expect(button.disabled?).to be_falsey
+      end
+    end
   end
 end # describe 'ライフゲームのエミュレーションテスト'
