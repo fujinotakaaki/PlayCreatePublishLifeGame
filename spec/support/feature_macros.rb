@@ -24,7 +24,7 @@ module FeatureMacros
       puts "\e[33m ┏ #{examples} (PENDING: Not yet implemented)\e[0m"
       return
     end
-    puts TrueClass === yield ? "\e[32m ┏ #{examples}\e[0m" : "\e[31m ┏ #{examples}\e[0m"
+    puts TrueClass === yield ? "\e[34m ┏ #{examples}\e[0m" : "\e[31m ┏ #{examples}\e[0m"
   end
 
   private
