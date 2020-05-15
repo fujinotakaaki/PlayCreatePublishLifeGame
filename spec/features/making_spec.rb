@@ -1,7 +1,7 @@
 # rack-testでは#visible?でfalseとなるのは、style="display: none;"またはhidden属性のみにしか
 # https://stackoverflow.com/questions/40825218/checking-for-visibility-with-capybara
 require 'rails_helper'
-# bundle exec rspec spec/features/making-spec.rb
+# bundle exec rspec spec/features/making_spec.rb
 RSpec.describe "パターン作成ページのテスト", type: :feature, js: true do # Making#editページ
   let(:making){create(:making_blank)}
   # let(:making){create(:making_random)}
