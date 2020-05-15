@@ -15,6 +15,7 @@ module LifeGameMacros
 
   # ビット列をエミュレータ画面に表示されるテキストを構築する
   def bitstrings_to_text( bitstrings = [], **options )
+    bitstrings = bitstrings.split(/[^01]/) if bitstrings.is_a?(String)
     options[:alive] ||= ?■
     options[:dead] ||= ?□
     bitstrings.map! do |bitstring|

@@ -26,7 +26,7 @@ RSpec.describe "MakingヘルパーとPatternヘルパーの統合テスト", typ
       # ライフゲーム用のビット列の配列を構築
       building_lifegame_pattern_array = helper.build_up_bit_strings_from Pattern.new(making_params)
       # 投入データと完全に一致するか判定
-      expect(building_lifegame_pattern_array).to eq pattern_data[:making_text].split(?,)
+      expect(building_lifegame_pattern_array.join("\n")).to eq pattern_data[:making_text]
     end
   end
 end
