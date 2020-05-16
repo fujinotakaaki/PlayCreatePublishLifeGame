@@ -6,7 +6,8 @@ require 'rails_helper'
 RSpec.describe "パターン作成ページのテスト", type: :feature, js: true do # Making#editページ
   let(:making_blank){create(:making_blank)}
   let(:making_random){create(:making_random)}
-  let(:making_text){attributes_for(:making_random, :sample)[:making_text]}
+  let(:making_filled_text){attributes_for(:making_random, :filled_sample)[:making_text]}
+  let(:making_unfilled_text){attributes_for(:making_random, :unfilled_sample)[:making_text]}
   before do
     create(:display_format, id: 1)
     sign_in making_blank.user
@@ -129,7 +130,7 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
 
     context '一斉操作機能' do
       before do
-        fill_in 'making_making_text', with: making_text
+        fill_in 'making_making_text', with: making_filled_text
         find_link(href: '#sampleContentB').click
       end
 
@@ -183,37 +184,55 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
     end # context '一斉操作セクション'
 
 
-    # context '補完処理機能' do
-    #   before do
-    #     find_link(href: '#sampleContentC').click
-    #   end
-    # end
-    #
-    #
+    context '補完処理機能' do
+      before do
+        find_link(href: '#sampleContentC').click
+      end
+
+      it '左側の補完に成功' do
+        fill_in 'making_making_text', with: making_unfilled_text
+        find_by_id('sampleContentC').find_button('左側').click
+        expect_making_textarea "00001\n00011\n00101\n01001\n10001"
+        expect_making_display bitstrings_to_text("00001\n00011\n00101\n01001\n10001")
+      end
+
+      it '右側の補完に成功' do
+        fill_in 'making_making_text', with: making_unfilled_text
+        find_by_id('sampleContentC').find_button('右側').click
+        expect_making_textarea "10000\n11000\n10100\n10010\n10001"
+        expect_making_display bitstrings_to_text("10000\n11000\n10100\n10010\n10001")
+      end
+    end
+
+
     # context '特殊処理機能' do
     #   before do
     #     find_link(href: '#sampleContentD').click
     #   end
     # end
-    #
-    #
+
+
     # context 'パターン合成機能' do
     #   before do
     #     find_link(href: '#sampleContentE').click
     #   end
     # end
-    #
-    #
-    # context '画像から作成機能' do
-    #   before do
-    #     find_link(href: '#sampleContentF').click
-    #   end
-    # end
+
+
+    context '画像から作成機能' do
+      before do
+        find_link(href: '#sampleContentF').click
+      end
+
+      it 'ページ遷移に成功' do
+        find_by_id('sampleContentF').find('a').click
+        expect(current_path).to eq new_making_path(locale: I18n.default_locale)
+      end
+    end
 
 
     context 'パターンの初期化機能' do
       before do
-        # sign_out making_blank.user
         sign_in making_random.user
         visit edit_making_path
         find_link(href: '#sampleContentG').click
