@@ -176,6 +176,15 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
           expect_making_textarea 'パターン作成'
         end
 
+        it '0は無効' do
+          height = rand(1..300)
+          width = 0
+          fill_in_size(height, width)
+          accept_alert '入力サイズが不適切です' do
+            find(:css, '.makings__edit--createBlankPattern').find('button').click
+          end
+        end
+
         it '負の値は無効' do
           height = rand(1..300)
           width = -1

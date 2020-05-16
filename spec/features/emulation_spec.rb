@@ -93,19 +93,13 @@ RSpec.feature 'ライフゲームのエミュレーションテスト', type: :f
 
     # 開始ボタンを押下
     all(:css, '.patterns__show--lifeGameStart').sample.click
-    # ライフゲーム盤面が自動的に世代更新されることを確認
-    expect do
-      sleep 2
-    end.to change(current_generation, :text).and change(current_diaplay, :text)
-
     # 一時停止ボタンを押下
     find(:css, '.patterns__show--lifeGameStop').click
     # ライフゲーム盤面の自動更新が実行されないことを確認
     rand(3..6).times do
       expect do
         sleep 0.5
-      end.to_not change(current_generation, :text) # .and change(current_diaplay, :text)
-      # #to_notは.and changeをサポートしていないため
+      end.to_not change(current_generation, :text) #change(current_diaplay, :text)
     end
   end
 

@@ -8,7 +8,7 @@ RSpec.describe MembersController do
   # 他人のアカウント
   let!(:another_user){create(:user)}
   # 新規作成データ
-  let(:attributes_data){attributes_for(:user, :for_attributes)}
+  let(:attributes_data){attributes_for(:user, :edit)}
 
   describe '非ログインユーザの場合' do
     context 'GET #confirm' do

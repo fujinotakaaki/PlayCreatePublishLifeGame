@@ -6,6 +6,7 @@ FactoryBot.define do
     margin_bottom { rand(5) }
     margin_left { rand(5) }
     margin_right { rand(5) }
+    image {Faker::Avatar.image}
     sequence(:normalized_rows_sequence, (3..6).cycle) {|n| Array.new(rand(3..6)){SecureRandom.hex(n)}.join(?,) }
     association :user, factory: :user
     association :category, factory: :category
