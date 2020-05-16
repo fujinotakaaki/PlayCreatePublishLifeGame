@@ -19,12 +19,12 @@ module FeatureMacros
   # テストの結果に応じて色も変わるように対応
   # テスト通過とペンディングは集計結果には反映されません
   def it_puts(examples = "")
-    print ' ' * 8 # ネストの数？レベル？が分からないので空白の長さは暫定的
+    indent =  ' ' * 8 # ネストの数？レベル？が分からないので空白の長さは暫定的
     unless block_given? then
-      puts "\e[33m ┏ #{examples} (PENDING: Not yet implemented)\e[0m"
+      puts "#{indent}\e[33m ┏ #{examples} (PENDING: Not yet implemented)\e[0m"
       return
     end
-    puts TrueClass === yield ? "\e[34m ┏ #{examples}\e[0m" : "\e[31m ┏ #{examples}\e[0m"
+    puts TrueClass === yield ? "#{indent}\e[34m ┏ #{examples}\e[0m" : "#{indent}\e[31m ┏ #{examples}\e[0m"
   end
 
   private

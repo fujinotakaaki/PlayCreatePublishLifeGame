@@ -205,11 +205,62 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
     end
 
 
-    # context '特殊処理機能' do
-    #   before do
-    #     find_link(href: '#sampleContentD').click
-    #   end
-    # end
+    context '特殊処理機能' do
+      before do
+        fill_in 'making_making_text', with: making_filled_text
+        find_by_id('sampleContentA').find_button('検証').click
+        find_link(href: '#sampleContentD').click
+      end
+
+      it '上下反転' do
+        flip_button = find_by_id('sampleContentD').find_button('上下反転')
+        # 上下反転の確認
+        flip_button.click
+        expect_making_textarea "1010\n1001\n1011\n0110"
+        expect_making_display bitstrings_to_text("1010\n1001\n1011\n0110")
+        # 元に戻るか確認
+        flip_button.click
+        expect_making_textarea making_filled_text
+        expect_making_display bitstrings_to_text(making_filled_text)
+      end
+
+      it '左右反転' do
+        flip_button = find_by_id('sampleContentD').find_button('左右反転')
+        # 左右反転の確認
+        flip_button.click
+        expect_making_textarea "0110\n1101\n1001\n0101"
+        expect_making_display bitstrings_to_text("0110\n1101\n1001\n0101")
+        # 元に戻るか確認
+        flip_button.click
+        expect_making_textarea making_filled_text
+        expect_making_display bitstrings_to_text(making_filled_text)
+      end
+
+      it '反時計回りに回転' do
+        rotation_button = find_by_id('sampleContentD').find_button('反時計回りに回転')
+        it_puts '90度回転' do
+          rotation_button.click
+          expect_making_textarea "0110\n1101\n1000\n0111"
+          expect_making_display bitstrings_to_text("0110\n1101\n1000\n0111")
+        end
+        it_puts '180度回転' do
+          rotation_button.click
+          expect_making_textarea "0101\n1001\n1101\n0110"
+          expect_making_display bitstrings_to_text("0101\n1001\n1101\n0110")
+        end
+        it_puts '270度回転' do
+          rotation_button.click
+          expect_making_textarea "1110\n0001\n1011\n0110"
+          expect_making_display bitstrings_to_text("1110\n0001\n1011\n0110")
+        end
+        # 元に戻るか確認
+        it_puts '360度回転' do
+          rotation_button.click
+          expect_making_textarea making_filled_text
+          expect_making_display bitstrings_to_text(making_filled_text)
+        end
+      end
+    end # context '特殊処理機能' do
 
 
     # context 'パターン合成機能' do
