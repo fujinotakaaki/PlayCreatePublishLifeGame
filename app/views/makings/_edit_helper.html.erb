@@ -6,9 +6,9 @@
 	<li class="makings__edit--tabLi"><a href="#sampleContentB" data-toggle="tab">一斉操作</a></li>
 	<li class="makings__edit--tabLi"><a href="#sampleContentC" data-toggle="tab">補完処理</a></li>
 	<li class="makings__edit--tabLi"><a href="#sampleContentD" data-toggle="tab">特殊処理</a></li>
-	<li class="makings__edit--tabLi"><a href="#sampleContentG" data-toggle="tab">パターン合成</a></li>
-	<li class="makings__edit--tabLi"><a href="#sampleContentE" data-toggle="tab">画像から作成</a></li>
-	<li class="makings__edit--tabLi"><a href="#sampleContentF" data-toggle="tab">パターンの初期化</a></li>
+	<li class="makings__edit--tabLi"><a href="#sampleContentE" data-toggle="tab">パターン合成</a></li>
+	<li class="makings__edit--tabLi"><a href="#sampleContentF" data-toggle="tab">画像から作成</a></li>
+	<li class="makings__edit--tabLi"><a href="#sampleContentG" data-toggle="tab">パターンの初期化</a></li>
 </ul>
 
 
@@ -119,7 +119,7 @@
 
 
 	<!-- 画像から作成セクション -->
-	<div class="tab-pane makings__edit--tabCommon" id="sampleContentE">
+	<div class="tab-pane makings__edit--tabCommon" id="sampleContentF">
 		<h4>
 			<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
 			画像からパターン作成メニュー
@@ -130,7 +130,7 @@
 
 
 	<!-- パターンの初期化セクション -->
-	<div class="tab-pane makings__edit--tabCommon" id="sampleContentF">
+	<div class="tab-pane makings__edit--tabCommon" id="sampleContentG">
 		<!--作成中のパターンを初期化-->
 		<%= link_to making_path, method: :delete, data: { confirm: "作成中のパターンを初期化しますか？" } do %>
 		<p class="makings__edit--destroyTab">
@@ -141,7 +141,7 @@
 
 
 	<!-- パターン合成セクション -->
-	<div class="tab-pane makings__edit--tabCommon" id="sampleContentG">
+	<div class="tab-pane makings__edit--tabCommon" id="sampleContentE">
 		<!--パターン合成タイトル-->
 		<h4>
 			<i class="fas fa-object-group"></i>

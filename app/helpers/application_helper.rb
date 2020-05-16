@@ -24,4 +24,13 @@ module ApplicationHelper
     black_list = %w( confirmations omniauth_callbacks passwords registrations sessions unlocks )
     black_list.include?( _controller_name )
   end
+
+  # link_to_if代替メソッド => falseのときにはネストしている中身を出力
+  def link_to_if_with_block(condition, options = nil, html_options = nil, &block)
+    if condition
+      link_to(options, html_options, &block)
+    else
+      capture(&block)
+    end
+  end
 end

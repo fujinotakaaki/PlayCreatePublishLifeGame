@@ -11,7 +11,7 @@
 <!--アクションボタン-->
 <p class="members__confirm--content">
   <%= link_to "戻る", member_path( current_user ), class: "btn btn-primary" %>
-  <%= link_to "退会する", "javascript:void(0)", class: "btn btn-danger", onclick: "modalOpen();" %>
+  <%= link_to "退会する", "javascript:void(0)", class: "btn btn-danger", onclick: "modalOperation();" %>
 </p>
 
 <!--モーダルウィンドウ-->
@@ -22,7 +22,7 @@
   <div class="members__modal--content">
     <!--「閉じる」アクション-->
     <p style="text-align: right;">
-      <%= link_to 'javascript:void(0)', class: "members__modal--close", onclick: "modalClose();" do %>
+      <%= link_to 'javascript:void(0)', class: "members__modal--close", onclick: "modalOperation();" do %>
       <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
       <% end %>
     </p>
@@ -34,8 +34,8 @@
       確認のために、「<%= content_tag :span, current_user.confirm_text, class: "members__confirm--machingText" %>」と入力してください。
     </p>
     <!--退会確認フォーム-->
-    <%= text_field_tag 'confirm_member', nil, class: "form-control members__confirm--textField" %>
+    <%= text_field_tag 'confirm_member', nil, class: "form-control members__confirm--textField", onkeyup: 'checkForm(this.value);' %>
     <!--確定ボタン-->
-    <%= link_to "退会", user_registration_path, method: :delete, class: "btn members__confirm--submit" %>
+    <%= button_to "退会", user_registration_path, method: :delete, disabled: true, class: "btn btn-danger members__confirm--submit" %>
   </div>
 </div>

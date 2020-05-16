@@ -63,13 +63,6 @@
     &--submit {
       width: 100%;
       margin: 1em 0;
-      pointer-events: none;
-      color: whitesmoke;
-      background-color: rgba(255,0,0,0.4);
-      &:hover {
-        color: whitesmoke !important;
-        background-color: #d00 !important;
-      }
     }
     &--caution {
       padding: 10px;

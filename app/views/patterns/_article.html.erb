@@ -3,7 +3,8 @@
 <div class="clearfix patterns__article">
   <!--パターンアピール画像-->
   <div class="patterns__article--divLeft" >
-    <%= link_to pattern_path( pattern ) do %>
+    <!-- link_to_if代替メソッド(module ApplicationHelper)-->
+    <%= link_to_if_with_block character_limit < 2**6, pattern_path( pattern ) do %>
     <%= attachment_image_tag pattern, :image, fallback: asset_path( "no_pattern_image.jpg" ), class: "center-block patterns__article--img" %>
     <% end %>
   </div>
