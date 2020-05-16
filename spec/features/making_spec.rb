@@ -48,7 +48,6 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
       end
     end # it 'パターン作成に必要なアクションボタン存在の確認'
 
-    ## パターン作成用インターフェースについてのテスト
     it 'ナビゲーションタグの挙動のテスト' do
       it_puts 'classにactiveを有する要素は唯一であること' do
         within(:css, '.makings__edit--tabNav') do
@@ -128,6 +127,76 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
     # https://github.com/teamcapybara/capybara/blob/master/History.md#version-300rc2
 
 
+    context '基本操作機能' do
+      context '作成中のパターンの保存について' do
+        it '適切なパターンの保存に成功' do
+          fill_in 'making_making_text', with: making_filled_text
+          find(:css, '.makings__edit--verification').click
+          expect(find(:css, '.application__alert--common')).to have_content '保存可能なパターンです'
+          find_by_id('makings__edit--update').click
+          expect(find(:css, '.application__alert--common')).to have_content '更新に成功しました'
+          making_blank.reload
+          expect(making_blank.normalized_rows_sequence).to eq '6,b,9,a'
+        end
+
+        it '不適切なパターンの保存に失敗' do
+          fill_in 'making_making_text', with: making_unfilled_text
+          find(:css, '.makings__edit--verification').click
+          expect(find(:css, '.application__alert--common')).to have_content 'パターンが不揃いです'
+          making_blank.reload
+          expect(making_blank.normalized_rows_sequence).to be_nil
+        end
+      end # context '作成中のパターンの保存について'
+
+      context '空のパターン作成メソッド' do
+        def fill_in_size(height, width)
+          fill_in 'blank_pattern_height', with: height
+          fill_in 'blank_pattern_width', with: width
+        end
+
+        it '空のパターンの作成に成功' do
+          height = rand(1..300)
+          width = rand(1..300)
+          fill_in_size(height, width)
+          accept_confirm '編集中の内容は消えますがよろしいですか？' do
+            find(:css, '.makings__edit--createBlankPattern').find('button').click
+          end
+          expect_making_text = Array.new(height, ?0*width).join("\n")
+          expect_making_textarea expect_making_text
+          expect_making_display bitstrings_to_text(expect_making_text)
+        end
+
+        it 'キャンセルに成功' do
+          height = rand(1..300)
+          width = rand(1..300)
+          fill_in_size(height, width)
+          dismiss_confirm '編集中の内容は消えますがよろしいですか？' do
+            find(:css, '.makings__edit--createBlankPattern').find('button').click
+          end
+          expect_making_textarea 'パターン作成'
+        end
+
+        it '負の値は無効' do
+          height = rand(1..300)
+          width = -1
+          fill_in_size(height, width)
+          accept_alert '入力サイズが不適切です' do
+            find(:css, '.makings__edit--createBlankPattern').find('button').click
+          end
+        end
+
+        it '300より大きい値は無効' do
+          height = rand(1..300)
+          width = 301
+          fill_in_size(height, width)
+          accept_alert '入力サイズが不適切です' do
+            find(:css, '.makings__edit--createBlankPattern').find('button').click
+          end
+        end
+      end # context '空のパターン作成メソッド'
+    end # context '基本操作機能'
+
+
     context '一斉操作機能' do
       before do
         fill_in 'making_making_text', with: making_filled_text
@@ -202,7 +271,7 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
         expect_making_textarea "10000\n11000\n10100\n10010\n10001"
         expect_making_display bitstrings_to_text("10000\n11000\n10100\n10010\n10001")
       end
-    end
+    end # context '補完処理機能'
 
 
     context '特殊処理機能' do
@@ -260,14 +329,14 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
           expect_making_display bitstrings_to_text(making_filled_text)
         end
       end
-    end # context '特殊処理機能' do
+    end # context '特殊処理機能'
 
 
     # context 'パターン合成機能' do
     #   before do
     #     find_link(href: '#sampleContentE').click
     #   end
-    # end
+    # end # context 'パターン合成機能'
 
 
     context '画像から作成機能' do
@@ -279,7 +348,7 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
         find_by_id('sampleContentF').find('a').click
         expect(current_path).to eq new_making_path(locale: I18n.default_locale)
       end
-    end
+    end # context '画像から作成機能'
 
 
     context 'パターンの初期化機能' do

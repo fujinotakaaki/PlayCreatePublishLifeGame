@@ -19,11 +19,6 @@ FactoryBot.define do
       normalized_rows_sequence { nil }
       making_text { "1\n11\n101\n1001\n10001" }
     end
-
-    trait :unfilled_sample do
-      normalized_rows_sequence { nil }
-      making_text { "1\n11\n101\n1001\n10001" }
-    end
   end
 
   factory :making_octagon, class: Making do
