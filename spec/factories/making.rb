@@ -9,10 +9,15 @@ FactoryBot.define do
       normalized_rows_sequence { nil }
       sequence(:making_text, (4..10).cycle) {|n| Array.new(rand(2..10), 2**n - 1).map{|i|"%0#{n}b" % (i^rand(2**n))}.join("\n") }
     end
-    
+
     trait :sample do
       normalized_rows_sequence { nil }
       making_text { "0110\n1011\n1001\n1010" }
+    end
+
+    trait :unfilled_sample do
+      normalized_rows_sequence { nil }
+      making_text { "1\n11\n101\n1001\n10001" }
     end
   end
 

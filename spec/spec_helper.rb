@@ -48,7 +48,9 @@ RSpec.configure do |config|
 
   config.after do |example|
     if example.metadata[:type] == :feature and example.exception
-        page.save_screenshot "#{DateTime.now}.png"
+      # execute_script "document.getElementById('making_making_text').scrollIntoView(false)"
+      # execute_script "document.querySelector('.patterns__show--lifeGameDisplay').scrollIntoView(false)"
+      page.save_screenshot "#{DateTime.now}.png"
     end
   end
 
