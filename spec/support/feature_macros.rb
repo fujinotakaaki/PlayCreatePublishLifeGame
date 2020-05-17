@@ -14,6 +14,7 @@ module FeatureMacros
     logout(warden_scope(resource))
   end
 
+  ## コンソールにexmplesを出力する
   # aggregate_failures: trueのテストでのみ使用を想定
   # テストの内容をコンソールに出力（--format documentationを使用も想定）
   # テストの結果に応じて色も変わるように対応
@@ -25,6 +26,29 @@ module FeatureMacros
       return
     end
     puts TrueClass === yield ? "#{indent}\e[34m ┏ #{examples}\e[0m" : "#{indent}\e[31m ┏ #{examples}\e[0m"
+  end
+
+  ## Making#edit専用メソッド
+  # テキストエリアの入力を比較するメソッド
+  def expect_making_textarea(value)
+    expect(find_by_id('making_making_text').value).to have_content value
+  end
+
+  # エミュレーション画面のテキストを比較するメソッド
+  def expect_making_display(value)
+    current_display = find(:css, '.patterns__show--lifeGameDisplay')
+    expect(current_display.text).to have_content value
+  end
+
+  # 基本機能の無地の盤面の作成フォームの値入力処理
+  def fill_in_size(height, width)
+    fill_in 'blank_pattern_height', with: height
+    fill_in 'blank_pattern_width', with: width
+  end
+
+  def expect_coupler_preview(value)
+    current_display = find(:css, '.makings__edit--couplerPreview')
+    expect(current_display.text).to have_content value
   end
 
   private
