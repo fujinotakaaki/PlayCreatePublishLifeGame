@@ -2,8 +2,8 @@ require 'rails_helper'
 # bundle exec rspec spec/controllers/admin/patterns_spec.rb
 RSpec.describe Admin::PatternsController do
   let!(:user){create(:user)}
-  let!(:my_patterns){create_list(:pattern_random, rand(5..10), user: user)}
-  let!(:patterns){create_list(:pattern_random, rand(5..10))}
+  let!(:my_patterns){create_list(:pattern, rand(5..10), user: user)}
+  let!(:patterns){create_list(:pattern, rand(5..10))}
   let(:admin){create(:admin)}
 
   describe '非ログインユーザの場合' do

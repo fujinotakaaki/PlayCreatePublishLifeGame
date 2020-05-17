@@ -8,7 +8,7 @@ RSpec.describe MakingsController do
   # 新規ユーザ
   let(:user){create(:user)}
   # 新規作成データ
-  let(:attributes_data){attributes_for(:making_random, :filled_random)}
+  let(:attributes_data){attributes_for(:making, :filled_random)}
   # レコードのデフォルト設定のために以下２項目は存在が必須
   let!(:display_format_first){create(:display_format, id: 1)}
   let!(:display_format_second){create(:display_format, id: 2)}

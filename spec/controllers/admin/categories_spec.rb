@@ -1,7 +1,7 @@
 require 'rails_helper'
 # bundle exec rspec spec/controllers/admin/categories_spec.rb
 RSpec.describe Admin::CategoriesController do
-  let!(:pattern){create(:pattern_random)}
+  let!(:pattern){create(:pattern)}
   let!(:category){create(:category)}
   let(:user){create(:user)}
   let(:admin){create(:admin)}

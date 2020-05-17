@@ -4,13 +4,13 @@
 require 'rails_helper'
 # bundle exec rspec spec/features/making_spec.rb
 RSpec.describe "パターン作成ページのテスト", type: :feature, js: true do # Making#editページ
-  let(:making_blank){create(:making_blank)}
-  let(:making_random){create(:making_random)}
-  let(:making_filled_text){attributes_for(:making_random, :filled_sample)[:making_text]}
-  let(:making_unfilled_text){attributes_for(:making_random, :unfilled_sample)[:making_text]}
+  let(:making_fresh_off){create(:making)}
+  let(:making){create(:making_random)}
+  let(:filled_sample_text){attributes_for(:making, :filled_sample)[:making_text]}
+  let(:unfilled_sample_text){attributes_for(:making, :unfilled_sample)[:making_text]}
   before do
     create(:display_format, id: 1)
-    sign_in making_blank.user
+    sign_in making_fresh_off.user
     visit edit_making_path
   end
 
@@ -130,21 +130,21 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
     context '基本操作機能' do
       context '作成中のパターンの保存について' do
         it '適切なパターンの保存に成功' do
-          fill_in 'making_making_text', with: making_filled_text
+          fill_in 'making_making_text', with: filled_sample_text
           find(:css, '.makings__edit--verification').click
           expect(find(:css, '.application__alert--common')).to have_content '保存可能なパターンです'
           find_by_id('makings__edit--update').click
           expect(find(:css, '.application__alert--common')).to have_content '更新に成功しました'
-          making_blank.reload
-          expect(making_blank.normalized_rows_sequence).to eq '6,b,9,a'
+          making_fresh_off.reload
+          expect(making_fresh_off.normalized_rows_sequence).to eq '6,b,9,a'
         end
 
         it '不適切なパターンの保存に失敗' do
-          fill_in 'making_making_text', with: making_unfilled_text
+          fill_in 'making_making_text', with: unfilled_sample_text
           find(:css, '.makings__edit--verification').click
           expect(find(:css, '.application__alert--common')).to have_content 'パターンが不揃いです'
-          making_blank.reload
-          expect(making_blank.normalized_rows_sequence).to be_nil
+          making_fresh_off.reload
+          expect(making_fresh_off.normalized_rows_sequence).to be_nil
         end
       end # context '作成中のパターンの保存について'
 
@@ -208,7 +208,7 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
 
     context '一斉操作機能' do
       before do
-        fill_in 'making_making_text', with: making_filled_text
+        fill_in 'making_making_text', with: filled_sample_text
         find_link(href: '#sampleContentB').click
       end
 
@@ -268,14 +268,14 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
       end
 
       it '左側の補完に成功' do
-        fill_in 'making_making_text', with: making_unfilled_text
+        fill_in 'making_making_text', with: unfilled_sample_text
         find_by_id('sampleContentC').find_button('左側').click
         expect_making_textarea "00001\n00011\n00101\n01001\n10001"
         expect_making_display bitstrings_to_text("00001\n00011\n00101\n01001\n10001")
       end
 
       it '右側の補完に成功' do
-        fill_in 'making_making_text', with: making_unfilled_text
+        fill_in 'making_making_text', with: unfilled_sample_text
         find_by_id('sampleContentC').find_button('右側').click
         expect_making_textarea "10000\n11000\n10100\n10010\n10001"
         expect_making_display bitstrings_to_text("10000\n11000\n10100\n10010\n10001")
@@ -285,7 +285,7 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
 
     context '特殊処理機能' do
       before do
-        fill_in 'making_making_text', with: making_filled_text
+        fill_in 'making_making_text', with: filled_sample_text
         find_by_id('sampleContentA').find_button('検証').click
         find_link(href: '#sampleContentD').click
       end
@@ -298,8 +298,8 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
         expect_making_display bitstrings_to_text("1010\n1001\n1011\n0110")
         # 元に戻るか確認
         flip_button.click
-        expect_making_textarea making_filled_text
-        expect_making_display bitstrings_to_text(making_filled_text)
+        expect_making_textarea filled_sample_text
+        expect_making_display bitstrings_to_text(filled_sample_text)
       end
 
       it '左右反転' do
@@ -310,8 +310,8 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
         expect_making_display bitstrings_to_text("0110\n1101\n1001\n0101")
         # 元に戻るか確認
         flip_button.click
-        expect_making_textarea making_filled_text
-        expect_making_display bitstrings_to_text(making_filled_text)
+        expect_making_textarea filled_sample_text
+        expect_making_display bitstrings_to_text(filled_sample_text)
       end
 
       it '反時計回りに回転' do
@@ -334,8 +334,8 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
         # 元に戻るか確認
         it_puts '360度回転' do
           rotation_button.click
-          expect_making_textarea making_filled_text
-          expect_making_display bitstrings_to_text(making_filled_text)
+          expect_making_textarea filled_sample_text
+          expect_making_display bitstrings_to_text(filled_sample_text)
         end
       end
     end # context '特殊処理機能'
@@ -362,30 +362,33 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
 
     context 'パターンの初期化機能' do
       before do
-        sign_in making_random.user
+        sign_in making.user
         visit edit_making_path
         find_link(href: '#sampleContentG').click
       end
 
       it '中断に成功' do
         reset_button = find_by_id('sampleContentG').find('a')
-        expect(reset_button['data-confirm']).to eq "作成中のパターンを初期化しますか？"
         expect(page).to_not have_content 'パターン作成の説明'
         # aタグではURLが無いというエラーになるため、
-        dismiss_confirm {reset_button.find('p').click}
+        dismiss_confirm "作成中のパターンを初期化しますか？" do
+          reset_button.find('p').click
+        end
         expect(page).to_not have_content 'パターン作成の説明'
-        making_random.reload
-        expect(making_random.normalized_rows_sequence).to_not be_nil
+        making.reload
+        expect(making.normalized_rows_sequence).to_not be_nil
       end
 
       it '実行に成功' do
         reset_button = find_by_id('sampleContentG').find('a')
-        expect(reset_button['data-confirm']).to eq "作成中のパターンを初期化しますか？"
         expect(page).to_not have_content 'パターン作成の説明'
         # aタグではURLが無いというエラーになるため、
-        accept_confirm {reset_button.find('p').click}
+        accept_confirm "作成中のパターンを初期化しますか？" do
+          reset_button.find('p').click
+        end
+        sleep 3
         expect(page).to have_content 'パターン作成の説明'
-        expect{making_random.reload}.to raise_exception(ActiveRecord::RecordNotFound)
+        expect{making.reload}.to raise_exception(ActiveRecord::RecordNotFound)
       end
     end # context 'パターンの初期化機能'
   end # describe '機能のテスト'

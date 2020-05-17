@@ -2,7 +2,7 @@ require 'rails_helper'
 # bundle exec rspec spec/features/devise_spec.rb
 RSpec.feature 'ユーザー認証に関するテスト１', type: :feature do
   let!(:user){build(:user, confirmed_at: nil)}
-  let!(:uniq_user){create(:user)}
+  let(:uniq_user){create(:user)}
   after do
     ActionMailer::Base.deliveries.clear
   end
@@ -23,7 +23,7 @@ RSpec.feature 'ユーザー認証に関するテスト１', type: :feature do
       fill_in 'user[name]', with: user.name
       fill_in 'user[email]', with: user.email
       fill_in 'user[password]', with: user.password
-      fill_in 'user[password_confirmation]', with: user.password
+      fill_in 'user[password_confirmation]', with: user.password_confirmation
       # アカウントの新規登録実行
       expect { click_button 'アカウント作成' }.to change{ ActionMailer::Base.deliveries.size }.by(1)
       # 認証メールを送信したことの通知確認
@@ -72,13 +72,14 @@ RSpec.feature 'ユーザー認証に関するテスト１', type: :feature do
       # アカウントの新規登録ページへ遷移
       visit new_user_registration_path
       # 入力用のデータを作成
-      test_user = build(:user)
+      new_user = build(:user)
+      new_user.attributes = options
 
       # フォームに値を入力
-      fill_in 'user[name]', with: options[:name] || test_user.name
-      fill_in 'user[email]', with: options[:email] || test_user.email
-      fill_in 'user[password]', with: options[:password] || test_user.password
-      fill_in 'user[password_confirmation]', with: options[:password_confirmation] || options[:password] || test_user.password
+      fill_in 'user[name]', with: new_user.name
+      fill_in 'user[email]', with: new_user.email
+      fill_in 'user[password]', with: new_user.password
+      fill_in 'user[password_confirmation]', with: new_user.password_confirmation
 
       # レコードが作成されていないことを確認
       expect { click_button 'アカウント作成' }.to_not change(User, :count)
@@ -86,12 +87,8 @@ RSpec.feature 'ユーザー認証に関するテスト１', type: :feature do
       expect(page).to have_text(error_message)
     end
 
-    scenario '名前が空欄は無効' do
-      sign_up_test('ユーザ名を入力してください', name: "")
-    end
-
-    scenario 'Eメールが空欄は無効' do
-      sign_up_test('Eメールを入力してください', email: "")
+    scenario '名前が空白または空欄は無効' do
+      sign_up_test('ユーザ名を入力してください', name: " "*rand(3))
     end
 
     scenario '登録済のEメールは無効' do
@@ -100,7 +97,7 @@ RSpec.feature 'ユーザー認証に関するテスト１', type: :feature do
 
     scenario 'パスワードが6文字未満は無効' do
       shorter_password = SecureRandom.alphanumeric(1+rand(5))
-      sign_up_test('パスワードは6文字以上で入力してください', password: shorter_password)
+      sign_up_test('パスワードは6文字以上で入力してください', password: shorter_password, password_confirmation: shorter_password)
     end
 
     scenario '再入力パスワードが異なる場合は無効' do
