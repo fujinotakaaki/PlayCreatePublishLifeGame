@@ -4,7 +4,7 @@ RSpec.describe FavoritesController do
   # 自分のお気に入りレコード
   let!(:favorite){create(:favorite)}
   # 他人が作成したパターン
-  let(:pattern){create(:pattern_random)}
+  let(:pattern){create(:pattern)}
 
   describe '非ログインユーザの場合' do
     context 'POST #create' do

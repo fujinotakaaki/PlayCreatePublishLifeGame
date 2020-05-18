@@ -8,7 +8,7 @@ RSpec.describe MembersController do
   # 他人のアカウント
   let!(:another_user){create(:user)}
   # 新規作成データ
-  let(:attributes_data){attributes_for(:user, :for_attributes)}
+  let(:attributes_data){attributes_for(:user, :edit)}
 
   describe '非ログインユーザの場合' do
     context 'GET #confirm' do
@@ -31,7 +31,7 @@ RSpec.describe MembersController do
         # 作成するレコード数
         # 自分の投稿
         n1 = rand(3..20)
-        create_list(:pattern_random, n1, user: user)
+        create_list(:pattern, n1, user: user)
         # 自分がお気に入りした投稿
         n2 = rand(3..20)
         create_list(:favorite, n2, user: user)
@@ -40,7 +40,7 @@ RSpec.describe MembersController do
         create_list(:favorite, n3, user: another_user)
         # 他人の投稿
         n4 = rand(3..20)
-        create_list(:pattern_random, n4)
+        create_list(:pattern, n4)
 
         # 参照するページの決定
         # 自分の投稿一覧
@@ -118,7 +118,7 @@ RSpec.describe MembersController do
         # 作成するレコード数
         # 自分の投稿
         n1 = rand(3..20)
-        create_list(:pattern_random, n1, user: user)
+        create_list(:pattern, n1, user: user)
         # 自分がお気に入りした投稿
         n2 = rand(3..20)
         create_list(:favorite, n2, user: user)
@@ -127,7 +127,7 @@ RSpec.describe MembersController do
         create_list(:favorite, n3, user: another_user)
         # 他人の投稿
         n4 = rand(3..20)
-        create_list(:pattern_random, n4)
+        create_list(:pattern, n4)
 
         # 参照するページの決定
         # 自分の投稿一覧

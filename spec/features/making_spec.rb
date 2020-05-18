@@ -4,13 +4,13 @@
 require 'rails_helper'
 # bundle exec rspec spec/features/making_spec.rb
 RSpec.describe "パターン作成ページのテスト", type: :feature, js: true do # Making#editページ
-  let(:making_blank){create(:making_blank)}
-  let(:making_random){create(:making_random)}
-  let(:making_filled_text){attributes_for(:making_random, :filled_sample)[:making_text]}
-  let(:making_unfilled_text){attributes_for(:making_random, :unfilled_sample)[:making_text]}
+  let(:making_fresh_off){create(:making)}
+  let(:making){create(:making_random)}
+  let(:filled_sample_text){attributes_for(:making, :filled_sample)[:making_text]}
+  let(:unfilled_sample_text){attributes_for(:making, :unfilled_sample)[:making_text]}
   before do
     create(:display_format, id: 1)
-    sign_in making_blank.user
+    sign_in making_fresh_off.user
     visit edit_making_path
   end
 
@@ -86,18 +86,6 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
 
 
   describe '機能のテスト' do
-    # テキストエリアの入力を比較するメソッド
-    def expect_making_textarea(value)
-      expect(find_by_id('making_making_text').value).to have_content value
-    end
-
-    # エミュレーション画面のテキストを比較するメソッド
-    def expect_making_display(value)
-      current_display = find(:css, '.patterns__show--lifeGameDisplay')
-      expect(current_display.text).to have_content value
-    end
-
-
     context '入力機能', aggregate_failures: true do
       it "入力した値をパターン反映に成功" do
         random_bit_strings = Array.new(rand(5..10)){?0*rand(0..10)+rand(0...1024).to_s(2)}.join("\n")
@@ -130,30 +118,25 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
     context '基本操作機能' do
       context '作成中のパターンの保存について' do
         it '適切なパターンの保存に成功' do
-          fill_in 'making_making_text', with: making_filled_text
+          fill_in 'making_making_text', with: filled_sample_text
           find(:css, '.makings__edit--verification').click
           expect(find(:css, '.application__alert--common')).to have_content '保存可能なパターンです'
           find_by_id('makings__edit--update').click
           expect(find(:css, '.application__alert--common')).to have_content '更新に成功しました'
-          making_blank.reload
-          expect(making_blank.normalized_rows_sequence).to eq '6,b,9,a'
+          making_fresh_off.reload
+          expect(making_fresh_off.normalized_rows_sequence).to eq '6,b,9,a'
         end
 
         it '不適切なパターンの保存に失敗' do
-          fill_in 'making_making_text', with: making_unfilled_text
+          fill_in 'making_making_text', with: unfilled_sample_text
           find(:css, '.makings__edit--verification').click
           expect(find(:css, '.application__alert--common')).to have_content 'パターンが不揃いです'
-          making_blank.reload
-          expect(making_blank.normalized_rows_sequence).to be_nil
+          making_fresh_off.reload
+          expect(making_fresh_off.normalized_rows_sequence).to be_nil
         end
       end # context '作成中のパターンの保存について'
 
       context '空のパターン作成メソッド' do
-        def fill_in_size(height, width)
-          fill_in 'blank_pattern_height', with: height
-          fill_in 'blank_pattern_width', with: width
-        end
-
         it '空のパターンの作成に成功' do
           height = rand(1..300)
           width = rand(1..300)
@@ -174,6 +157,15 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
             find(:css, '.makings__edit--createBlankPattern').find('button').click
           end
           expect_making_textarea 'パターン作成'
+        end
+
+        it '0は無効' do
+          height = rand(1..300)
+          width = 0
+          fill_in_size(height, width)
+          accept_alert '入力サイズが不適切です' do
+            find(:css, '.makings__edit--createBlankPattern').find('button').click
+          end
         end
 
         it '負の値は無効' do
@@ -199,7 +191,7 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
 
     context '一斉操作機能' do
       before do
-        fill_in 'making_making_text', with: making_filled_text
+        fill_in 'making_making_text', with: filled_sample_text
         find_link(href: '#sampleContentB').click
       end
 
@@ -259,14 +251,14 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
       end
 
       it '左側の補完に成功' do
-        fill_in 'making_making_text', with: making_unfilled_text
+        fill_in 'making_making_text', with: unfilled_sample_text
         find_by_id('sampleContentC').find_button('左側').click
         expect_making_textarea "00001\n00011\n00101\n01001\n10001"
         expect_making_display bitstrings_to_text("00001\n00011\n00101\n01001\n10001")
       end
 
       it '右側の補完に成功' do
-        fill_in 'making_making_text', with: making_unfilled_text
+        fill_in 'making_making_text', with: unfilled_sample_text
         find_by_id('sampleContentC').find_button('右側').click
         expect_making_textarea "10000\n11000\n10100\n10010\n10001"
         expect_making_display bitstrings_to_text("10000\n11000\n10100\n10010\n10001")
@@ -276,7 +268,7 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
 
     context '特殊処理機能' do
       before do
-        fill_in 'making_making_text', with: making_filled_text
+        fill_in 'making_making_text', with: filled_sample_text
         find_by_id('sampleContentA').find_button('検証').click
         find_link(href: '#sampleContentD').click
       end
@@ -289,8 +281,8 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
         expect_making_display bitstrings_to_text("1010\n1001\n1011\n0110")
         # 元に戻るか確認
         flip_button.click
-        expect_making_textarea making_filled_text
-        expect_making_display bitstrings_to_text(making_filled_text)
+        expect_making_textarea filled_sample_text
+        expect_making_display bitstrings_to_text(filled_sample_text)
       end
 
       it '左右反転' do
@@ -301,8 +293,8 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
         expect_making_display bitstrings_to_text("0110\n1101\n1001\n0101")
         # 元に戻るか確認
         flip_button.click
-        expect_making_textarea making_filled_text
-        expect_making_display bitstrings_to_text(making_filled_text)
+        expect_making_textarea filled_sample_text
+        expect_making_display bitstrings_to_text(filled_sample_text)
       end
 
       it '反時計回りに回転' do
@@ -325,18 +317,321 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
         # 元に戻るか確認
         it_puts '360度回転' do
           rotation_button.click
-          expect_making_textarea making_filled_text
-          expect_making_display bitstrings_to_text(making_filled_text)
+          expect_making_textarea filled_sample_text
+          expect_making_display bitstrings_to_text(filled_sample_text)
         end
       end
     end # context '特殊処理機能'
 
 
-    # context 'パターン合成機能' do
-    #   before do
-    #     find_link(href: '#sampleContentE').click
-    #   end
-    # end # context 'パターン合成機能'
+    context 'パターン合成機能' do
+      let!(:block){create(:block)}
+      let!(:glider){create(:glider)}
+      let!(:octagon){create(:octagon)}
+      let!(:step4){create(:step4)}
+      before do
+        Capybara.reset_sessions!
+        sign_in making_fresh_off.user
+        visit edit_making_path
+      end
+
+      # 4x3マスとブロックの合成に成功
+      it 'テストケース1' do
+        fill_in_size(4,3)
+        accept_confirm '編集中の内容は消えますがよろしいですか？' do
+          find(:css, '.makings__edit--createBlankPattern').find('button').click
+        end
+        find_link(href: '#sampleContentE').click
+        within(:css, '#sampleContentE') do
+          select(block.name)
+          expect(page).to have_content 'このパターンは使用可能です'
+          expect_coupler_preview bitstrings_to_text("11\n11")
+          expect do
+            find(:css, '.makings__edit--startCoupling').click
+          end.to change{page.has_text?('手順２')}.from(be_falsey).to(be_truthy)
+        end
+        execute_script "keypressHelper('down')"
+        find_button('設置').click
+        expect_making_display bitstrings_to_text("000\n110\n110\n000")
+        find_link(href: '#sampleContentA').click
+        find(:css, '.makings__edit--verification').click
+        expect(find(:css, '.application__alert--common')).to have_content '保存可能なパターンです'
+        find_by_id('makings__edit--update').click
+        expect(find(:css, '.application__alert--common')).to have_content '更新に成功しました'
+      end
+
+      # 合成のキャンセルに成功
+      it 'テストケース2' do
+        fill_in_size(5,5)
+        accept_confirm '編集中の内容は消えますがよろしいですか？' do
+          find(:css, '.makings__edit--createBlankPattern').find('button').click
+        end
+        find_link(href: '#sampleContentE').click
+        # 1コ目の合成処理
+        within(:css, '#sampleContentE') do
+          select(step4.name)
+          expect(page).to have_content 'このパターンは使用可能です'
+          expect_coupler_preview bitstrings_to_text("1000\n1100\n1110\n1111")
+          expect do
+            find(:css, '.makings__edit--startCoupling').click
+          end.to change{page.has_text?('手順２')}.from(be_falsey).to(be_truthy)
+        end
+        window_key_sends('right')
+        window_key_sends('down')
+        window_key_sends('down', shiftKey: true)
+        expect_making_display bitstrings_to_text(<<~FIRST)
+        00000
+        01111
+        01110
+        01100
+        01000
+        FIRST
+        find_button('中止').click
+        expect_making_display bitstrings_to_text(<<~FIRST)
+        00000
+        00000
+        00000
+        00000
+        00000
+        FIRST
+        find_link(href: '#sampleContentA').click
+        find(:css, '.makings__edit--verification').click
+        expect(find(:css, '.application__alert--common')).to have_content '「生」セルがありません'
+      end
+
+      # 3x1マスとブロックでは、幅が足りないため合成できないこと
+      it 'テストケース3' do
+        fill_in_size(3,1)
+        accept_confirm '編集中の内容は消えますがよろしいですか？' do
+          find(:css, '.makings__edit--createBlankPattern').find('button').click
+        end
+        find_link(href: '#sampleContentE').click
+        within(:css, '#sampleContentE') do
+          select(block.name)
+          expect(page).to have_content 'このパターンは使用できません'
+          expect_coupler_preview bitstrings_to_text("11\n11")
+          expect(find(:css, '.makings__edit--startCoupling').disabled?).to be_truthy
+        end
+      end
+
+      # 1x3マスとブロックでは、高さが足りないため合成できないこと
+      it 'テストケース4' do
+        fill_in_size(1,3)
+        accept_confirm '編集中の内容は消えますがよろしいですか？' do
+          find(:css, '.makings__edit--createBlankPattern').find('button').click
+        end
+        find_link(href: '#sampleContentE').click
+        within(:css, '#sampleContentE') do
+          select(block.name)
+          expect(page).to have_content 'このパターンは使用できません'
+          expect_coupler_preview bitstrings_to_text("11\n11")
+          expect(find(:css, '.makings__edit--startCoupling').disabled?).to be_truthy
+        end
+      end
+
+      # 10x10マスに八角形を中央に配置し、合成に成功
+      it 'テストケース5' do
+        fill_in_size(10,10)
+        accept_confirm '編集中の内容は消えますがよろしいですか？' do
+          find(:css, '.makings__edit--createBlankPattern').find('button').click
+        end
+        find_link(href: '#sampleContentE').click
+        within(:css, '#sampleContentE') do
+          select(octagon.name)
+          expect(page).to have_content 'このパターンは使用可能です'
+          expect_coupler_preview bitstrings_to_text(<<~OCTAGON)
+          010010
+          101101
+          010010
+          010010
+          101101
+          010010
+          OCTAGON
+          expect do
+            find(:css, '.makings__edit--startCoupling').click
+          end.to change{page.has_text?('手順２')}.from(be_falsey).to(be_truthy)
+        end
+        2.times do
+          window_key_sends('down')
+          window_key_sends('right')
+        end
+        find_button('設置').click
+        expect_making_display bitstrings_to_text(<<~OCTAGON)
+        0000000000
+        0000000000
+        0001001000
+        0010110100
+        0001001000
+        0001001000
+        0010110100
+        0001001000
+        0000000000
+        0000000000
+        OCTAGON
+        find_link(href: '#sampleContentA').click
+        find(:css, '.makings__edit--verification').click
+        expect(find(:css, '.application__alert--common')).to have_content '保存可能なパターンです'
+        find_by_id('makings__edit--update').click
+        expect(find(:css, '.application__alert--common')).to have_content '更新に成功しました'
+      end
+
+      # 5x13マスと２個のグライダーの合成に成功
+      # 左右反転操作
+      # 回転操作
+      # 10マス跳び移動
+      # 連続同パターン合成
+      it 'テストケース6' do
+        fill_in_size(5,13)
+        accept_confirm '編集中の内容は消えますがよろしいですか？' do
+          find(:css, '.makings__edit--createBlankPattern').find('button').click
+        end
+        find_link(href: '#sampleContentE').click
+        within(:css, '#sampleContentE') do
+          select(glider.name)
+          expect(page).to have_content 'このパターンは使用可能です'
+          expect_coupler_preview bitstrings_to_text("010\n001\n111")
+          expect do
+            find(:css, '.makings__edit--startCoupling').click
+          end.to change{page.has_text?('手順２')}.from(be_falsey).to(be_truthy)
+        end
+        3.times do
+          window_key_sends('right')
+          window_key_sends('r')
+          window_key_sends('down')
+        end
+        find_button('設置').click
+        expect_making_display bitstrings_to_text(<<~FIRST)
+        0000000000000
+        0000000000000
+        0001000000000
+        0001010000000
+        0001100000000
+        FIRST
+        expect(find(:css, '.makings__edit--startCoupling').disabled?).to be_falsey
+        find(:css, '.makings__edit--startCoupling').click
+        window_key_sends('r')
+        window_key_sends('right', altKey: true)
+        window_key_sends('right', shiftKey: true)
+        find_button('設置').click
+        expect_making_display bitstrings_to_text(<<~SECOND)
+        0000000000010
+        0000000000100
+        0001000000111
+        0001010000000
+        0001100000000
+        SECOND
+        find_link(href: '#sampleContentA').click
+        find(:css, '.makings__edit--verification').click
+        expect(find(:css, '.application__alert--common')).to have_content '保存可能なパターンです'
+        find_by_id('makings__edit--update').click
+        expect(find(:css, '.application__alert--common')).to have_content '更新に成功しました'
+      end
+
+      # 連続異種パターン合成に成功
+      it 'テストケース7' do
+        fill_in_size(15,15)
+        accept_confirm '編集中の内容は消えますがよろしいですか？' do
+          find(:css, '.makings__edit--createBlankPattern').find('button').click
+        end
+        find_link(href: '#sampleContentE').click
+        # 1コ目の合成処理
+        within(:css, '#sampleContentE') do
+          select(step4.name)
+          expect(page).to have_content 'このパターンは使用可能です'
+          expect_coupler_preview bitstrings_to_text("1000\n1100\n1110\n1111")
+          expect do
+            find(:css, '.makings__edit--startCoupling').click
+          end.to change{page.has_text?('手順２')}.from(be_falsey).to(be_truthy)
+        end
+        window_key_sends('right', altKey: true)
+        window_key_sends('r')
+        3.times {window_key_sends('left')}
+        find_button('設置').click
+        expect_making_display bitstrings_to_text(<<~FIRST)
+        000000000010000
+        000000000110000
+        000000001110000
+        000000011110000
+        000000000000000
+        000000000000000
+        000000000000000
+        000000000000000
+        000000000000000
+        000000000000000
+        000000000000000
+        000000000000000
+        000000000000000
+        000000000000000
+        000000000000000
+        FIRST
+        # 2コ目の合成処理
+        within(:css, '#sampleContentE') do
+          select(glider.name)
+          expect(page).to have_content 'このパターンは使用可能です'
+          expect_coupler_preview bitstrings_to_text("010\n001\n111")
+          expect do
+            find(:css, '.makings__edit--startCoupling').click
+          end.to change{page.has_text?('手順２')}.from(be_falsey).to(be_truthy)
+        end
+        window_key_sends('right', altKey: true)
+        window_key_sends('down', altKey: true)
+        window_key_sends('up')
+        find_button('設置').click
+        expect_making_display bitstrings_to_text(<<~SECOND)
+        000000000010000
+        000000000110000
+        000000001110000
+        000000011110000
+        000000000000000
+        000000000000000
+        000000000000000
+        000000000000000
+        000000000000000
+        000000000001000
+        000000000000100
+        000000000011100
+        000000000000000
+        000000000000000
+        000000000000000
+        SECOND
+        # 3コ目の合成処理
+        within(:css, '#sampleContentE') do
+          select(octagon.name)
+          expect(page).to have_content 'このパターンは使用可能です'
+          expect_coupler_preview bitstrings_to_text("010010\n101101\n010010\n010010\n101101\n010010")
+          expect do
+            find(:css, '.makings__edit--startCoupling').click
+          end.to change{page.has_text?('手順２')}.from(be_falsey).to(be_truthy)
+        end
+        5.times do
+          window_key_sends('right')
+          window_key_sends('down')
+        end
+        find_button('設置').click
+        expect_making_display bitstrings_to_text(<<~THIRD)
+        000000000010000
+        000000000110000
+        000000001110000
+        000000011110000
+        000000000000000
+        000000100100000
+        000001011010000
+        000000100100000
+        000000100100000
+        000001011011000
+        000000100100100
+        000000000011100
+        000000000000000
+        000000000000000
+        000000000000000
+        THIRD
+        find_link(href: '#sampleContentA').click
+        find(:css, '.makings__edit--verification').click
+        expect(find(:css, '.application__alert--common')).to have_content '保存可能なパターンです'
+        find_by_id('makings__edit--update').click
+        expect(find(:css, '.application__alert--common')).to have_content '更新に成功しました'
+      end
+    end # context 'パターン合成機能'
 
 
     context '画像から作成機能' do
@@ -353,30 +648,33 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
 
     context 'パターンの初期化機能' do
       before do
-        sign_in making_random.user
+        sign_in making.user
         visit edit_making_path
         find_link(href: '#sampleContentG').click
       end
 
       it '中断に成功' do
         reset_button = find_by_id('sampleContentG').find('a')
-        expect(reset_button['data-confirm']).to eq "作成中のパターンを初期化しますか？"
         expect(page).to_not have_content 'パターン作成の説明'
         # aタグではURLが無いというエラーになるため、
-        dismiss_confirm {reset_button.find('p').click}
+        dismiss_confirm "作成中のパターンを初期化しますか？" do
+          reset_button.find('p').click
+        end
         expect(page).to_not have_content 'パターン作成の説明'
-        making_random.reload
-        expect(making_random.normalized_rows_sequence).to_not be_nil
+        making.reload
+        expect(making.normalized_rows_sequence).to_not be_nil
       end
 
       it '実行に成功' do
         reset_button = find_by_id('sampleContentG').find('a')
-        expect(reset_button['data-confirm']).to eq "作成中のパターンを初期化しますか？"
         expect(page).to_not have_content 'パターン作成の説明'
         # aタグではURLが無いというエラーになるため、
-        accept_confirm {reset_button.find('p').click}
+        accept_confirm "作成中のパターンを初期化しますか？" do
+          reset_button.find('p').click
+        end
+        sleep 3
         expect(page).to have_content 'パターン作成の説明'
-        expect{making_random.reload}.to raise_exception(ActiveRecord::RecordNotFound)
+        expect{making.reload}.to raise_exception(ActiveRecord::RecordNotFound)
       end
     end # context 'パターンの初期化機能'
   end # describe '機能のテスト'

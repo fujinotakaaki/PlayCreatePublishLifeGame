@@ -139,3 +139,27 @@ const ajaxForGet = function( url, successCallback, failCallback = () => console.
   failCallback()
 );
 }
+
+
+/*
+* =============================
+* キータッチイベントを発生させる
+* =============================
+* rspec用テストヘルパー
+*/
+function keypressHelper(keyName, options = {shiftKey: false, altKey: false}) {
+  if ( ! keyName ) return;
+  let list = {
+    backSpace: 8,
+    enter: 13,
+    left: 37,
+    up: 38,
+    right: 39,
+    down: 40,
+    'delete': 46,
+    r: 82
+  };
+  options['keyCode'] = list[keyName];
+  window.dispatchEvent( new KeyboardEvent("keydown", options));
+  // window.dispatchEvent( new KeyboardEvent("keyup", options));
+}

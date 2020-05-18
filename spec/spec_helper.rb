@@ -50,6 +50,7 @@ RSpec.configure do |config|
     if example.metadata[:type] == :feature and example.exception
       # execute_script "document.getElementById('making_making_text').scrollIntoView(false)"
       # execute_script "document.querySelector('.patterns__show--lifeGameDisplay').scrollIntoView(false)"
+      execute_script "document.querySelector('footer').scrollIntoView(true)"
       page.save_screenshot "#{DateTime.now}.png"
     end
   end

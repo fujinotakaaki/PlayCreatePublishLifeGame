@@ -4,9 +4,9 @@ RSpec.describe PatternsController do
   # kaminariの１ページあたりのレコード取得数
   let(:amounts_per_page){Kaminari.config.default_per_page}
   # 自分のレコード
-  let!(:pattern){create(:pattern_random)}
+  let!(:pattern){create(:pattern)}
   # 他人のレコード
-  let!(:anothers_pattern){create(:pattern_random)}
+  let!(:anothers_pattern){create(:pattern)}
 
   describe '非ログインユーザの場合' do
     context 'GET #index' do
@@ -14,7 +14,7 @@ RSpec.describe PatternsController do
         # 作成するレコード数
         n = rand(3..100)
         # pattern, anothers_patternの個数を考慮
-        create_list(:pattern_random, n-2)
+        create_list(:pattern, n-2)
         # puts "Patternレコード数：#{Pattern.count}, n=#{n}"
 
         # 参照するページの決定
@@ -120,7 +120,7 @@ RSpec.describe PatternsController do
         # 作成するレコード数
         n = rand(3..100)
         # pattern, anothers_patternの個数を考慮
-        create_list(:pattern_random, n-2)
+        create_list(:pattern, n-2)
         # puts "Patternレコード数：#{Pattern.count}, n=#{n}"
 
         # 参照するページの決定

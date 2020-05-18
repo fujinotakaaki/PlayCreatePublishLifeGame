@@ -4,7 +4,7 @@ RSpec.describe PostCommentsController do
   # 自分のアカウント
   let(:user){create(:user)}
   # 他人の作成したパターン
-  let(:pattern){create(:pattern_random)}
+  let(:pattern){create(:pattern)}
   # コメントデータ
   let(:comments){create_list(:comment, rand(6..30), pattern: pattern)}
   # 新規作成データ
