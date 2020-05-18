@@ -43,5 +43,15 @@ FactoryBot.define do
       margin_right { 2 }
       normalized_rows_sequence { '12,2d,12,12,2d,12' }
     end
+
+    factory :step4 do
+      name { '階段（４段）' }
+      introduction { '右肩下がりの４段の階段' }
+      margin_top { 1 }
+      margin_bottom { 1 }
+      margin_left { 1 }
+      margin_right { 1 }
+      normalized_rows_sequence { '8,c,e,f' }
+    end
   end
 end

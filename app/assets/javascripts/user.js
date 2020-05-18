@@ -147,7 +147,8 @@ const ajaxForGet = function( url, successCallback, failCallback = () => console.
 * =============================
 * rspec用テストヘルパー
 */
-function keypressHelper(keyName) {
+function keypressHelper(keyName, options = {shiftKey: false, altKey: false}) {
+  if ( ! keyName ) return;
   let list = {
     backSpace: 8,
     enter: 13,
@@ -155,8 +156,10 @@ function keypressHelper(keyName) {
     up: 38,
     right: 39,
     down: 40,
-    'delete': 46
-  }
-  window.dispatchEvent( new KeyboardEvent("keydown", { keyCode: list[keyName] }));
-  // window.dispatchEvent( new KeyboardEvent("keyup", { keyCode: list[keyName] }));
+    'delete': 46,
+    r: 82
+  };
+  options['keyCode'] = list[keyName];
+  window.dispatchEvent( new KeyboardEvent("keydown", options));
+  // window.dispatchEvent( new KeyboardEvent("keyup", options));
 }

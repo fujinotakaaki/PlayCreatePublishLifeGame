@@ -51,6 +51,15 @@ module FeatureMacros
     expect(current_display.text).to have_content value
   end
 
+  # couplerのキー操作処理
+  def window_key_sends(key, **options)
+    options_for_js = begin
+      options = options&.to_a.map {|pair| "#{pair[0]}: #{pair[1]}"}
+      "{ #{options&.join(', ')} }"
+    end
+    execute_script "keypressHelper('#{key}', #{options_for_js})"
+  end
+
   private
 
   def warden_scope(resource)
