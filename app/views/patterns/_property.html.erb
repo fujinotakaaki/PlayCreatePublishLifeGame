@@ -19,7 +19,7 @@
       <%= content_tag :span, '', class: "glyphicon glyphicon-paperclip", aria: { hidden: true } %>
 
       <!--Patterns#showかつログインユーザの場合-->
-      <% if user_signed_in? && current_page?( pattern_path( pattern ) ) then %>
+      <% if user_signed_in? && action_name == 'show' && controller_name == 'patterns' then %>
         <!--お気に入り登録・削除の表示-->
         <% if pattern.is_favorite_by?( current_user ) then %>
           <!--登録済の場合-->
