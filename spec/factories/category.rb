@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :category do
-    name { Faker::String.random }
-    explanation { Faker::String.random.truncate(500) }
+    name { Faker::Game.genre }
+    explanation { Faker::Lorem.sentence.truncate(500) }
   end
 end

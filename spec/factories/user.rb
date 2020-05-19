@@ -4,9 +4,10 @@ FactoryBot.define do
     password { SecureRandom.alphanumeric }
     password_confirmation { password }
     confirmed_at { Time.zone.now }
-    name {Faker::Name.name}
-    introduction {Faker::String.random.truncate(500)}
-    profile_image {Faker::Avatar.image}
+    name { Faker::Name.name }
+    introduction { Faker::Lorem.sentence.truncate(500) }
+    profile_image { Faker::Avatar.image }
+
     trait :edit do
       email { nil }
       password { nil }

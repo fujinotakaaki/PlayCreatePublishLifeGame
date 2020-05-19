@@ -1,14 +1,14 @@
 FactoryBot.define do
   factory :pattern do
-    name { Faker::String.random }
-    introduction { Faker::String.random.truncate(500) }
+    name { Faker::Game.title }
+    introduction { Faker::Lorem.sentence.truncate(500) }
     margin_top { rand(5) }
     margin_bottom { rand(5) }
     margin_left { rand(5) }
     margin_right { rand(5) }
-    image {Faker::Avatar.image}
-    is_torus{[true, false].sample}
-    sequence(:normalized_rows_sequence, (3..6).cycle) {|n| Array.new(rand(3..6)){SecureRandom.hex(n)}.join(?,) }
+    image { Faker::Avatar.image }
+    is_torus{ [true, false].sample }
+    sequence( :normalized_rows_sequence, (3..6).cycle) {|n| Array.new(rand(3..6)){SecureRandom.hex(n)}.join(?,) }
     association :user, factory: :user
     association :category, factory: :category
     association :display_format, factory: :display_format
