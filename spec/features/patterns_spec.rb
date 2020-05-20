@@ -1,12 +1,12 @@
 require 'rails_helper'
-# bundle exec rspec spec/features/comment_spec.rb
+# bundle exec rspec spec/features/patterns_spec.rb
 RSpec.describe 'Patternsビューに関するテスト', type: :feature do
   let(:user){create(:user)}
   let!(:pattern){create(:pattern)}
-  let!(:patterns){create_list(:pattern, 4, category: pattern.category)}
 
   describe '非ログインユーザの場合' do
     before do
+      create_list(:pattern, 4, category: pattern.category)
       visit pattern_path(id: pattern)
       pattern.reload
     end
@@ -87,9 +87,13 @@ RSpec.describe 'Patternsビューに関するテスト', type: :feature do
     context '#show' do
       it 'お気に入り登録に成功', js: true do
         within(:css, '.patterns__show') do
+          favorite_info = find('ul').all('li')[3]
           expect do
-            find('ul').all('li')[3].find_link('登録').click
+            favorite_info.find_link('登録').click
           end.to change(Favorite, :count).by(1)
+          expect(favorite_info).to have_content '解除'
+          pattern.reload
+          expect(favorite_info).to have_content pattern.favorites_count
         end
       end
 
@@ -97,12 +101,15 @@ RSpec.describe 'Patternsビューに関するテスト', type: :feature do
         create(:favorite, pattern: pattern, user: user)
         visit current_path
         within(:css, '.patterns__show') do
+          favorite_info = find('ul').all('li')[3]
           expect do
             accept_confirm 'お気に入りを解除しますか？' do
-              find('ul').all('li')[3].find_link('解除').click
+              favorite_info.find_link('解除').click
             end
-            visit current_path
           end.to change(Favorite, :count).by(-1)
+          expect(favorite_info).to have_content '登録'
+          pattern.reload
+          expect(favorite_info).to have_content pattern.favorites_count
         end
       end
 

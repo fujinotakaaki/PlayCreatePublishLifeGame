@@ -143,7 +143,7 @@ RSpec.describe PatternsController do
         end
       end
 
-      context 'カテゴリ検索'
+      # context 'カテゴリ検索'
       context 'キーワード検索'
     end
 
