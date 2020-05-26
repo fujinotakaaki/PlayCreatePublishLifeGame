@@ -33,7 +33,7 @@
       </span>
 
       <!--投稿者情報（Patterns#showでは表示しない）-->
-      <% unless current_page?( pattern_path( pattern ) ) %>
+      <% unless action_name == 'show' && controller_name == 'patterns' %>
       <%= render 'patterns/property', pattern: pattern %>
       <% end %>
     </p>

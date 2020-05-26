@@ -60,6 +60,14 @@ module FeatureMacros
     execute_script "keypressHelper('#{key}', #{options_for_js})"
   end
 
+  # 日付を見やすい書式に変換するメソッド(patterns/property)
+  def date_format( create_time )
+    # TimeWithZone => DateTimeに変換
+    t = create_time.to_datetime
+    # 書式に当てはめる（例）2020年03月19日 03:15
+    t.strftime('%Y年%m月%d日 %H:%M')
+  end
+
   private
 
   def warden_scope(resource)
