@@ -672,8 +672,8 @@ RSpec.describe "パターン作成ページのテスト", type: :feature, js: tr
         accept_confirm "作成中のパターンを初期化しますか？" do
           reset_button.find('p').click
         end
-        sleep 3
-        expect(page).to have_content 'パターン作成の説明'
+        visit edit_making_path # 本来は必要ない
+        expect_making_textarea 'パターン作成の説明'
         expect{making.reload}.to raise_exception(ActiveRecord::RecordNotFound)
       end
     end # context 'パターンの初期化機能'

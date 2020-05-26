@@ -6,7 +6,7 @@ RSpec.describe Admin::CategoriesController do
   let(:user){create(:user)}
   let(:admin){create(:admin)}
   # 新規作成データ
-  let(:attributes_data){attributes_for(:category)}
+  let(:attributes_data){attributes_for(:category, name: "test")}
 
   describe '非ログインユーザの場合' do
     context 'GET #index' do

@@ -70,6 +70,7 @@ RSpec.describe 'Patternsビューに関するテスト', type: :feature do
         within(:css, '.comments__index') do
           expect do
             find(:css, '.comments__index--more').click
+            sleep 1
           end.to change{all(:css, '.comments__article').count}.from(5).to(6)
         end
       end
@@ -86,31 +87,28 @@ RSpec.describe 'Patternsビューに関するテスト', type: :feature do
 
     context '#show' do
       it 'お気に入り登録に成功', js: true do
-        within(:css, '.patterns__show') do
-          favorite_info = find('ul').all('li')[3]
-          expect do
+        expect do
+          within(:css, '.patterns__show') do
+            favorite_info = find('ul').all('li')[3]
             favorite_info.find_link('登録').click
-          end.to change(Favorite, :count).by(1)
-          expect(favorite_info).to have_content '解除'
-          pattern.reload
-          expect(favorite_info).to have_content pattern.favorites_count
-        end
+            expect(favorite_info).to have_content '解除'
+            pattern.reload
+            expect(favorite_info).to have_content pattern.favorites_count
+          end
+        end.to change(Favorite, :count).by(1)
       end
 
       it 'お気に入り解除に成功', js: true do
-        create(:favorite, pattern: pattern, user: user)
-        visit current_path
-        within(:css, '.patterns__show') do
-          favorite_info = find('ul').all('li')[3]
-          expect do
-            accept_confirm 'お気に入りを解除しますか？' do
-              favorite_info.find_link('解除').click
-            end
-          end.to change(Favorite, :count).by(-1)
-          expect(favorite_info).to have_content '登録'
+        visit pattern_path(id: create(:favorite, user: user).pattern)
+        expect do
+          favorite_info = find(:css, '.patterns__show').find('ul').all('li')[3]
+          accept_confirm 'お気に入りを解除しますか？' do
+            favorite_info.find_link('解除').click
+          end
           pattern.reload
+          expect(favorite_info).to have_content '登録'
           expect(favorite_info).to have_content pattern.favorites_count
-        end
+        end.to change(Favorite, :count).by(-1)
       end
 
       it '投稿の編集ボタンが存在しないこと' do
