@@ -90,7 +90,7 @@ gem "refile", require: "refile/rails", github: 'manfe/refile'
 # 画像サイズ調整機能
 gem "refile-mini_magick"
 # ページング機能
-gem 'kaminari', '~> 1.1.1'
+gem 'kaminari', '~> 1.2.1'
 # 閲覧数カウント機能
 gem 'impressionist'
 # コントローラからjsへデータの受け渡しが可能になる機能
