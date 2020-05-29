@@ -5,10 +5,8 @@ ruby '2.5.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.1'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
 # Use Puma as the app server
-gem 'puma', '~> 3.11'
+gem 'puma', '>= 3.12.6'
 # Use SCSS for stylesheets
 # gem 'sass-rails', '~> 5.0' # 廃止？
 gem 'sassc-rails'
@@ -16,6 +14,10 @@ gem 'sassc-rails'
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'mini_racer', platforms: :ruby
+
+gem "activesupport", ">= 5.2.4.3"
+gem "actionpack", ">= 5.2.4.3"
+gem "activestorage", ">= 5.2.4.3"
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
@@ -46,6 +48,8 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # テスト機能
   gem 'rspec-rails'
+  # Use sqlite3 as the database for Active Record
+  gem 'sqlite3'
 end
 
 group :development do
@@ -92,7 +96,7 @@ gem "refile-mini_magick"
 # ページング機能
 gem 'kaminari', '~> 1.2.1'
 # 閲覧数カウント機能
-gem 'impressionist'
+gem 'impressionist', '~>1.6.1'
 # コントローラからjsへデータの受け渡しが可能になる機能
 gem 'gon'
 # 環境変数を管理
