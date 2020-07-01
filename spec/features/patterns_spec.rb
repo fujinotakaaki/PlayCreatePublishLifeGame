@@ -100,15 +100,16 @@ RSpec.describe 'Patternsビューに関するテスト', type: :feature do
 
       it 'お気に入り解除に成功', js: true do
         visit pattern_path(id: create(:favorite, user: user).pattern)
+        favorite_info = find(:css, '.patterns__show').find('ul').all('li')[3]
         expect do
-          favorite_info = find(:css, '.patterns__show').find('ul').all('li')[3]
           accept_confirm 'お気に入りを解除しますか？' do
             favorite_info.find_link('解除').click
           end
-          pattern.reload
-          expect(favorite_info).to have_content '登録'
-          expect(favorite_info).to have_content pattern.favorites_count
+          sleep 2
         end.to change(Favorite, :count).by(-1)
+        pattern.reload
+        expect(favorite_info).to have_content '登録'
+        expect(favorite_info).to have_content pattern.favorites_count
       end
 
       it '投稿の編集ボタンが存在しないこと' do

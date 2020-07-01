@@ -40,7 +40,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :production do
-  gem 'mysql2'
+  gem 'mysql2', '~> 0.5.3'
 end
 
 group :development, :test do
